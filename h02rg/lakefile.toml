@@ -1,0 +1,85 @@
+name = "H02"
+version = "0.1.0"
+defaultTargets = ["H02", "Grassmann", "FRD", "Loc", "Step", "Step2", "Flow", "Flow2", "Suscept", "Obs", "PtCorr", "Psi4", "Ward", "DressedFRD", "Obs2", "PtCorr2", "Spin2", "Cont", "H02RGMain", "H02UVMain"]
+leanOptions = { linter.unusedSectionVars = false }
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.31.0-rc1"
+
+[[lean_lib]]
+name = "H02"
+
+[[lean_lib]]
+name = "Grassmann"
+
+[[lean_lib]]
+name = "FRD"
+
+[[lean_lib]]
+name = "Loc"
+
+[[lean_lib]]
+name = "Step"
+srcDir = "H02RG"
+
+[[lean_lib]]
+name = "Step2"
+srcDir = "H02UV"
+
+[[lean_lib]]
+name = "Flow"
+srcDir = "H02RG"
+
+[[lean_lib]]
+name = "Flow2"
+srcDir = "H02UV"
+
+[[lean_lib]]
+name = "Suscept"
+srcDir = "H02RG"
+
+[[lean_lib]]
+name = "Obs"
+srcDir = "H02RG"
+
+[[lean_lib]]
+name = "PtCorr"
+srcDir = "H02RG"
+
+[[lean_lib]]
+name = "Psi4"
+srcDir = "H02RG"
+
+[[lean_lib]]
+name = "Ward"
+srcDir = "H02RG"
+
+[[lean_lib]]
+name = "DressedFRD"
+
+[[lean_lib]]
+name = "Obs2"
+srcDir = "H02UV"
+
+[[lean_lib]]
+name = "PtCorr2"
+srcDir = "H02UV"
+
+[[lean_lib]]
+name = "Spin2"
+srcDir = "H02UV"
+
+[[lean_lib]]
+name = "Cont"
+
+# Main theorems of `h02rg-lean.tex` / `h02uv-lean.tex`. Default `srcDir = "."`, so the modules
+# are `H02RG.Main.*` / `H02UV.Main.*` (files `H02RG/Main/*.lean`, `H02UV/Main/*.lean`).
+[[lean_lib]]
+name = "H02RGMain"
+globs = ["H02RG.Main.+"]
+
+[[lean_lib]]
+name = "H02UVMain"
+globs = ["H02UV.Main.+"]

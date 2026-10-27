@@ -1,0 +1,1343 @@
+{
+  "schema_version": 1,
+  "manifest_state": "AUTHOR_APPROVED",
+  "seal_limits": {
+    "max_body_lines": 3,
+    "max_body_bytes": 240
+  },
+  "anchors": [
+    {
+      "id": "def:carrier.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:65-79"
+      },
+      "contract": {
+        "id": "def:carrier",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+      "export": "ArborealDecay.EdgeWeights",
+      "split_policy": {
+        "source_group": "def:carrier",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "f58738a6bc30e7f6f82891464352d9e7b72e884527e04fdb727a747761b57ff8",
+      "definition_closure": [],
+      "state": "SEALED",
+      "full_file_sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+    },
+    {
+      "id": "eq:forest-measure.weight.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:65-72"
+      },
+      "contract": {
+        "id": "eq:forest-measure.weight",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/ForestWeight.lean",
+      "export": "ArborealDecay.forestWeight",
+      "split_policy": {
+        "source_group": "eq:forest-measure.weight",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "755e239171b470027a07a28b9aca0d52baa33e3f464a401410e0f9b3d7fe6575",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+          "sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+        }
+      ],
+      "state": "SEALED",
+      "full_file_sha256": "05e8d4cf6cc21e85f56536b2b5d010f009c6bae0412c77262cdd84d90d85902a"
+    },
+    {
+      "id": "eq:forest-measure.Z.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:65-72"
+      },
+      "contract": {
+        "id": "eq:forest-measure.Z",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/PartitionFunction.lean",
+      "export": "ArborealDecay.partitionFunction",
+      "split_policy": {
+        "source_group": "eq:forest-measure.Z",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "3fed35c4d0357a4d460b81d758ac6dacbdfbfff3063a8efa90140cb9da4ef7f4",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+          "sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestWeight.lean",
+          "sha256": "05e8d4cf6cc21e85f56536b2b5d010f009c6bae0412c77262cdd84d90d85902a"
+        }
+      ],
+      "state": "SEALED",
+      "full_file_sha256": "37e2e520f39b3dd633d9bf6be4b76c3f7c27f503dfc5a07fc967ef8ff0226b27"
+    },
+    {
+      "id": "eq:forest-measure.mu.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:65-72"
+      },
+      "contract": {
+        "id": "eq:forest-measure.mu",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/ForestProb.lean",
+      "export": "ArborealDecay.forestProb",
+      "split_policy": {
+        "source_group": "eq:forest-measure.mu",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "a7a507b1dce804e2b874841c3c183ed1ea78eb9df924ee7ab6a308de4ec82a27",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+          "sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestWeight.lean",
+          "sha256": "05e8d4cf6cc21e85f56536b2b5d010f009c6bae0412c77262cdd84d90d85902a"
+        },
+        {
+          "path": "ArborealDecay/Frozen/PartitionFunction.lean",
+          "sha256": "37e2e520f39b3dd633d9bf6be4b76c3f7c27f503dfc5a07fc967ef8ff0226b27"
+        }
+      ],
+      "state": "SEALED",
+      "full_file_sha256": "887152c6698ef5f698616a762daea8c80ae144758e4bdd5d4dbaabf13cfd6dea"
+    },
+    {
+      "id": "def:tau.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:73-76"
+      },
+      "contract": {
+        "id": "def:tau",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/TwoPoint.lean",
+      "export": "ArborealDecay.twoPoint",
+      "split_policy": {
+        "source_group": "def:tau",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "f6ba4c8ae9ee4c82b4fd662fa2eed8eb04ce7203568597b12c3230d87fd48cd0",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+          "sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestProb.lean",
+          "sha256": "887152c6698ef5f698616a762daea8c80ae144758e4bdd5d4dbaabf13cfd6dea"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestWeight.lean",
+          "sha256": "05e8d4cf6cc21e85f56536b2b5d010f009c6bae0412c77262cdd84d90d85902a"
+        },
+        {
+          "path": "ArborealDecay/Frozen/PartitionFunction.lean",
+          "sha256": "37e2e520f39b3dd633d9bf6be4b76c3f7c27f503dfc5a07fc967ef8ff0226b27"
+        }
+      ],
+      "state": "SEALED",
+      "full_file_sha256": "277321aaf58d4a74227e138b5b0f613021adb8aa7a8d8cb65e82cfbdd8171b8f"
+    },
+    {
+      "id": "def:Z2-nn.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:81-86"
+      },
+      "contract": {
+        "id": "def:Z2-nn",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/IsNN.lean",
+      "export": "ArborealDecay.IsNN",
+      "split_policy": {
+        "source_group": "def:Z2-nn",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "4fc49f67afeac355b632789a255981b4dc7a6f8fba0b31175650f19cee1f96de",
+      "definition_closure": [],
+      "state": "SEALED",
+      "full_file_sha256": "f2a5b86436d725599e21f805254a92dde886c889088e414a4a55f2f90b63476c"
+    },
+    {
+      "id": "def:Z2-supdist.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:81-86"
+      },
+      "contract": {
+        "id": "def:Z2-supdist",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/SupDist.lean",
+      "export": "ArborealDecay.supDist",
+      "split_policy": {
+        "source_group": "def:Z2-supdist",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "5c9935bcddf65cc0b94293b2853649b38fb96d1dd84ec5b790435c71ab972208",
+      "definition_closure": [],
+      "state": "SEALED",
+      "full_file_sha256": "b9e39dbd546bae6b3528322135b8829b1e382196c00b1e345a0626a1379c250b"
+    },
+    {
+      "id": "def:torus-nn.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:88-89"
+      },
+      "contract": {
+        "id": "def:torus-nn",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/IsTorusNN.lean",
+      "export": "ArborealDecay.IsTorusNN",
+      "split_policy": {
+        "source_group": "def:torus-nn",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "9e1fc741b6cb4ecaffd2f35df2e172ba88eac611751d4b5dfab620a1616ee7f1",
+      "definition_closure": [],
+      "state": "SEALED",
+      "full_file_sha256": "65e8bbbc5d43aec9ad86d1fa9820783b823a812567179488d7ff40a4c647421e"
+    },
+    {
+      "id": "def:torus-supdist.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:88-89"
+      },
+      "contract": {
+        "id": "def:torus-supdist",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/TorusSupDist.lean",
+      "export": "ArborealDecay.torusSupDist",
+      "split_policy": {
+        "source_group": "def:torus-supdist",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "69713ec7c9c659cd832c896b2f93c194e68b61567e6c7fa01a392df7be097bfd",
+      "definition_closure": [],
+      "state": "SEALED",
+      "full_file_sha256": "aed5c8719680d273f7c5945d4fa9152078226e7dd21bf4629830a8d5cc1e3902"
+    },
+    {
+      "id": "def:torus-uniform.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:89-93"
+      },
+      "contract": {
+        "id": "def:torus-uniform",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/TorusUniform.lean",
+      "export": "ArborealDecay.torusUniform",
+      "split_policy": {
+        "source_group": "def:torus-uniform",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "c4e8f2b3df3c356768b51e02f1474070b9090c0827df6a5b170558780b8cd2a3",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+          "sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+        },
+        {
+          "path": "ArborealDecay/Frozen/IsTorusNN.lean",
+          "sha256": "65e8bbbc5d43aec9ad86d1fa9820783b823a812567179488d7ff40a4c647421e"
+        }
+      ],
+      "state": "SEALED",
+      "full_file_sha256": "8bedf9c9c8f590d2c01c7afc9c2e4100050677f5fa0bb0fe2527f6683dafa563"
+    },
+    {
+      "id": "def:torus-eucl.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:89-93"
+      },
+      "contract": {
+        "id": "def:torus-eucl",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/TorusEuclNorm.lean",
+      "export": "ArborealDecay.torusEuclNorm",
+      "split_policy": {
+        "source_group": "def:torus-eucl",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "27a6e509b582060a47e028b688a0e541ca5d831fb9968cf4f984b41d2043adb3",
+      "definition_closure": [],
+      "state": "SEALED",
+      "full_file_sha256": "8d3234e3c57c236f327111f1ffadc4ca1988e7c26e40c97be7cc9e0cb14d9aa0"
+    },
+    {
+      "id": "def:support-graph.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:65-79"
+      },
+      "contract": {
+        "id": "def:support-graph",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/EdgeWeightsGraph.lean",
+      "export": "ArborealDecay.EdgeWeights.graph",
+      "split_policy": {
+        "source_group": "def:support-graph",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "4edc01826009b5876e817be167eb74b5cb3a52148a9021a43e6c0156ddc842b2",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+          "sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+        }
+      ],
+      "state": "SEALED",
+      "full_file_sha256": "d9afe8747d332eabf3941ca5c93acac858b2a8161043a5640356c774f91f2592"
+    },
+    {
+      "id": "def:identification.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:77-79,484-488"
+      },
+      "contract": {
+        "id": "def:identification",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/EdgeWeightsMap.lean",
+      "export": "ArborealDecay.EdgeWeights.map",
+      "split_policy": {
+        "source_group": "def:identification",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "cfc4d61f57a9cdf1d703ec0a92e20182268678aed0f200ba6423c2b5de286ff5",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+          "sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+        }
+      ],
+      "state": "SEALED",
+      "full_file_sha256": "d4108543f1778c9f46a16a93b986dbbf9e2c946eaae462ca25635e89834e45a4"
+    },
+    {
+      "id": "def:collapse.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:486-488"
+      },
+      "contract": {
+        "id": "def:collapse",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/Collapse.lean",
+      "export": "ArborealDecay.collapse",
+      "split_policy": {
+        "source_group": "def:collapse",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "0ef28534696fa54612df1d00d0acd0ab7f37d8ee1bb7c1cba363facbc5670d13",
+      "definition_closure": [],
+      "state": "SEALED",
+      "full_file_sha256": "a000f46f574c2c642ee6cc3d778884fc0b9aa0d5e12c8b0d2a986ea0a4a6e75f"
+    },
+    {
+      "id": "eq:PG-def.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:104-108"
+      },
+      "contract": {
+        "id": "eq:PG-def",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/ForestPolynomial.lean",
+      "export": "ArborealDecay.forestPolynomial",
+      "split_policy": {
+        "source_group": "eq:PG-def",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "f0aebcd013ee24021a4bde1fe835878342545a43fc2cdd82e78a657cacc5736f",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+          "sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestWeight.lean",
+          "sha256": "05e8d4cf6cc21e85f56536b2b5d010f009c6bae0412c77262cdd84d90d85902a"
+        }
+      ],
+      "state": "SEALED",
+      "full_file_sha256": "86785a3a8a55fc939fc0e560001df9b7e9a931df905501c6ce3fcf0ecff7effe"
+    },
+    {
+      "id": "def:real-stable.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:117-120"
+      },
+      "contract": {
+        "id": "def:real-stable",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/IsRealStable.lean",
+      "export": "ArborealDecay.IsRealStable",
+      "split_policy": {
+        "source_group": "def:real-stable",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "bc5852549eb6223c8c1548c1983ea107c4d5faf76b4ba268e5bd24e4220fd996",
+      "definition_closure": [],
+      "state": "SEALED",
+      "full_file_sha256": "909e05ae9e25eaa7a1ee89da2ab797aaadbbd45afae3fc79559207f0e84e2521"
+    },
+    {
+      "id": "def:s-monomial.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:339-348"
+      },
+      "contract": {
+        "id": "def:s-monomial",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/SMonomial.lean",
+      "export": "ArborealDecay.sMonomial",
+      "split_policy": {
+        "source_group": "def:s-monomial",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "c0f57b52db967616432eb5f6b8cbb46c5b240dcb306236b78f5c62e01163e03f",
+      "definition_closure": [],
+      "state": "SEALED",
+      "full_file_sha256": "e43c192473bff4f3c0f702bdf7a74d731e22d1e0a8b9bd9655a174de266944ba"
+    },
+    {
+      "id": "def:supnorm.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:824-826"
+      },
+      "contract": {
+        "id": "def:supnorm",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/SupNorm.lean",
+      "export": "ArborealDecay.supNorm",
+      "split_policy": {
+        "source_group": "def:supnorm",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "e078221302c8e1d4e31813ca00b2e0a89c2649e6708902ec462bdad90aed8389",
+      "definition_closure": [],
+      "state": "SEALED",
+      "full_file_sha256": "d5053cc8028c7fc6d7657e05bc7e7083165a2988b99366c4f76c1954a4de9993"
+    },
+    {
+      "id": "def:annulus-wiring.v1",
+      "kind": "definition",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:824-831"
+      },
+      "contract": {
+        "id": "def:annulus-wiring",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/AnnulusCollapse.lean",
+      "export": "ArborealDecay.annulusCollapse",
+      "split_policy": {
+        "source_group": "def:annulus-wiring",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "f7c86567e60accbe09dfffb2c1b0269fe52ac721532bb85fe8b8bfdf7b4ba5dd",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/SupNorm.lean",
+          "sha256": "d5053cc8028c7fc6d7657e05bc7e7083165a2988b99366c4f76c1954a4de9993"
+        }
+      ],
+      "state": "SEALED",
+      "full_file_sha256": "756910c79555c73f22e3172ccb349c07748fb94e3a817a54093757a2fd885282"
+    },
+    {
+      "id": "thm:main.finite.v1",
+      "kind": "theorem",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:81-87"
+      },
+      "contract": {
+        "id": "thm:main.finite",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/ExpDecayFinite.lean",
+      "export": "ArborealDecay.expDecay_finite",
+      "split_policy": {
+        "source_group": "thm:main",
+        "mode": "INDEPENDENT_BY_AUTHOR",
+        "ruling_ref": "R4"
+      },
+      "abi_sha256": "c244588cf5fd35a3f917e378ee5e1cf492b6f993061deb9709415a623c0bb887",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+          "sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestProb.lean",
+          "sha256": "887152c6698ef5f698616a762daea8c80ae144758e4bdd5d4dbaabf13cfd6dea"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestWeight.lean",
+          "sha256": "05e8d4cf6cc21e85f56536b2b5d010f009c6bae0412c77262cdd84d90d85902a"
+        },
+        {
+          "path": "ArborealDecay/Frozen/IsNN.lean",
+          "sha256": "f2a5b86436d725599e21f805254a92dde886c889088e414a4a55f2f90b63476c"
+        },
+        {
+          "path": "ArborealDecay/Frozen/PartitionFunction.lean",
+          "sha256": "37e2e520f39b3dd633d9bf6be4b76c3f7c27f503dfc5a07fc967ef8ff0226b27"
+        },
+        {
+          "path": "ArborealDecay/Frozen/SupDist.lean",
+          "sha256": "b9e39dbd546bae6b3528322135b8829b1e382196c00b1e345a0626a1379c250b"
+        },
+        {
+          "path": "ArborealDecay/Frozen/TwoPoint.lean",
+          "sha256": "277321aaf58d4a74227e138b5b0f613021adb8aa7a8d8cb65e82cfbdd8171b8f"
+        }
+      ],
+      "state": "SEALED",
+      "implementation": {
+        "module": "ArborealDecay.Provider.ExpDecayFinite",
+        "export": "ArborealDecay.Provider.expDecay_finite"
+      },
+      "prefix_sha256": "b11976b05cca4b86701517698717c745d492e2a428c2d8c4df342da29b25bbd4",
+      "suffix_sha256": "8b48cfbab58b829774a5248af3538f14120d68725fec5faef5c9bb3ab7d4c374",
+      "draft_allowlist": {
+        "frozen_paths": [],
+        "audit_paths": []
+      }
+    },
+    {
+      "id": "thm:main.torus.v1",
+      "kind": "theorem",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:81-89"
+      },
+      "contract": {
+        "id": "thm:main.torus",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/ExpDecayTorus.lean",
+      "export": "ArborealDecay.expDecay_torus",
+      "split_policy": {
+        "source_group": "thm:main",
+        "mode": "INDEPENDENT_BY_AUTHOR",
+        "ruling_ref": "R4"
+      },
+      "abi_sha256": "75f1cd085b688ad05aa5bc78eb38f1f739908a021c6a2bb69a5f3a8c7d9ae5c1",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+          "sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestProb.lean",
+          "sha256": "887152c6698ef5f698616a762daea8c80ae144758e4bdd5d4dbaabf13cfd6dea"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestWeight.lean",
+          "sha256": "05e8d4cf6cc21e85f56536b2b5d010f009c6bae0412c77262cdd84d90d85902a"
+        },
+        {
+          "path": "ArborealDecay/Frozen/IsTorusNN.lean",
+          "sha256": "65e8bbbc5d43aec9ad86d1fa9820783b823a812567179488d7ff40a4c647421e"
+        },
+        {
+          "path": "ArborealDecay/Frozen/PartitionFunction.lean",
+          "sha256": "37e2e520f39b3dd633d9bf6be4b76c3f7c27f503dfc5a07fc967ef8ff0226b27"
+        },
+        {
+          "path": "ArborealDecay/Frozen/TorusSupDist.lean",
+          "sha256": "aed5c8719680d273f7c5945d4fa9152078226e7dd21bf4629830a8d5cc1e3902"
+        },
+        {
+          "path": "ArborealDecay/Frozen/TwoPoint.lean",
+          "sha256": "277321aaf58d4a74227e138b5b0f613021adb8aa7a8d8cb65e82cfbdd8171b8f"
+        }
+      ],
+      "state": "SEALED",
+      "implementation": {
+        "module": "ArborealDecay.Provider.ExpDecayTorus",
+        "export": "ArborealDecay.Provider.expDecay_torus"
+      },
+      "prefix_sha256": "33e88fba1f020c3fb158af574dd169f0ee6b14acf230a59d554cfeecbf3d393b",
+      "suffix_sha256": "8b48cfbab58b829774a5248af3538f14120d68725fec5faef5c9bb3ab7d4c374",
+      "draft_allowlist": {
+        "frozen_paths": [],
+        "audit_paths": []
+      }
+    },
+    {
+      "id": "thm:main.eucl.v1",
+      "kind": "theorem",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:81-93"
+      },
+      "contract": {
+        "id": "thm:main.eucl",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/ExpDecayTorusEucl.lean",
+      "export": "ArborealDecay.expDecay_torus_eucl",
+      "split_policy": {
+        "source_group": "thm:main",
+        "mode": "INDEPENDENT_BY_AUTHOR",
+        "ruling_ref": "R4"
+      },
+      "abi_sha256": "d0e388d75470514a64591ec0f0a4e9c85a4bbe8e5b2a1195d28a65f48b8e9a64",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+          "sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestProb.lean",
+          "sha256": "887152c6698ef5f698616a762daea8c80ae144758e4bdd5d4dbaabf13cfd6dea"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestWeight.lean",
+          "sha256": "05e8d4cf6cc21e85f56536b2b5d010f009c6bae0412c77262cdd84d90d85902a"
+        },
+        {
+          "path": "ArborealDecay/Frozen/IsTorusNN.lean",
+          "sha256": "65e8bbbc5d43aec9ad86d1fa9820783b823a812567179488d7ff40a4c647421e"
+        },
+        {
+          "path": "ArborealDecay/Frozen/PartitionFunction.lean",
+          "sha256": "37e2e520f39b3dd633d9bf6be4b76c3f7c27f503dfc5a07fc967ef8ff0226b27"
+        },
+        {
+          "path": "ArborealDecay/Frozen/TorusEuclNorm.lean",
+          "sha256": "8d3234e3c57c236f327111f1ffadc4ca1988e7c26e40c97be7cc9e0cb14d9aa0"
+        },
+        {
+          "path": "ArborealDecay/Frozen/TorusUniform.lean",
+          "sha256": "8bedf9c9c8f590d2c01c7afc9c2e4100050677f5fa0bb0fe2527f6683dafa563"
+        },
+        {
+          "path": "ArborealDecay/Frozen/TwoPoint.lean",
+          "sha256": "277321aaf58d4a74227e138b5b0f613021adb8aa7a8d8cb65e82cfbdd8171b8f"
+        }
+      ],
+      "state": "SEALED",
+      "implementation": {
+        "module": "ArborealDecay.Provider.ExpDecayTorusEucl",
+        "export": "ArborealDecay.Provider.expDecay_torus_eucl"
+      },
+      "prefix_sha256": "a4d018397cbecfc5fae90e5cb70460d8adfb0ae6da7e06bef869a1f349a32b99",
+      "suffix_sha256": "8b48cfbab58b829774a5248af3538f14120d68725fec5faef5c9bb3ab7d4c374",
+      "draft_allowlist": {
+        "frozen_paths": [],
+        "audit_paths": []
+      }
+    },
+    {
+      "id": "prop:separator-wiring.v1",
+      "kind": "theorem",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:484-491"
+      },
+      "contract": {
+        "id": "prop:separator-wiring",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/SeparatorWiring.lean",
+      "export": "ArborealDecay.separator_wiring",
+      "split_policy": {
+        "source_group": "prop:separator-wiring",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "8b32c2f74a0d744040843e54b273e8fa4db77c4436ca464f08c56105f08da68a",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/Collapse.lean",
+          "sha256": "a000f46f574c2c642ee6cc3d778884fc0b9aa0d5e12c8b0d2a986ea0a4a6e75f"
+        },
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+          "sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+        },
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeightsGraph.lean",
+          "sha256": "d9afe8747d332eabf3941ca5c93acac858b2a8161043a5640356c774f91f2592"
+        },
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeightsMap.lean",
+          "sha256": "d4108543f1778c9f46a16a93b986dbbf9e2c946eaae462ca25635e89834e45a4"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestProb.lean",
+          "sha256": "887152c6698ef5f698616a762daea8c80ae144758e4bdd5d4dbaabf13cfd6dea"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestWeight.lean",
+          "sha256": "05e8d4cf6cc21e85f56536b2b5d010f009c6bae0412c77262cdd84d90d85902a"
+        },
+        {
+          "path": "ArborealDecay/Frozen/PartitionFunction.lean",
+          "sha256": "37e2e520f39b3dd633d9bf6be4b76c3f7c27f503dfc5a07fc967ef8ff0226b27"
+        },
+        {
+          "path": "ArborealDecay/Frozen/TwoPoint.lean",
+          "sha256": "277321aaf58d4a74227e138b5b0f613021adb8aa7a8d8cb65e82cfbdd8171b8f"
+        }
+      ],
+      "state": "SEALED",
+      "implementation": {
+        "module": "ArborealDecay.Provider.SeparatorWiring",
+        "export": "ArborealDecay.Provider.separator_wiring"
+      },
+      "prefix_sha256": "642a7eca53b68da8b36f01ed9d2871092a0b2b446d2150be08d49eb4af249e16",
+      "suffix_sha256": "8b48cfbab58b829774a5248af3538f14120d68725fec5faef5c9bb3ab7d4c374",
+      "draft_allowlist": {
+        "frozen_paths": [],
+        "audit_paths": []
+      }
+    },
+    {
+      "id": "prop:incident-NC.v1",
+      "kind": "theorem",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:259-267"
+      },
+      "contract": {
+        "id": "prop:incident-NC",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/IncidentNC.lean",
+      "export": "ArborealDecay.incident_NC",
+      "split_policy": {
+        "source_group": "prop:incident-NC",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "433b624f9fe50fd9cf99e1b931048fa378d75c66fe11e65291b3ec46bc1315df",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+          "sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestProb.lean",
+          "sha256": "887152c6698ef5f698616a762daea8c80ae144758e4bdd5d4dbaabf13cfd6dea"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestWeight.lean",
+          "sha256": "05e8d4cf6cc21e85f56536b2b5d010f009c6bae0412c77262cdd84d90d85902a"
+        },
+        {
+          "path": "ArborealDecay/Frozen/PartitionFunction.lean",
+          "sha256": "37e2e520f39b3dd633d9bf6be4b76c3f7c27f503dfc5a07fc967ef8ff0226b27"
+        }
+      ],
+      "state": "SEALED",
+      "implementation": {
+        "module": "ArborealDecay.Provider.IncidentNC",
+        "export": "ArborealDecay.Provider.incident_NC"
+      },
+      "prefix_sha256": "5ebfea696e8a9e7aa2f59f75a8b22d16177d294cfe00d08086be4d3dcd4ff5e4",
+      "suffix_sha256": "8b48cfbab58b829774a5248af3538f14120d68725fec5faef5c9bb3ab7d4c374",
+      "draft_allowlist": {
+        "frozen_paths": [],
+        "audit_paths": []
+      }
+    },
+    {
+      "id": "prop:Simon-Lieb.v1",
+      "kind": "theorem",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:1036-1044"
+      },
+      "contract": {
+        "id": "prop:Simon-Lieb",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/SimonLieb.lean",
+      "export": "ArborealDecay.simon_lieb",
+      "split_policy": {
+        "source_group": "prop:Simon-Lieb",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "c92a017a08a993e302ad9de7104d48a9d043537ff54eeee41aa970ca82dcb361",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+          "sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+        },
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeightsGraph.lean",
+          "sha256": "d9afe8747d332eabf3941ca5c93acac858b2a8161043a5640356c774f91f2592"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestProb.lean",
+          "sha256": "887152c6698ef5f698616a762daea8c80ae144758e4bdd5d4dbaabf13cfd6dea"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestWeight.lean",
+          "sha256": "05e8d4cf6cc21e85f56536b2b5d010f009c6bae0412c77262cdd84d90d85902a"
+        },
+        {
+          "path": "ArborealDecay/Frozen/PartitionFunction.lean",
+          "sha256": "37e2e520f39b3dd633d9bf6be4b76c3f7c27f503dfc5a07fc967ef8ff0226b27"
+        },
+        {
+          "path": "ArborealDecay/Frozen/TwoPoint.lean",
+          "sha256": "277321aaf58d4a74227e138b5b0f613021adb8aa7a8d8cb65e82cfbdd8171b8f"
+        }
+      ],
+      "state": "SEALED",
+      "implementation": {
+        "module": "ArborealDecay.Provider.SimonLieb",
+        "export": "ArborealDecay.Provider.simon_lieb"
+      },
+      "prefix_sha256": "f8e28e436a9ae03457cfe86f16854a8a2ba5da4cefc387d8255533b0459099bc",
+      "suffix_sha256": "8b48cfbab58b829774a5248af3538f14120d68725fec5faef5c9bb3ab7d4c374",
+      "draft_allowlist": {
+        "frozen_paths": [],
+        "audit_paths": []
+      }
+    },
+    {
+      "id": "lem:PG-stable.v1",
+      "kind": "theorem",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:194-196"
+      },
+      "contract": {
+        "id": "lem:PG-stable",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/ForestPolynomialIsRealStable.lean",
+      "export": "ArborealDecay.forestPolynomial_isRealStable",
+      "split_policy": {
+        "source_group": "lem:PG-stable",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "f507f8a3518dc200c6fe471ed801d79002fc68bf6cbdf2c43b7e672aa65ba2fb",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+          "sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestPolynomial.lean",
+          "sha256": "86785a3a8a55fc939fc0e560001df9b7e9a931df905501c6ce3fcf0ecff7effe"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestWeight.lean",
+          "sha256": "05e8d4cf6cc21e85f56536b2b5d010f009c6bae0412c77262cdd84d90d85902a"
+        },
+        {
+          "path": "ArborealDecay/Frozen/IsRealStable.lean",
+          "sha256": "909e05ae9e25eaa7a1ee89da2ab797aaadbbd45afae3fc79559207f0e84e2521"
+        }
+      ],
+      "state": "SEALED",
+      "implementation": {
+        "module": "ArborealDecay.Provider.ForestPolynomialIsRealStable",
+        "export": "ArborealDecay.Provider.forestPolynomial_isRealStable"
+      },
+      "prefix_sha256": "a043fb611ed57f42f30c2f52ab0b596efd2891662306e92024a6f153cedba73e",
+      "suffix_sha256": "8b48cfbab58b829774a5248af3538f14120d68725fec5faef5c9bb3ab7d4c374",
+      "draft_allowlist": {
+        "frozen_paths": [],
+        "audit_paths": []
+      }
+    },
+    {
+      "id": "lem:stable-separator.v1",
+      "kind": "theorem",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:339-352"
+      },
+      "contract": {
+        "id": "lem:stable-separator",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/StableSeparator.lean",
+      "export": "ArborealDecay.stable_separator",
+      "split_policy": {
+        "source_group": "lem:stable-separator",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "63f55700c484c0b1705df4ec7b1373f8953c31a5c7990805d1be78924286b47c",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/IsRealStable.lean",
+          "sha256": "909e05ae9e25eaa7a1ee89da2ab797aaadbbd45afae3fc79559207f0e84e2521"
+        },
+        {
+          "path": "ArborealDecay/Frozen/SMonomial.lean",
+          "sha256": "e43c192473bff4f3c0f702bdf7a74d731e22d1e0a8b9bd9655a174de266944ba"
+        }
+      ],
+      "state": "SEALED",
+      "implementation": {
+        "module": "ArborealDecay.Provider.StableSeparator",
+        "export": "ArborealDecay.Provider.stable_separator"
+      },
+      "prefix_sha256": "bf282b58e09e4e2edb518cb218c22090733e098978d17c4ce035daefed2fcbfa",
+      "suffix_sha256": "8b48cfbab58b829774a5248af3538f14120d68725fec5faef5c9bb3ab7d4c374",
+      "draft_allowlist": {
+        "frozen_paths": [],
+        "audit_paths": []
+      }
+    },
+    {
+      "id": "prop:annulus.v1",
+      "kind": "theorem",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:833-841"
+      },
+      "contract": {
+        "id": "prop:annulus",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/AnnulusBound.lean",
+      "export": "ArborealDecay.annulus_bound",
+      "split_policy": {
+        "source_group": "prop:annulus",
+        "mode": "NOT_SPLIT",
+        "ruling_ref": "R10"
+      },
+      "abi_sha256": "f216352cceb5c8341b12d8e0cf8713fea2a559f449347243d86694e35cb3da0a",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/AnnulusCollapse.lean",
+          "sha256": "756910c79555c73f22e3172ccb349c07748fb94e3a817a54093757a2fd885282"
+        },
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+          "sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+        },
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeightsMap.lean",
+          "sha256": "d4108543f1778c9f46a16a93b986dbbf9e2c946eaae462ca25635e89834e45a4"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestProb.lean",
+          "sha256": "887152c6698ef5f698616a762daea8c80ae144758e4bdd5d4dbaabf13cfd6dea"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestWeight.lean",
+          "sha256": "05e8d4cf6cc21e85f56536b2b5d010f009c6bae0412c77262cdd84d90d85902a"
+        },
+        {
+          "path": "ArborealDecay/Frozen/IsNN.lean",
+          "sha256": "f2a5b86436d725599e21f805254a92dde886c889088e414a4a55f2f90b63476c"
+        },
+        {
+          "path": "ArborealDecay/Frozen/PartitionFunction.lean",
+          "sha256": "37e2e520f39b3dd633d9bf6be4b76c3f7c27f503dfc5a07fc967ef8ff0226b27"
+        },
+        {
+          "path": "ArborealDecay/Frozen/SupNorm.lean",
+          "sha256": "d5053cc8028c7fc6d7657e05bc7e7083165a2988b99366c4f76c1954a4de9993"
+        },
+        {
+          "path": "ArborealDecay/Frozen/TwoPoint.lean",
+          "sha256": "277321aaf58d4a74227e138b5b0f613021adb8aa7a8d8cb65e82cfbdd8171b8f"
+        }
+      ],
+      "state": "SEALED",
+      "implementation": {
+        "module": "ArborealDecay.Provider.AnnulusBound",
+        "export": "ArborealDecay.Provider.annulus_bound"
+      },
+      "prefix_sha256": "6b21fe5a67e874a0b7458af5a8c9cb640d3f81aeb2de7cb1952960f3644ebd8a",
+      "suffix_sha256": "8b48cfbab58b829774a5248af3538f14120d68725fec5faef5c9bb3ab7d4c374",
+      "draft_allowlist": {
+        "frozen_paths": [],
+        "audit_paths": []
+      }
+    },
+    {
+      "id": "prop:superpoly.finite.v1",
+      "kind": "theorem",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:924-934"
+      },
+      "contract": {
+        "id": "prop:superpoly.finite",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/SuperpolyFinite.lean",
+      "export": "ArborealDecay.superpoly_finite",
+      "split_policy": {
+        "source_group": "prop:superpoly",
+        "mode": "INDEPENDENT_BY_AUTHOR",
+        "ruling_ref": "R10 (N4)"
+      },
+      "abi_sha256": "1e4a9840d8c9113f2c4f0695409d579f78796e664a8ca1916c57d5e41d388d78",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+          "sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestProb.lean",
+          "sha256": "887152c6698ef5f698616a762daea8c80ae144758e4bdd5d4dbaabf13cfd6dea"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestWeight.lean",
+          "sha256": "05e8d4cf6cc21e85f56536b2b5d010f009c6bae0412c77262cdd84d90d85902a"
+        },
+        {
+          "path": "ArborealDecay/Frozen/IsNN.lean",
+          "sha256": "f2a5b86436d725599e21f805254a92dde886c889088e414a4a55f2f90b63476c"
+        },
+        {
+          "path": "ArborealDecay/Frozen/PartitionFunction.lean",
+          "sha256": "37e2e520f39b3dd633d9bf6be4b76c3f7c27f503dfc5a07fc967ef8ff0226b27"
+        },
+        {
+          "path": "ArborealDecay/Frozen/SupDist.lean",
+          "sha256": "b9e39dbd546bae6b3528322135b8829b1e382196c00b1e345a0626a1379c250b"
+        },
+        {
+          "path": "ArborealDecay/Frozen/TwoPoint.lean",
+          "sha256": "277321aaf58d4a74227e138b5b0f613021adb8aa7a8d8cb65e82cfbdd8171b8f"
+        }
+      ],
+      "state": "SEALED",
+      "implementation": {
+        "module": "ArborealDecay.Provider.SuperpolyFinite",
+        "export": "ArborealDecay.Provider.superpoly_finite"
+      },
+      "prefix_sha256": "aa7a3da438fe8b5e3243319eb8dd646261c212462accb382f556fbc0032a51c1",
+      "suffix_sha256": "8b48cfbab58b829774a5248af3538f14120d68725fec5faef5c9bb3ab7d4c374",
+      "draft_allowlist": {
+        "frozen_paths": [],
+        "audit_paths": []
+      }
+    },
+    {
+      "id": "prop:superpoly.torus.v1",
+      "kind": "theorem",
+      "author_approval": {
+        "approved_by": "Roland Bauerschmidt",
+        "approved_at": "2026-10-24",
+        "approval_ref": "RULINGS.md R10; docs/approval/batch1.md",
+        "approval_version": "1"
+      },
+      "source": {
+        "revision": "git 9686009 / sha256 9ba7ea55",
+        "range": "h02expdec.tex:924-934"
+      },
+      "contract": {
+        "id": "prop:superpoly.torus",
+        "version": "1"
+      },
+      "path": "ArborealDecay/Frozen/SuperpolyTorus.lean",
+      "export": "ArborealDecay.superpoly_torus",
+      "split_policy": {
+        "source_group": "prop:superpoly",
+        "mode": "INDEPENDENT_BY_AUTHOR",
+        "ruling_ref": "R10 (N4)"
+      },
+      "abi_sha256": "1e3c9de4493fc7016e23844f15ef5de85cdd2f78c8bb43528f2da02e93a4de73",
+      "definition_closure": [
+        {
+          "path": "ArborealDecay/Frozen/EdgeWeights.lean",
+          "sha256": "4655a4f09a8d871084bfd29a94ae021b88dd007005ee196fd1aa3c04e30d487c"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestProb.lean",
+          "sha256": "887152c6698ef5f698616a762daea8c80ae144758e4bdd5d4dbaabf13cfd6dea"
+        },
+        {
+          "path": "ArborealDecay/Frozen/ForestWeight.lean",
+          "sha256": "05e8d4cf6cc21e85f56536b2b5d010f009c6bae0412c77262cdd84d90d85902a"
+        },
+        {
+          "path": "ArborealDecay/Frozen/IsTorusNN.lean",
+          "sha256": "65e8bbbc5d43aec9ad86d1fa9820783b823a812567179488d7ff40a4c647421e"
+        },
+        {
+          "path": "ArborealDecay/Frozen/PartitionFunction.lean",
+          "sha256": "37e2e520f39b3dd633d9bf6be4b76c3f7c27f503dfc5a07fc967ef8ff0226b27"
+        },
+        {
+          "path": "ArborealDecay/Frozen/TorusSupDist.lean",
+          "sha256": "aed5c8719680d273f7c5945d4fa9152078226e7dd21bf4629830a8d5cc1e3902"
+        },
+        {
+          "path": "ArborealDecay/Frozen/TwoPoint.lean",
+          "sha256": "277321aaf58d4a74227e138b5b0f613021adb8aa7a8d8cb65e82cfbdd8171b8f"
+        }
+      ],
+      "state": "SEALED",
+      "implementation": {
+        "module": "ArborealDecay.Provider.SuperpolyTorus",
+        "export": "ArborealDecay.Provider.superpoly_torus"
+      },
+      "prefix_sha256": "28c2c3e197b9b42e12afe537b3e19ed1508e4e3f62fdb3f6de01c97fede2c07b",
+      "suffix_sha256": "8b48cfbab58b829774a5248af3538f14120d68725fec5faef5c9bb3ab7d4c374",
+      "draft_allowlist": {
+        "frozen_paths": [],
+        "audit_paths": []
+      }
+    }
+  ]
+}

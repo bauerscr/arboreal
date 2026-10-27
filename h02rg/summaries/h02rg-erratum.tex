@@ -1,0 +1,320 @@
+\documentclass[11pt]{amsart}
+
+\usepackage[nomath,nothms,nomisc,nolayout,nohyperref,abbrs,nocolor]{mymacros}
+
+\usepackage{amsmath,amssymb,bbm,mathtools}
+\usepackage{xspace}
+\usepackage{thmtools, thm-restate}
+\usepackage{fullpage}
+\usepackage{enumerate}
+\usepackage{microtype}
+
+\usepackage[bookmarks, colorlinks, breaklinks,
+pdftitle={},pdfauthor={}]{hyperref}
+
+\hypersetup{
+  linkcolor=black,
+  citecolor=black,
+  filecolor=black,
+  urlcolor=black}
+
+\numberwithin{equation}{section}
+
+\usepackage{cleveref}
+
+%% Macros of h02rg.tex
+\newcommand{\conn}{\leftrightarrow}
+\newcommand{\nconn}{\not\leftrightarrow}
+\newcommand{\obs}{\star}
+\newcommand{\cVbulk}{\cV^\varnothing}
+\newcommand{\cKbulk}{\cK^\varnothing}
+\newcommand{\Vbulk}{V^\varnothing}
+\newcommand{\Vobs}{V^\obs}
+\newcommand{\uobs}{u^\obs}
+\newcommand{\Kbulk}{K^\varnothing}
+\newcommand{\Kobs}{K^\obs}
+\newcommand{\ellabN}{\ell_{ab,N}}
+\newcommand{\OL}{O_L}
+\newcommand{\dplus}{(\frac{d-2}{2} \wedge 1)}
+\newcommand{\Loc}{\operatorname{Loc}}
+\newcommand{\loc}{\operatorname{loc}}
+\newcommand{\tu}{\tilde u_{N,N}}
+\newcommand{\Comp}{\operatorname{Comp}}
+
+\title{Erratum: Percolation transition for random forests in $d\geq 3$}
+\date{}
+
+\author{Roland Bauerschmidt}
+\address{University of Cambridge, DPMMS; Courant Institute of Mathematical Sciences, NYU}
+\email{bauerschmidt@cims.nyu.edu}
+
+\author{Nicholas Crawford}
+\address{The Technion, Department of Mathematics}
+\email{nickc@technion.ac.il}
+
+\author{Tyler Helmuth}
+\address{Durham University, Department of Mathematical Sciences}
+\email{tyler.helmuth@durham.ac.uk}
+
+\begin{document}
+\sloppy
+
+\begin{abstract}
+  We correct a number of errors in \cite{BCH24}. None of them affects the main results,
+  Theorems~1.1, 1.2, 1.3 and~1.5 and Proposition~1.4 of \cite{BCH24}.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+This note lists corrections to \cite{BCH24}. They were found during a formal verification of
+the main results of \cite{BCH24} in the Lean proof assistant. Section, theorem and equation
+numbers refer to \cite{BCH24}, and the notation is that of \cite{BCH24}.
+
+The main results, Theorems~1.1, 1.2, 1.3, 1.5 and Proposition~1.4, hold as stated. Some
+intermediate statements in Sections~2--6 need to be changed. Each correction below is marked
+\textbf{(S)} if it changes the statement of a numbered result (or a definition), and
+\textbf{(P)} if it only concerns a proof. Where a statement changes, we indicate why the main
+results are not affected.
+
+\section{Corrections}
+
+\subsection*{Section 2: Consequences of combining renormalisation and Ward identities}
+
+\begin{itemize}
+  % h02rg.tex l. 1066-1073, thm:psi4, e:psi4-00
+\item \textbf{(S)} Theorem~2.1, (2.8). The error term $O(b_0L^{-\kappa N})$ is false: for
+  $b_0=0$ the left-hand side is the torus Green function $(-\Delta+m^2)^{-1}(0,0)$, which differs
+  from $\gamma=(-\Delta^{\Z^d}+m^2)^{-1}(0,0)$ by the zero mode $t_N/|\Lambda_N|$ and by the
+  difference between the torus and $\Z^d$ Green functions, both of order $L^{-(d-2)N}$ when
+  $L^{-N}\le m$ (see also the correction of (6.26) below). The correct statement is
+  \begin{equation*}
+    \avg{\bar\psi_0\psi_0}_{m^2,s_0,a_0,b_0} = \gamma + O(L^{-(d-2)N}) + O(b_0L^{-\kappa N}).
+  \end{equation*}
+  Only the limit $N\to\infty$ of (2.8) is used (in the proof of Corollary~2.2(i)), so nothing
+  else changes.
+
+  % h02rg.tex l. 1103-1118, e:betab0m, e:hb0m, cor:ward
+\item \textbf{(P)} Section~2.1, (2.14)--(2.15) and Corollary~2.2. It is used, but not shown,
+  that $s_0^c(b_0,m^2)$ and $a_0^c(b_0,m^2)$ are real for real $b_0$; otherwise $\beta(b_0,m^2)$
+  and $h(b_0,m^2)$ are not real parameters. This follows since the covariances are real, so
+  the renormalisation group map commutes with complex conjugation of all coefficients, and
+  hence, by uniqueness of the solution of the stable manifold problem in the proof of
+  Theorem~3.24, $V_0^c(m^2,\bar b_0)=\overline{V_0^c(m^2,b_0)}$. The same argument shows that
+  $\tilde a^c_{N,N}$, $\tilde u^c_{N,N}$, $u_N^c$, and $\lambda$, $\gamma$ at $m^2=0$, are real for
+  real $b_0$, which is also used in Section~2.2.
+
+  % h02rg.tex l. 1383-1391, cor:macro, proof of the second claim
+\item \textbf{(P)} Proof of Lemma~2.4, second claim. That $1+\tu^c$ diverges as $m^2\downarrow 0$
+  only gives $\tilde a^c_{N,N}(b_0,0)\ge 0$. Strict positivity follows from the rate:
+  by (2.28) and $m^2t_N\to1$, $m^2(1+\tu^c)\to\tilde a^c_{N,N}(b_0,0)$ as $m^2\downarrow0$, and by
+  (2.41) together with $\det(-\Delta+m^2)\le K_Nm^2$ (only one eigenvalue of $-\Delta+m^2$ tends
+  to $0$),
+  \begin{equation*}
+    m^2(1+\tu^c) \geq K_N^{-1}\,Z_{\beta,h}\pa{\frac{\beta e^{-u_N^c}}{1+s_0^c}}^{-|\Lambda_N|},
+  \end{equation*}
+  whose right-hand side converges to a positive limit since $Z_{\beta,h}\to Z_{\beta,0}>0$.
+\end{itemize}
+
+\subsection*{Section 3: The bulk renormalisation group flow}
+
+\begin{itemize}
+  % h02rg.tex l. 1717-1719, sec:frd (zero mode); see also App. B
+\item \textbf{(S)} Section~3.1, after (3.6). With the corrected definition of $C_N$ (see the
+  correction to Appendix~B), $C_N$ satisfies (3.3) with $j+1=N$, i.e.,
+  $|\nabla^\alpha C_N(x,y)|\le O_{\alpha,s}(\vartheta_{N-1}(m^2))L^{-(d-2+|\alpha|)(N-1)}$, not
+  (3.3) with $j=N$. Since $\ell_0$ is chosen $L$-dependent in (3.24), this does not affect the
+  rest of the paper.
+
+  % h02rg.tex l. 2018-2021, def:Phi
+\item \textbf{(S)} Definition~3.2. The test functions must be complex valued,
+  $g\colon\Lambda_f^*\to\C$ (as in \cite{MR3332938}), since $\cN(\Lambda)$ has complex
+  coefficients. With real test functions the product property (3.26) fails: for $\ell=1$ and
+  $F=1+i\psi_x$, one gets $\|F\|_{T_j(\ell)}=\sqrt2$ but $\|F^2\|_{T_j(\ell)}=\|1+2i\psi_x\|_{T_j(\ell)}=\sqrt5>2$.
+
+  % h02rg.tex l. 1958-1962 (def:cKbulk) and l. 2333-2361 (prop:Loc (v) and its proof)
+\item \textbf{(S)} Proposition~3.8(v) is false as stated. For a block $B$, the element
+  $F=\sum_{x\in B}\pa{\psi_x(\Delta\bar\psi)_x-(\Delta\psi)_x\bar\psi_x}\in\cN_{\rm sym}(B)$ is
+  invariant under all automorphisms fixing $B$ and satisfies $\Loc_{B,B}F=F$, but
+  $F\notin(\C\oplus\cVbulk)(B)$, since (3.35) contains only the symmetric combination of
+  $(-\Delta\psi)\bar\psi$ and $\psi(-\Delta\bar\psi)$. Correspondingly, the claim in the proof that
+  $\cVbulk$ contains all local polynomials of dimension at most $d$ that are invariant under
+  the automorphisms fixing a point is false. The correction is to require in addition that
+  the $F_i$ are invariant under the symplectic symmetry $J\colon\psi\mapsto\bar\psi$,
+  $\bar\psi\mapsto-\psi$ (note $JF=-F$ for the above $F$). The maps $\Loc_{X,Y}$, $\theta$ and
+  $\E_C$ (for symmetric $C$) commute with $J$, and the initial potential is $J$-invariant.
+  Accordingly, $J$-invariance of each $K_j(X)$ is to be added to the definition of
+  $\cKbulk_j$ (Definition~3.1); it is preserved by the renormalisation group map, so nothing
+  else changes.
+
+  % h02rg.tex l. 2560-2561, prop:ZVK, last sentence
+\item \textbf{(S)} Proposition~3.11, last sentence. The automorphism invariance of $K_{j+1}$
+  follows only for $j+1<N$: for $j+1=N$ every automorphism maps the single $N$-block to itself,
+  but need not map $(N-1)$-blocks to $(N-1)$-blocks, so the invariance of $K_{N-1}$ does not
+  give invariance of $K_N$ under all automorphisms. The invariance of $K_N$ is not used.
+
+  % h02rg.tex l. 2818-2819, thm:step, last sentence
+\item \textbf{(S)} Theorem~3.13, last sentence. The last map $\Phi_N$ satisfies the bounds with
+  $L^{-\dplus}$ replaced by $L^d$, not by $1$: for $j+1=N$ there is no extraction ($Q=J=0$), and
+  the $O(L^d)$ small sets $X$ all contribute $\E_{C_N}\theta K_{N-1}(X)$ to $K_N(\Lambda_N)$
+  without contraction. Since $\Phi_N$ is applied only once, this is harmless.
+
+  % h02rg.tex l. 3381-3388, lem:Ri-bd proof, e:K-crucial and the next line
+\item \textbf{(P)} Proof of Lemma~3.22, (3.111) and the line after it. The factor
+  $(1-e^{(u+V)_{j+1}(X_\cX)})$ should read $(1-e^{-(u+V)_{j+1}(X_\cX)})$.
+
+  % h02rg.tex l. 3740-3743, proof of thm:flow, bound on D_j
+\item \textbf{(P)} Proof of Theorem~3.24, the bound on $D_j$. The factor $b_0$ should be
+  omitted: $\|D_j\|_{j\to j+1}\le\max\{L^{-(d-2)},O(L^{-3}+A^{-\eta})\}\le O(L^{-\kappa})$. This is
+  the bound needed for the stable manifold theorem.
+\end{itemize}
+
+\subsection*{Section 4: Computation of the susceptibility}
+
+\begin{itemize}
+  % h02rg.tex l. 3906-3916, proof of prop:ZNN, e:kN2normbd
+\item \textbf{(P)} Proof of Proposition~4.1, (4.10). With the pairing (3.25) and antisymmetric
+  coefficients, the test function $g$ with $g_{(x,1),(y,-1)}=1$ and $g_z=0$ otherwise gives
+  $\avg{K_N(\Lambda_N),g}=\frac12k_N^2$. The test function must be antisymmetrised,
+  $g_{(x,1),(y,-1)}=1$ and $g_{(y,-1),(x,1)}=-1$; then $\avg{K_N(\Lambda_N),g}=k_N^2$ and still
+  $\|g\|_{\Phi_N(\ell_N)}=\ell_N^{-2}$, so (4.10) holds.
+\end{itemize}
+
+\subsection*{Section 5: Additivity of the observable potential}
+
+% h02rg.tex l. 4123-4160 (def:cVobs, e:VobsX); affects sec:locobs (prop:Loc-obs (iv)),
+% sec:rgmap-ext l. 4672-4675 (prop:ZVK, prop:consistency for the extended map), lem:ZNN-obs
+\noindent\textbf{(S)} Definition~5.1, (5.9). With the indicator $1_{a\in X,b\in X}$ on the
+$\sigma_a\bar\sigma_b$ terms (and analogously in Case~(2)), the map
+$X\mapsto(\uobs+\Vobs)(X)$ is not additive over blocks: if $a$ and $b$ lie in different blocks
+$B_a\ne B_b$, then $(\uobs+\Vobs)(B_a\cup B_b)\ne(\uobs+\Vobs)(B_a)+(\uobs+\Vobs)(B_b)$. Additivity
+is needed both in the polymer formalism, which uses $e^{-V(Y)}=\prod_{B\in\cB_j(Y)}e^{-V(B)}$
+(proof of Proposition~3.11, extended in Section~5.5), and in Proposition~5.6(iv).
+
+\emph{Corrected definition.} The $\sigma_a\bar\sigma_b$ terms (in Case~(2) the $\sigma_a\sigma_b$
+terms) are evaluated block-additively: half of each such term is assigned to the block
+containing $a$ and half to the block containing $b$. That is, in Case~(1),
+\begin{multline*}
+  (\uobs+\Vobs)(X) =
+  -\lambda_a\sigma_a\bar\psi_a1_{a\in X}-\lambda_b\psi_b\bar\sigma_b1_{b\in X}
+  \\
+  +\sigma_a\bar\sigma_b\pa{-\frac q2+\frac r2\bar\psi_a\psi_a}1_{a\in X}
+  +\sigma_a\bar\sigma_b\pa{-\frac q2+\frac r2\bar\psi_b\psi_b}1_{b\in X},
+\end{multline*}
+and analogously in Case~(2), where also the $\eta$ term is split in halves. This agrees with
+(5.9) on every $X$ that contains both or neither of $a,b$, in particular on $X=\Lambda_N$, so
+all statements about $\Lambda_N$ (e.g.\ (5.6) and Lemma~6.3) are unchanged. It entails the
+following changes.
+\begin{enumerate}
+\item The $\sigma_a\bar\sigma_b$ part of the localisation of $K_j(X)$ on a small set $X$ containing
+  exactly one of $a,b$, say $a$, is $\loc^{ab}_{X\cap\{a,b\},\cdot}$ with $X\cap\{a,b\}=\{a\}$; it
+  produces a constant and a multiple of $\bar\psi_a\psi_a$ only, in the half at $a$. To accommodate
+  this, $q$ and $r$ are split into $q_a,q_b$ and $r_a,r_b$ (the terms
+  $\sigma_a\bar\sigma_b(-q_x+r_x\bar\psi_x\psi_x)$ in the half at $x\in\{a,b\}$), and in the
+  recursions of $q$ in Lemmas~5.3 and~5.13 the term $-r_jC_{j+1}(0,0)$ (see the correction below)
+  becomes $-(r_{a,j}C_{j+1}(a,a)+r_{b,j}C_{j+1}(b,b))$. Only $q=q_a+q_b$ enters on sets containing
+  both points. If the $ab$ component of $K_j(X)$ vanishes on small sets containing only one
+  of $a,b$, the split is harmless ($r_a=r_b=r/2$).
+\item In Case~(2), the half of the $\eta$ term assigned to the block of $a$,
+  $-\sigma_a\sigma_b\frac\eta4(\bar\psi_a\psi_b+\bar\psi_b\psi_a)$, is not local at scale $j$ if $a$
+  and $b$ lie in different $j$-blocks. The locality $K_{j+1}(X)\in\cN(X^\square)$ of the output
+  still holds if $\eta_j=0$ or $j\ge j_{ab}$ (then every $j$-block containing $a$ or $b$ has both
+  points in its scale-$(j+1)$ neighbourhood), which covers the whole flow since $\eta_j=0$ for
+  $j<j_{ab}$.
+\item At $j=j_{ab}$, the factorisation of $K_{j+1}$ over connected components asserted for the
+  extended map in Section~5.5 does not hold in general, since $e^{-(u+V)_{j+1}(B)}$ need not be
+  local. It does hold along the flow, i.e., $K_{j+1}(U)=\prod_{Y\in\Comp(U)}K_{j+1}(Y)$ for the
+  activities produced from $(V_j,K_j)$, which is what is needed to iterate Proposition~3.11
+  up to scale $N$ in Lemma~6.3: $e^{-(u+V)_{j+1}}$ enters $K_{j+1}$ only through the inclusion
+  $\cN(\Lambda)\subset\cN(\Lambda\sqcup\Lambda)$ and is not integrated against $C_{j+1}$, so its
+  lack of locality does not affect the factorisation.
+\end{enumerate}
+
+\subsection*{Section 5: The observable renormalisation group flow}
+
+\begin{itemize}
+  % h02rg.tex l. 4181, 4193 (lem:Vobs-flow-free), l. 5285, 5297 (lem:Vobs-recursion), l. 5990 (proof of lem:2pt)
+\item \textbf{(S)} Lemma~5.3 (both cases, including (5.15)), Lemma~5.13 (both cases) and the
+  proof of Lemma~6.5. The $r$ term in the recursion of $q$ has the opposite sign: $+r_jC_{j+1}(0,0)$
+  should read $-r_jC_{j+1}(0,0)$, as follows from Definition~5.1 and is consistent with the term
+  $-r_Nt_N|\Lambda_N|^{-1}$ in (6.10) and (6.13). This affects no estimate.
+
+  % h02rg.tex l. 5346-5350, lem:Vobs-bd, e:Vobs-bd6
+\item \textbf{(S)} Lemma~5.14, (5.89). Since $\|V\|_j$ is the supremum of $\|V(B)\|_{T_j(\ell_j)}$
+  over blocks and the norm (5.24) is the sum of the norms of the components, a block containing
+  both $a$ and $b$ contributes $|\lambda_{a,j}|+|\lambda_{b,j}|$. The bound should read
+  $\|\Vobs_j\|_j\le2\lambda_0+\OL(\lambda_0^2)+\OL(M\lambda_0b_0)$. This changes only constants.
+\end{itemize}
+
+\subsection*{Section 6: Computation of pointwise correlation functions}
+
+\begin{itemize}
+  % h02rg.tex l. 5599-5601 (e:ZNN-lambda-b) and l. 5694 (proof)
+\item \textbf{(S)} Lemma~6.3, (6.9). Since $\psi\bar\sigma_b=-\bar\sigma_b\psi$, the coefficient is
+  $\tilde Z^{\bar\sigma_b\psi}_{N,N}=-\lambda_{b,N}+\OL(\ell_{b,N}^{-1}\ell_N^{-1}\|\Kobs_N\|_N)$.
+
+  % h02rg.tex l. 5603-5609 (e:ZNN-q-a) and l. 5692-5696 (proof, Case (1), B)
+\item \textbf{(S)} Lemma~6.3, (6.10), and its proof in Case~(1). The expression for $B$ omits the
+  constant term $k_N^{\sigma_a\bar\sigma_b}$ (the coefficient of $\sigma_a\bar\sigma_b$ without
+  $\psi,\bar\psi$ in $\Kobs_N(\Lambda_N)$), which is included in Case~(2). Hence (6.10) holds
+  with an additional error $\OL(\ellabN^{-1}\|\Kobs_N\|_N)$. Consequently (6.38) holds with an
+  additional error $\OL(\frac{b_0}{\lambda_0}L^{-(d-2+\kappa)N})/(1+\tu)$, and (6.4) with
+  $\OL(b_0L^{-(d-2+\kappa)N})/(1+\tu)$.
+
+  % h02rg.tex l. 5784-5788 (e:gammainfbd), consequences: e:2ptaa (l. 5794), e:2ptaa-bis (l. 5514),
+  % e:2pt-b (l. 5951), e:2pt-b-bis (l. 5544), e:1pt-b-thm / E_00 (l. 1263, 1288), e:2pt-b-thm / E_00xx (l. 1266, 1291)
+\item \textbf{(S)} Lemma~6.4, (6.26). The bound on $\gamma_{x,j}$ is false: by the proof,
+  $\gamma_{x,\infty}-\gamma_{x,j}$ contains $\lambda_{x,\infty}\sum_{k\ge j}C_{k+1}(0,0)$, which is of
+  order $\lambda_0L^{-(d-2)j}$ and has no factor $b_0$ (already for $b_0=0$,
+  $\gamma_{x,j}=\lambda_0\sum_{k<j}C_{k+1}(0,0)$). The correct bound is
+  \begin{equation*}
+    \gamma_{x,j}=\gamma_\infty+\OL(\lambda_0L^{-(d-2)j}).
+  \end{equation*}
+  Consequently, (6.27), (6.3) and (2.30) (i.e., $E_{00}$) hold only with an additional error term
+  $\OL(L^{-(d-2)N})$ (not divided by $1+\tu$), and (6.39), (6.5) and (2.31) (i.e., $E_{00xx}$) only
+  with an additional error term $\OL(L^{-(d-2)N})(1+(m^2|\Lambda_N|)^{-1}/|1+\tu|)$; alternatively,
+  these statements hold as stated with $\gamma$ replaced by the scale-$N$ couplings
+  $\gamma^{(2)}_{x,N}/\lambda_0$. The main results are not affected: in the proof of
+  Corollary~2.2 the limit $N\to\infty$ is taken, and in Lemmas~2.5 and~2.6 (where $m^2\downarrow0$)
+  the additional terms can be absorbed into the existing relative errors $O(b_0L^{-\kappa N})$,
+  using $|\Lambda_N|\tilde a^c_{N,N}(b_0,0)=O(b_0)$ and $\kappa\le d-2$.
+
+  % h02rg.tex l. 5900-5911, end of proof of lem:1pt (point independence of lambda)
+\item \textbf{(S)} Proof of Lemma~6.4, last paragraph. The argument shows that
+  $\lambda^{(2)}_{a,\infty}$ is independent of $a$ only at $m^2=0$, since it takes
+  $m^2\downarrow0$ first. For $m^2>0$, the statements (2.10), (2.31), (6.5) and (6.39) are proved
+  only with $\lambda^2$ replaced by $\lambda_a\lambda_b$ and $2\lambda\gamma$ by
+  $(\lambda_a+\lambda_b)\gamma$ (with $a=0$, $b=x$ in (2.10) and (2.31)), where $\lambda_x=\lambda^{(2)}_{x,\infty}/\lambda_0=1+O(b_0)$. At $m^2=0$,
+  which is the case needed in Section~2.2 and for the main results, $\lambda_a=\lambda_b$.
+
+  % h02rg.tex l. 5951-5966 (e:2pt-b), l. 5544-5554 (e:2pt-b-bis), l. 1266-1272 / 1291-1295 (e:2pt-b-thm, E_00xx)
+\item \textbf{(S)} Lemma~6.5, (6.39); Proposition~6.2, (6.5); Theorem~2.3, $E_{00xx}$ in (2.31).
+  The error term $\OL(b_0L^{-(d-2+\kappa)N})$ (resp.\ $\OL(\frac{b_0}{\lambda_0}L^{-(d-2+\kappa)N})$)
+  arises from the constants $k_N^{\#}$ in (6.13) and is therefore divided by $1+\tu$; it should
+  read $\OL(b_0L^{-(d-2+\kappa)N})/(1+\tu)$. The two forms agree when $|\tu|$ is small, e.g.\ under
+  the assumption $L^{-N}\le m$ of Theorem~2.1.
+  % h02rg.tex l. 5977-5979 (e:lambdajab), l. 6000 and 6031 (|a-b| <= L), l. 6065 (||K^obs_N||)
+\item \textbf{(P)} Proof of Lemma~6.5. In (6.40), $\OL(\lambda_0b_0L^{-\kappa})$ should read
+  $\OL(\lambda_0b_0L^{-\kappa j})$ (twice); the two occurrences of ``$|a-b|\le L$'' should read
+  $L^{j_{ab}}\le2|a-b|_\infty<L^{j_{ab}+1}$ (cf.\ (5.21)); and in Case~(2),
+  $\|\Kobs_N\|_N\le\OL(b_0\lambda_0L^{-\kappa})$ should read $\|\Kobs_N\|_N\le\OL(b_0\lambda_0L^{-\kappa N})$.
+
+\end{itemize}
+
+\subsection*{Appendix B: Finite range decomposition}
+
+\begin{itemize}
+  % h02rg.tex l. 6496, 6511, 6513 and the estimates l. 6519-6538
+\item \textbf{(S)} Appendix~B. The lower limit $\frac12L^N$ of the $t$-integrals defining
+  $C_{N,N}$, $C_N$ and $t_N$ must be $\frac12L^{N-1}$, the upper limit of the integral defining
+  $C_{N-1}$; otherwise the scales $t\in(\frac12L^{N-1},\frac12L^N]$ belong to no covariance and
+  (3.1) fails. In the subsequent estimates $L^N$ is replaced by $L^{N-1}$; in particular
+  $|C_N(x,y)|\lesssim L^{-(d-2)(N-1)}$ and $t_N=1/m^2-O(L^{2(N-1)})$, which is (3.7). See also the
+  correction to Section~3.1.
+\end{itemize}
+
+\bibliographystyle{plain}
+\bibliography{all}
+
+\end{document}

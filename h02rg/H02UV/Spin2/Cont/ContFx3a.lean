@@ -1,0 +1,232 @@
+import Spin2.Cont.ContFx2f
+import Spin2.Cont.ContEqC5
+
+set_option autoImplicit false
+
+/-!
+# Option 2 (fixed `β_R`), Phase 2, layer 4a: the scalar package of the intermediate case with `Θ*`
+
+* **`MasterFacts.FxMidPkg C₁w C₁t C₁v C₁m Λ₁ Λ₂ R m b N_h r₀ x y ms r C_δ K_A K_R`**: `EqcMidPkg`
+  for `fx_T6_mid`: `cw2Thb M N_h j_y ↦ fxTh`, `k2mbar M N_h j_y ↦ fxmbar`, the window `hmAB` at
+  `m̄₀` and `fxKT r₀ C₁t Λ₁ Λ₂ m̄₀ C_δ ≤ K_R`.
+* **`MasterFacts.fx_eqc_mid_pkg (hcab)`** (`ms < j_y ≤ N_h`, `N ≤ j_y + C_δ`, package, and the
+  `r`-free `hsmN`): `|P(x) − P(y)| ≤ eqcCmid(K_A, K_R, C_δ)·cddRel·ϑ_{N_h}²`.
+  Proof: `fx_T6_mid` and the argument of `eqc_mid`/`eqc_mid_pkg`.
+-/
+
+namespace Spin2
+
+open Step Step2 PtCorr2
+
+noncomputable section
+
+open Finset Grassmann Obs Obs.SA Loc LocObs FRD Flow2 Flow2.Hist Obs2 Step2.D2
+
+variable {L : ℕ} [NeZero L]
+
+namespace MasterFacts
+
+variable (M : MasterFacts L)
+
+/-- **The scalar package of the intermediate case with `Θ*`** (see the module docstring). -/
+def FxMidPkg (C₁w C₁t C₁v C₁m Λ₁ Λ₂ : ℝ) {N : ℕ} (R : RGPar 2 L N) [Fact (0 < R.ℓ)]
+    [Fact (0 < R.A)] (m b : ℝ) (Nh : ℕ) (r₀ : ℝ) (x y : Lam 2 L N) (ms r Cδ : ℕ)
+    (KA KR : ℝ) : Prop :=
+  ∀ kk ww : ℝ, 0 ≤ kk → 0 ≤ ww →
+    1344 * (8 * (PtCorr2.csN 2 : ℝ) * kk + M.core.rdtΓ * ww) ≤ histS (R.withMsq m) ms (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m)) ^ 2 * (M.pl5M0 R m b x y ms r) →
+    ∃ vT wT kxT w2 k2 m0 Q₀ mm k₁ c₁ : ℝ,
+      (1 + M.fxTh ≤ vT) ∧
+      (M.core.cWo * (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) (Obs.coal L (0 : Lam 2 L N) y)).1) + (7 / 30) ^ (Obs.coal L (0 : Lam 2 L N) y - ms) * (ww / (histS (R.withMsq m) ms (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m)) ^ 2 * (M.pl5M0 R m b x y ms r))) + M.fxTh * (M.core.cWo * (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) (Obs.coal L (0 : Lam 2 L N) y)).1)) + w2 ≤ wT) ∧
+      ((56 / 75) ^ (Obs.coal L (0 : Lam 2 L N) y - ms) * ((kk + 120 * M.core.Bk * (M.core.c * M.core.ε) * ww) / (histS (R.withMsq m) ms (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m)) ^ 2 * (M.pl5M0 R m b x y ms r))) + 8 * M.core.cWo * M.core.Bk * (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) (Obs.coal L (0 : Lam 2 L N) y)).1) ^ 2 + M.fxTh * (8 * M.core.cWo * M.core.Bk * (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) (Obs.coal L (0 : Lam 2 L N) y)).1) ^ 2) ≤ kxT) ∧
+      (0 ≤ w2) ∧
+      (0 ≤ k2) ∧
+      (0 ≤ Q₀) ∧
+      ((7 / 5) ^ ((Obs.coal L (0 : Lam 2 L N) y) - ms) * (ww / (histS (R.withMsq m) ms (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m)) ^ 2 * (M.pl5M0 R m b x y ms r))) ≤ M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) ms).1 * Q₀) ∧
+      ((7 / 5) ^ ((Obs.coal L (0 : Lam 2 L N) y) - ms) * ((kk + 120 * M.core.Bk * (M.core.c * M.core.ε) * ww) / (histS (R.withMsq m) ms (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m)) ^ 2 * (M.pl5M0 R m b x y ms r))) ≤ 8 * M.core.Bk * (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) ms).1) ^ 2 * Q₀) ∧
+      ((8 / 15) ^ ((Obs.coal L (0 : Lam 2 L N) y) - ms) * zabQ M R m b (b - m) x y ms (M.pl5M0 R m b x y ms r) (Obs.coal L (0 : Lam 2 L N) y) Nh Q₀ ≤ 1) ∧
+      (Real.exp ((L : ℝ) ^ 2 * (M.core.Cw * (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) ((Obs.coal L (0 : Lam 2 L N) y) - 1)).1 + (2 * M.fxmbar) ^ 2))) - 1 ≤ w2) ∧
+      (M.k2cab * (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) (Obs.coal L (0 : Lam 2 L N) y)).1) * M.fxmbar ^ 2 ≤ k2) ∧
+      (M.core.A ^ 4 * (cx M.core.κ M.core.cT * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) (Obs.coal L (0 : Lam 2 L N) y)).1 ^ 3 + kxT + k2) ≤ 1) ∧
+      (0 < m0) ∧
+      (8 * (2 * rpIota vT wT * M.core.A) ^ ((L + 18) ^ 2) ≤ vck C₁w * ((4 * C₁w + 1) * m0)) ∧
+      (8 * (2 * rpIota vT wT * M.core.A) ^ ((L + 18) ^ 2) ≤ vck C₁t * ((4 * C₁t + 1) * m0)) ∧
+      (8 * (2 * rpIota vT wT * M.core.A) ^ ((L + 18) ^ 2) ≤ vck C₁v * ((4 * C₁v + 1) * m0)) ∧
+      (8 * (2 * rpIota vT wT * M.core.A) ^ ((L + 18) ^ 2) ≤ vck C₁m * ((4 * C₁m + 1) * m0)) ∧
+      (2 * (81 / 16 * (cJet L * (cRho L + 4 / r₀ ^ 2)) * (m0 + (4 * C₁t + 1) * M.core.c * m0 + 8 * ((4 * C₁t + 1) * m0) + 1) * M.core.ℓ ^ 2) * m * (L : ℝ) ^ (2 * N) ≤ 1) ∧
+      (0 ≤ c₁) ∧
+      (1 ≤ mm) ∧
+      (M.core.cWo * (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1) + (7 / 30) ^ (Nh - ms) * (ww / (histS (R.withMsq m) ms (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m)) ^ 2 * (M.pl5M0 R m b x y ms r))) ≤ (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1) * mm) ∧
+      ((M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1) ≤ mm) ∧
+      ((56 / 75) ^ (Nh - ms) * ((kk + 120 * M.core.Bk * (M.core.c * M.core.ε) * ww) / (histS (R.withMsq m) ms (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m)) ^ 2 * (M.pl5M0 R m b x y ms r))) + 8 * M.core.cWo * M.core.Bk * (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1) ^ 2 ≤ k₁) ∧
+      (k₁ ≤ c₁ * (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1) ^ 2 * mm) ∧
+      (8 * (cx M.core.κ M.core.cT + c₁) * (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1) ^ 3 ≤ M.core.ε₀) ∧
+      (2 * (81 / 16 * (cJet L * (cRho L + 4 / r₀ ^ 2)) * (M.ctVT (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1) + M.rptfWT (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1) mm + 8 * M.rptfKx c₁ (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1) mm k₁ + 1) * M.core.ℓ ^ 2) * m * (L : ℝ) ^ (2 * N) ≤ 1) ∧
+      M.naKA (M.ctVT (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1)) (M.rptfWT (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1) mm) (M.rptfKx c₁ (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1) mm k₁) r₀ ≤ KA ∧
+      M.fxKT r₀ C₁t Λ₁ Λ₂ m0 Cδ ≤ KR
+
+set_option linter.unusedVariables false in
+set_option maxHeartbeats 16000000 in
+/-- **The intermediate case from the `Θ*` package.** -/
+theorem fx_eqc_mid_pkg (hcab : 0 < M.k2cab) : ∃ C₁w C₁t C₁v C₁m Λ₁ Λ₂ : ℝ, 0 ≤ C₁w ∧ 0 ≤ C₁t ∧ 0 ≤ C₁v ∧ 0 ≤ C₁m ∧
+    ∀ {N : ℕ} (R : RGPar 2 L N) [Fact (0 < R.ℓ)] [Fact (0 < R.A)]
+    (hP : R.P = Pc) (hi0 : R.i₀ = 0) (hRℓ : R.ℓ = M.core.ℓ) (hRA : R.A = M.core.A)
+    (hRρ : R.ρ = M.core.ρ) (hN3 : 3 ≤ N) {Nh : ℕ} (hNh : Nh + 2 = N) {m : ℝ}
+    (hm : m ∈ mRange L N) {b : ℝ}
+    (hD : ∀ j ≤ Nh, InD3 ((L : ℝ) ^ 2) M.core.κ M.core.cm M.core.cT M.core.ε
+      (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) j))
+    {r₀ : ℝ} (hr₀ : 0 < r₀) (hr₀1 : r₀ ≤ 1) (hJ : LastJetBd L (M.core.A / 2) r₀)
+    {Kt : ℝ}
+    (hK : ‖(m : ℂ) * ((lastOut (R.withMsq m) Nh (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m))).Z *
+        zmRaw (R.withMsq m) (Nh + 1)
+          (lastOut (R.withMsq m) Nh (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m))).ζ) - 1‖ ≤
+      Kt * m * (L : ℝ) ^ (2 * N))
+    (hmT : Kt * m * (L : ℝ) ^ (2 * N) ≤ 1 / 2)
+    (hmA : 8 * cKAL L M.core.ℓ r₀ M.core.Cf M.core.cWL M.core.cKL 3 * m * (L : ℝ) ^ (2 * N) ≤ 1)
+    (hsmA : (M.core.Cf * (M.core.ℓ ^ 2 / 8 + M.core.ℓ ^ 4 / 128) +
+        9 / 4 * ((PtCorr2.cBn : ℝ) * Q1 2 * M.core.cWL) +
+        cKAL L M.core.ℓ r₀ M.core.Cf M.core.cWL M.core.cKL 3) *
+      (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1 ≤ 1 / 2)
+    (hs1 : 2 * (M.core.Cf * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1) ≤ M.core.ρ)
+    (hs2 : 8 * cM * M.core.ℓ ^ 2 * (M.core.Cf * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1)
+      ≤ 1 / 2)
+    (hs3 : PtCorr2.cRho L * (cTauL M.core.ℓ M.core.Cf M.core.cWL M.core.cKL *
+      (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1) ≤ 1)
+    (hs4 : 4 * (cTauL M.core.ℓ M.core.Cf M.core.cWL M.core.cKL *
+      (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1) ≤ r₀ ^ 2)
+    (hs5 : cTauL M.core.ℓ M.core.Cf M.core.cWL M.core.cKL *
+      (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1 ≤ r₀)
+    (hsmall : ∀ j ≤ Nh, max (spinMK L M.core.cg M.core.Ke M.core.KZ M.Kp M.core.KG 0) 0 *
+      (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) j).1 ≤ 1 / 2)
+    (hsmN : M.Kp * ((traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) (Nh - 1)).1 + zA L m (Nh - 1)) ≤ 1 / 2)
+    (hspl : SplitSmall R.P L R.ρ) (hm0' : 0 < m) (hmL : m ≤ (L : ℝ) ^ (-(2 * ((N : ℝ) - 1))))
+    (x y : Lam 2 L N) (hx : y ≠ 0) (h1 : 1 ≤ Obs.coal L (0 : Lam 2 L N) y)
+    (hj : Obs.coal L (0 : Lam 2 L N) y ≤ Nh)
+    {ms r : ℕ} (hk0 : 0 < ms) (hmx : ms < Obs.coal L (0 : Lam 2 L N) x)
+    (hmy : ms < Obs.coal L (0 : Lam 2 L N) y)
+    (hrk : r ≤ ms) (hblk : blk ms (y - x) = blk ms (0 : Lam 2 L N))
+    (hdist : supNorm (y - x) ≤ L ^ (ms - r))
+    (hs0 : 0 ≤ M.Kp * ((traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) ms).1 + zA L m ms))
+    (hs : M.Kp * ((traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) ms).1 + zA L m ms) ≤ 1 / 2)
+    (hreg : M.core.A ^ 4 * (cx M.core.κ M.core.cT *
+      (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) ms).1 ^ 3) ≤ 1)
+    (hg : M.core.rdtC * (M.core.cWo * (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) ms).1) *
+      2) ≤ 1 / 1344),
+    ∀ (Cδ : ℕ), N ≤ Obs.coal L (0 : Lam 2 L N) y + Cδ → ∀ {KA KR : ℝ},
+      M.FxMidPkg C₁w C₁t C₁v C₁m Λ₁ Λ₂ R m b Nh r₀ x y ms r Cδ KA KR →
+    |Pconn L N (1 / b) x - Pconn L N (1 / b) y| ≤
+      M.eqcCmid KA KR Cδ *
+        M.cddRel M.Kp (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) ms).1 (zA L m ms) (rpIota 0 0)
+          (R.withMsq m).A r * varthJ R m b (b - m) Nh ^ 2 := by
+  obtain ⟨C₁w, C₁t, C₁v, C₁m, Λ₁, Λ₂, hC₁w, hC₁t, hC₁v, hC₁m, hT⟩ := M.fx_T6_mid hcab
+  refine ⟨C₁w, C₁t, C₁v, C₁m, Λ₁, Λ₂, hC₁w, hC₁t, hC₁v, hC₁m, ?_⟩
+  intro N R _ _ hP hi0 hRℓ hRA hRρ hN3 Nh hNh m hm b hD r₀ hr₀ hr₀1 hJ Kt hK hmT hmA hsmA hs1 hs2
+    hs3 hs4 hs5 hsmall hsmN hspl hm0' hmL x y hx h1 hj ms r hk0 hmx hmy hrk hblk hdist hs0 hs hreg hg
+    Cδ hδ KA' KR' hpkg
+  obtain ⟨-, h0, -, -, -, -, -, -, -, -, -, -, hM0, -, -, -, -, hrel⟩ := M.pl4_T6_inputs N R hP hi0
+    hRℓ hRA hRρ (by omega) Nh hNh m hm b hD hspl hm0' hmL x y hk0 hmx hmy hj hrk hblk hdist hs0 hs
+    hreg
+  obtain ⟨kk, ww, hkk, hww, hMR, hrest⟩ := hT R hP hi0 hRℓ hRA hRρ hN3 hNh hm hD hr₀ hr₀1 hJ hK
+    hmT hmA hsmA hs1 hs2 hs3 hs4 hs5 hsmall hsmN hspl hm0' hmL x y hx h1 hj hk0 hmx hmy hrk hblk hdist
+    hs0 hs hreg hg
+  obtain ⟨vT, wT, kxT, w2, k2, m0, Q₀, mm, k₁, c₁, hvT, hwT, hkxT, hw2, hk2, hQ0, hQw, hQk, hwait,
+    hw2e, hk2e, hsmT, hm0, h8w, h8t, h8v, h8m, hmAB, hc₁, hmm1, hmmW, hrm, hk1, hk₁, hkt, hmAa, hKA',
+    hKR'⟩ := hpkg kk ww hkk hww hMR
+  have hmain := hrest hvT hwT hkxT hw2 hk2 hQ0 hQw hQk hwait hw2e hk2e hsmT hm0 h8w h8t h8v h8m Cδ
+    hδ hmAB hc₁ hmm1 hmmW hrm hk1 hk₁ hkt hmAa
+  have hN2 : 2 ≤ N := by omega
+  have hb : 0 < b := by
+    have := (hD 0 (Nat.zero_le _)).1; simpa [Hist.traj_zero] using this
+  set jy := Obs.coal L (0 : Lam 2 L N) y with hjyd
+  set n := Nh - jy with hnd
+  set Q := M.cddRel M.Kp (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) ms).1 (zA L m ms) (rpIota 0 0)
+    (R.withMsq m).A r with hQd
+  set V := varthJ R m b (b - m) Nh with hVd
+  set M₀ := M.pl5M0 R m b x y ms r with hM₀d
+  have hrel' : M₀ ≤ Q * ‖bt2 R (ptsX y) (zV0 b) m b (b - m) ms‖ := hrel
+  have hM0' : 0 ≤ M₀ := hM0.le
+  have hc0 : 0 ≤ M.core.c := by linarith [M.eqc_c_ge R hP hi0 hRℓ hRA hRρ hN2 hNh hm]
+  have hε : 0 ≤ M.core.ε := (hD 0 (Nat.zero_le _)).1.le.trans (hD 0 (Nat.zero_le _)).2.1
+  have hA0 : 0 ≤ (R.withMsq m).A := (Fact.out : 0 < R.A).le
+  have hQ0 : 0 ≤ Q := M.eqc_cddRel_nonneg r hc0 hε (hD ms (by omega)).1.le (zA_nonneg L hm.1.le ms)
+    (by unfold rpIota; positivity) hA0
+  have hV0 : 0 ≤ V := Real.rpow_nonneg (div_pos hb (hD Nh le_rfl).1).le _
+  -- `σ/|β_{a,N_h}| ≤ E_c·Q`
+  have hσ := M.eqc_ctSig_rel R hP hi0 hRℓ hRA hRρ hN2 hNh hm hD y (pl2Delta R m b (b - m) x y ms) h0
+    (ms := ms) (by omega) (by omega) hQ0 hrel'
+  have hq : ctSig R m b Nh y ms (pl2Delta R m b (b - m) x y ms) M₀ / ‖hBeta R m b (b - m) y Nh‖ ≤
+      M.eqcEc * Q := by
+    rcases (norm_nonneg (hBeta R m b (b - m) y Nh)).eq_or_lt with h | h
+    · rw [← h, div_zero]; unfold eqcEc; positivity
+    · rw [div_le_iff₀ h]; exact hσ.trans (le_of_eq (by unfold eqcEc; ring))
+  have hq0 : 0 ≤ ctSig R m b Nh y ms (pl2Delta R m b (b - m) x y ms) M₀ /
+      ‖hBeta R m b (b - m) y Nh‖ :=
+    div_nonneg (mul_nonneg hM0' (prod_nonneg fun _ _ => norm_nonneg _)) (norm_nonneg _)
+  -- the backward chain
+  have hG := M.eqc_nbGB_le R hP hi0 hRℓ hRA hRρ hN2 hNh hm hD (ptsX y)
+    (pl2Delta R m b (b - m) x y ms) h0 hk0 (by omega) hM0' hQ0 hrel' hkk hww hMR
+    (jy := jy) hmy.le hj
+  have hbT : b * thJ R m b (b - m) Nh ^ 2 ≤ V := by
+    have e := b_thJ_sq (hD Nh le_rfl).1 hb
+    have hg1 : (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1 ≤ 1 :=
+      (hD Nh le_rfl).2.1.trans M.eps_le
+    show b * (((traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1 / b) ^ (1 / 3 : ℝ)) ^ 2 ≤ V
+    rw [e]
+    exact mul_le_of_le_one_right hV0 hg1
+  have hK0 := M.eqcK_nonneg hc0
+  have hG' : M.nbGB R m b (b - m) Nh (ptsX y) ms (pl2Delta R m b (b - m) x y ms) M₀ kk ww jy ≤
+      ((n : ℝ) + 1) * M.eqcK * (Q * V) :=
+    hG.trans (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hbT hQ0) (by positivity))
+  -- `ϑ_{j_y} ≤ K_g^nϑ_{N_h}`
+  have hθ := M.eqc_varth_ratio R hP hi0 hRℓ hRA hRρ hN2 hNh hm hD (j := jy) hj
+  have hK11 := M.rpc11KM_nonneg M.Kp
+  have hKg := M.eqcKg_one_le
+  set KA := M.naKA (M.ctVT (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1))
+    (M.rptfWT (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1) mm)
+    (M.rptfKx c₁ (M.core.c * (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1) mm k₁) r₀ with hKAd
+  set KR := M.fxKT r₀ C₁t Λ₁ Λ₂ m0 Cδ with hKRd
+  set q := ctSig R m b Nh y ms (pl2Delta R m b (b - m) x y ms) M₀ / ‖hBeta R m b (b - m) y Nh‖
+  set Gb := M.nbGB R m b (b - m) Nh (ptsX y) ms (pl2Delta R m b (b - m) x y ms) M₀ kk ww jy
+  have hEc : 0 ≤ M.eqcEc := by unfold eqcEc; positivity
+  -- the first factor
+  have hF : KA * q * (3 / 2 * V) + Gb ≤
+      (max KA 0 * M.eqcEc * (3 / 2) + ((n : ℝ) + 1) * M.eqcK) * (Q * V) := by
+    have a1 : KA * q * (3 / 2 * V) ≤ max KA 0 * (M.eqcEc * Q) * (3 / 2 * V) :=
+      mul_le_mul_of_nonneg_right (mul_le_mul (le_max_left _ _) hq hq0 (le_max_right _ _))
+        (by positivity)
+    have e : (max KA 0 * M.eqcEc * (3 / 2) + ((n : ℝ) + 1) * M.eqcK) * (Q * V) =
+        max KA 0 * (M.eqcEc * Q) * (3 / 2 * V) + ((n : ℝ) + 1) * M.eqcK * (Q * V) := by ring
+    rw [e]; linarith
+  have hFb0 : 0 ≤ (max KA 0 * M.eqcEc * (3 / 2) + ((n : ℝ) + 1) * M.eqcK) * (Q * V) := by
+    have := le_max_right KA 0
+    positivity
+  have hS0 : 0 ≤ 3 / 2 * (1 + M.rpc11KM M.Kp) * varthJ R m b (b - m) jy :=
+    mul_nonneg (by positivity) (Real.rpow_nonneg (div_pos hb (hD jy hj).1).le _)
+  have hS : 3 / 2 * (1 + M.rpc11KM M.Kp) * varthJ R m b (b - m) jy ≤
+      3 / 2 * (1 + M.rpc11KM M.Kp) * (M.eqcKg ^ n * V) :=
+    mul_le_mul_of_nonneg_left hθ (by positivity)
+  have hT1 := (mul_le_mul_of_nonneg_right hF hS0).trans (mul_le_mul_of_nonneg_left hS hFb0)
+  have hT2 : max KR 0 * (cw4Cmp M n * Q) * V ^ 2 *
+      (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1 ≤ max KR 0 * cw4Cmp M n * Q * V ^ 2 := by
+    have hg1 : (traj (rgDataM R m) ((L : ℝ) ^ 2) b (b - m) Nh).1 ≤ 1 :=
+      (hD Nh le_rfl).2.1.trans M.eps_le
+    have : 0 ≤ max KR 0 * (cw4Cmp M n * Q) * V ^ 2 := by
+      have := le_max_right KR 0; have := cw4Cmp_pos M n; positivity
+    have := mul_le_of_le_one_right this hg1
+    linarith
+  have hfin : |Pconn L N (1 / b) x - Pconn L N (1 / b) y| ≤ M.eqcCmid KA KR n * Q * V ^ 2 := by
+    refine hmain.trans ?_
+    have e : M.eqcCmid KA KR n * Q * V ^ 2 =
+        (max KA 0 * M.eqcEc * (3 / 2) + ((n : ℝ) + 1) * M.eqcK) * (Q * V) *
+          (3 / 2 * (1 + M.rpc11KM M.Kp) * (M.eqcKg ^ n * V)) + max KR 0 * cw4Cmp M n * Q * V ^ 2 := by
+      unfold eqcCmid; ring
+    rw [e]
+    linarith
+  have hmono := M.eqcCmid_mono hc0 hKA' hKR' (show n ≤ Cδ by omega)
+  refine hfin.trans ?_
+  exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hmono hQ0) (by positivity)
+
+end MasterFacts
+
+end
+
+end Spin2

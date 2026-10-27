@@ -1,0 +1,475 @@
+\documentclass[11pt]{amsart}
+
+\usepackage[nomath,nothms,nomisc,nolayout,nohyperref,abbrs,nocolor]{mymacros}
+
+\usepackage{amsmath,amssymb,bbm,mathtools}
+\usepackage{xspace}
+\usepackage{thmtools, thm-restate}
+\usepackage{fullpage}
+\usepackage{enumerate}
+\usepackage{microtype}
+
+\usepackage[bookmarks, colorlinks, breaklinks,
+pdftitle={},pdfauthor={}]{hyperref}
+
+\hypersetup{
+  linkcolor=black,
+  citecolor=black,
+  filecolor=black,
+  urlcolor=black}
+
+\declaretheorem[numberwithin=section]{theorem}
+\declaretheorem[sibling=theorem]{lemma}
+\declaretheorem[sibling=theorem]{corollary}
+\declaretheorem[sibling=theorem]{proposition}
+\declaretheorem[sibling=theorem,style=remark]{remark}
+\declaretheorem[sibling=theorem,style=definition]{definition}
+\declaretheorem[sibling=theorem]{conjecture}
+
+\numberwithin{equation}{section}
+\numberwithin{theorem}{section}
+
+\usepackage{cleveref}
+
+\def\labelenumi{(\romannumeral\theenumi)}
+
+\newcommand{\conn}{\leftrightarrow}
+\newcommand{\nconn}{\not\leftrightarrow}
+\newcommand{\loc}{\operatorname{loc}}
+\newcommand{\ghost}{\mathfrak{g}}
+\newcommand{\lean}[1]{\texttt{\detokenize{#1}}}
+
+\title{The arboreal gas and the $\HH^{0|2}$ model in dimensions $d\ge3$:\\ statements of the Lean theorems}
+\date{}
+
+\begin{document}
+\sloppy
+
+\begin{abstract}
+  We consider the arboreal gas on the discrete torus $\Lambda_N=(\Z/L^N\Z)^d$, $d\ge3$, at large
+  inverse temperature $\beta$. The connection probability $\P_\beta[0\conn x]$ equals
+  $\zeta(\beta)+\mathsf c_0(\beta)/(\beta|x|^{d-2})$ up to errors $O(\beta^{-1}|x|^{-(d-2+\kappa)})$
+  and $O(\beta^{-1}L^{-\kappa N})$, with $\zeta(\beta)=1+O(1/\beta)$ and
+  $\mathsf c_0(\beta)=2c_d+O(1/\beta)$, where $c_d$ is the constant in the asymptotics of the Green
+  function of $\Z^d$. The infinite-volume percolation probability $\theta(\beta)$, defined through an
+  external field $h\downarrow0$, exists and satisfies $\zeta(\beta)=\theta(\beta)^2$; the truncated
+  connection probabilities decay as $\mathsf c_1(\beta)/(\beta|x|^{d-2})$ and
+  $\mathsf c_2(\beta)/(\beta^2|x|^{2(d-2)})$; the corresponding statements hold for the correlation
+  functions of the $\HH^{0|2}$ model, and $\mathsf c_0=2\mathsf c_1$, $\mathsf c_2\theta^2=\mathsf c_1^2$.
+  These are the main results of \cite{BCH24}. Every notion used in the statements is defined below.
+  No proofs are given; the Lean declarations that prove the statements are collected in a separate
+  section.
+\end{abstract}
+
+\maketitle
+
+\section{The model}
+
+\subsection{Graphs and forests}
+
+\begin{definition}[Graph]\label{def:graph}
+A \emph{(simple) graph} $G$ on a finite set $V$ is a symmetric, irreflexive relation
+$\mathrm{Adj}_G \subseteq V\times V$. If $\mathrm{Adj}_G(x,y)$ we say $x$ and $y$ are
+\emph{adjacent}, and call the unordered pair $\{x,y\}$ an \emph{edge} of $G$. The set of edges
+is $E(G)$.
+\end{definition}
+
+\begin{definition}[Walks, connection, cycles, forests]\label{def:walks}
+Let $G$ be a graph on $V$.
+\begin{itemize}
+\item A \emph{walk} from $x$ to $y$ is a finite sequence $x=v_0,v_1,\dots,v_k=y$ of vertices,
+  $k\ge 0$, with $v_{i-1}$ and $v_i$ adjacent for $1\le i\le k$.
+\item $x$ and $y$ are \emph{connected in $G$}, written $x\conn y$ in $G$, if there is a walk
+  from $x$ to $y$. Every vertex is connected to itself.
+\item A \emph{cycle} is a walk $v_0,\dots,v_k$ with $k\ge 3$ and $v_k=v_0$, whose edges
+  $\{v_{i-1},v_i\}$ are pairwise distinct and whose vertices $v_1,\dots,v_k$ are pairwise
+  distinct.
+\item $G$ is a \emph{forest} if it contains no cycle.
+\end{itemize}
+The set of all forests on $V$ is written $\mathcal{F}(V)$. A forest on $V$ need not be
+connected, and it always has vertex set exactly $V$ (it is a spanning forest).
+\end{definition}
+
+\subsection{The arboreal gas}
+
+\begin{definition}[Arboreal gas with general weights]\label{def:arboreal}
+Let $V$ be a finite set and $w\colon V\times V\to\R$ a symmetric function, so $w(x,y)=w(y,x)$.
+\begin{itemize}
+\item The \emph{weight} of a graph $F$ on $V$ is
+  $\displaystyle \omega_w(F)=\prod_{\{x,y\}\in E(F)} w(x,y)$.
+\item The \emph{partition function} is $\displaystyle Z_w=\sum_{F\in\mathcal F(V)}\omega_w(F)$.
+\item For a property $P$ of graphs on $V$, the \emph{arboreal gas probability} of $P$ is
+  \begin{equation}\label{e:P-forest}
+    \P_w[P]=\frac{1}{Z_w}\sum_{\substack{F\in\mathcal F(V)\\ F\text{ satisfies }P}}\omega_w(F).
+  \end{equation}
+\end{itemize}
+The sum runs over \emph{all} forests on $V$. A forest that uses a pair $\{x,y\}$ with
+$w(x,y)=0$ has weight $0$ and contributes nothing. If $w\ge 0$, then $Z_w\ge 1$, because the
+empty graph is a forest of weight $1$. Hence $\P_w$ is a probability measure on $\mathcal F(V)$.
+\end{definition}
+
+\begin{definition}[Torus]\label{def:torus}
+Let $d\ge 1$, $L\ge 1$ and $N\ge 0$ be integers. The \emph{discrete torus} is
+\[
+  \Lambda_N=(\Z/L^N\Z)^d,
+\]
+an abelian group with zero $0$.
+\begin{itemize}
+\item The $2d$ \emph{unit vectors} are $\pm e_i$, $i=1,\dots,d$, where $e_i$ has coordinate $1$
+  in position $i$ and $0$ elsewhere. They are indexed by the set
+  $\mathcal E_d=\{1,\dots,d\}\sqcup\{1,\dots,d\}$.
+\item The \emph{reduction map} $\pi_N\colon\Z^d\to\Lambda_N$ reduces each coordinate modulo
+  $L^N$.
+\item The \emph{centred representative} of $x\in\Lambda_N$ is the point
+  $\mathrm{rep}(x)\in\Z^d$ obtained coordinatewise: write $x_i=[a_i]$ with $0\le a_i<n=L^N$,
+  and set $\mathrm{rep}(x)_i=a_i$ if $a_i\le n-a_i$, and $\mathrm{rep}(x)_i=a_i-n$ otherwise.
+  Thus $\pi_N(\mathrm{rep}(x))=x$ and $|\mathrm{rep}(x)_i|\le n/2$.
+\item The \emph{Euclidean norm} on $\Z^d$ is $|z|=(\sum_{i=1}^d z_i^2)^{1/2}$.
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Nearest-neighbour weights]\label{def:nnW}
+For $\beta\in\R$, the edge weights on $\Lambda_N$ are
+\begin{equation}\label{e:nnW}
+  w_\beta(x,y)=\beta\cdot\#\{e\in\mathcal E_d : y=x+e\}.
+\end{equation}
+This function is symmetric. If $L^N\ge 3$ the vectors
+$x\pm e_i$ are $2d$ distinct points, so $w_\beta(x,y)=\beta$ when $x$ and $y$ are nearest
+neighbours on the torus and $0$ otherwise.
+
+The \emph{arboreal gas on $\Lambda_N$ at inverse temperature $\beta$} is
+$\P_{\beta}^{\Lambda_N}=\P_{w_\beta}$. When $L^N\ge3$, it is the measure on spanning
+forests $F$ of the nearest-neighbour torus graph in which $F$ has probability proportional to
+$\beta^{|E(F)|}$.
+\end{definition}
+
+\begin{definition}[External field via a ghost vertex]\label{def:ghost}
+Let $h\in\R$. Adjoin a new vertex $\ghost$ (the \emph{ghost}) to $\Lambda_N$, giving the vertex set
+$\Lambda_N\cup\{\ghost\}$. Define the symmetric weights
+\begin{equation}\label{e:ghostW}
+  w_{\beta,h}(x,y)=w_\beta(x,y),\qquad w_{\beta,h}(x,\ghost)=w_{\beta,h}(\ghost,x)=h,\qquad
+  w_{\beta,h}(\ghost,\ghost)=0,
+\end{equation}
+for $x,y\in\Lambda_N$.
+
+The \emph{arboreal gas with external field $h$} is $\P^{\Lambda_N}_{\beta,h}=\P_{w_{\beta,h}}$,
+a probability measure on forests of $\Lambda_N\cup\{\ghost\}$.
+\begin{itemize}
+\item For such a forest $F$, the \emph{base} $F|_{\Lambda_N}$ is the graph on $\Lambda_N$ with
+  the edges of $F$ that do not contain $\ghost$.
+\item The event ``$x\conn\ghost$'' means that $x$ and $\ghost$ are connected in $F$.
+\item The event ``$x\conn y$ in $F|_{\Lambda_N}$'' means that $x$ and $y$ are connected by a walk
+  avoiding $\ghost$.
+\end{itemize}
+\end{definition}
+
+\subsection{\texorpdfstring{The $\HH^{0|2}$ model}{The H02 model}}
+
+The $\HH^{0|2}$ model is the fermionic representation of the arboreal gas of \cite{BCH24}.
+
+\begin{definition}[Grassmann algebra and fermionic derivatives]\label{def:grassmann}
+Let $\Lambda$ be a finite set. The Grassmann algebra $\Omega^{\Lambda}$ is the exterior algebra
+over $\R$ of the real vector space with basis $\{\xi_i,\eta_i : i\in\Lambda\}$. Thus
+$\Omega^{\Lambda}$ is the unital associative $\R$-algebra generated by the $\xi_i,\eta_i$
+subject to the relation that any two generators anticommute, so $ab=-ba$ and in particular
+$a^2=0$.
+\begin{itemize}
+\item Every element has a \emph{scalar part}, its component of degree $0$.
+\item The fermionic derivative $\partial_{\xi_i}$ is the unique $\R$-linear map
+  $\Omega^\Lambda\to\Omega^\Lambda$ satisfying the odd Leibniz rule
+  $\partial(ab)=(\partial a)b+(-1)^{\deg a}a\,\partial b$ for homogeneous $a$, together with
+  $\partial_{\xi_i}\xi_j=\delta_{ij}$, $\partial_{\xi_i}\eta_j=0$ and $\partial_{\xi_i}1=0$.
+\item $\partial_{\eta_i}$ is defined symmetrically.
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Spins, inner product, integral]\label{def:spins}
+For $i,j\in\Lambda$ set
+\begin{equation}\label{e:spins}
+  z_i=1-\xi_i\eta_i,\qquad
+  u_i\cdot u_j=-\xi_i\eta_j-\xi_j\eta_i-z_iz_j .
+\end{equation}
+The element $z_i$ is invertible with $z_i^{-1}=1+\xi_i\eta_i$.
+
+Enumerate $\Lambda=\{i_1,\dots,i_M\}$ (the result below does not depend on the order). The
+\emph{integral} of $F\in\Omega^\Lambda$ is the scalar part of
+\[
+  T_{i_M}\circ\cdots\circ T_{i_1}(F),\qquad\text{where } T_i(G)=\partial_{\eta_i}\partial_{\xi_i}\bigl(z_i^{-1}G\bigr).
+\]
+It is written $[F]_0\in\R$.
+\end{definition}
+
+\begin{definition}[Action and expectation]\label{def:action}
+Let $w\colon\Lambda\times\Lambda\to\R$ be symmetric and $h\colon\Lambda\to\R$. The
+\emph{action} is
+\begin{equation}\label{e:action}
+  H_{w,h}=\tfrac14\sum_{i,j\in\Lambda}w(i,j)\bigl(u_i\cdot u_i-u_i\cdot u_j-u_j\cdot u_i+u_j\cdot u_j\bigr)+\sum_{i\in\Lambda}h(i)\,(z_i-1).
+\end{equation}
+\begin{itemize}
+\item $H_{w,h}$ has zero scalar part, so it is nilpotent, and
+  $e^{-H_{w,h}}=\sum_{k\ge0}(-H_{w,h})^k/k!$ is a finite sum.
+\item The unnormalised expectation is $[F]_{w,h}=[F\,e^{-H_{w,h}}]_0$.
+\item The expectation is $\avg{F}_{w,h}=[F]_{w,h}/[1]_{w,h}$.
+\end{itemize}
+On the torus we write
+$\avg{\cdot}_{\beta,h}^{\Lambda_N}=\avg{\cdot}_{w_\beta,\,h}$, with $w_\beta$
+from Definition~\ref{def:nnW} and the constant field $h(i)=h$.
+\end{definition}
+
+\subsection{Constants and conventions}\label{sec:constants}
+
+\begin{itemize}
+\item $\displaystyle c_d=\frac{\Gamma(d/2-1)}{4\pi^{d/2}}$.
+  For $d\ge3$, $c_d>0$. This is the constant in the asymptotics
+  $(-\Delta_{\Z^d})^{-1}(0,x)=c_d|x|^{2-d}+O(|x|^{1-d})$ of the Green function of the lattice
+  Laplacian, which is also proved in Lean (see Section~\ref{sec:lean}). The
+  theorems below use only the number $c_d$.
+\item Limits: ``$f(N)\to a$'' means convergence as $N\to\infty$ through the integers, and
+  ``$g(h)\to a$ as $h\downarrow0$'' means convergence as $h\to0$ with $h>0$.
+\item All constants whose existence is asserted below may depend on $d$ and $L$. They never
+  depend on $N$, $x$ or $h$, and they depend on $\beta$ only where this is written explicitly
+  (as functions of $\beta$).
+\end{itemize}
+The Lean declarations proving the results are listed in Section~\ref{sec:lean}.
+
+\section{The theorems}
+
+\begin{theorem}[Connection probabilities at $h=0$]\label{thm:macro}
+Let $d\ge3$. There is an integer $L_0$ such that for every odd integer $L\ge L_0$ there exist
+real numbers $\beta_0>0$, $\kappa\in(0,1]$, $C\ge0$, $\mathsf c_0>0$, and functions
+$\zeta,\mathsf c_0(\cdot)\colon\R\to\R$, with the following property. For every
+$\beta\ge\beta_0$:
+\begin{equation}\label{e:macro-const}
+  |\zeta(\beta)-1|\le\frac{C}{\beta},\qquad |\mathsf c_0(\beta)-\mathsf c_0|\le\frac{C}{\beta},
+\end{equation}
+and for every $N\ge2$ and every $x\in\Lambda_N$ with $x\ne0$, writing $r=|\mathrm{rep}(x)|$,
+\begin{equation}\label{e:macro}
+  \Bigl|\,\P^{\Lambda_N}_{\beta}\bigl[\,0\conn x\,\bigr]-\zeta(\beta)-\frac{\mathsf c_0(\beta)}{\beta\,r^{d-2}}\,\Bigr|
+  \;\le\;\frac{C}{\beta\, r^{d-2+\kappa}}+\frac{C}{\beta\,L^{\kappa N}} .
+\end{equation}
+Here $\P^{\Lambda_N}_\beta[0\conn x]$ is the $\P^{\Lambda_N}_\beta$-probability of the set of
+forests $F$ of Definition~\ref{def:nnW} in which $0$ and $x$ are connected.
+\end{theorem}
+
+\begin{theorem}[All results with shared constants]\label{thm:all}
+Let $d\ge3$. There is an integer $L_0$ such that for every odd integer $L\ge L_0$ there exist
+real numbers $\beta_0>0$, $\kappa\in(0,1]$, $K\ge0$, $C\ge0$, and functions
+$\zeta,\mathsf c_0(\cdot),\theta,\mathsf c_1,\mathsf c_2\colon\R\to\R$ such that
+\begin{equation}\label{e:c0}
+  \mathsf c_0=2c_d>0,
+\end{equation}
+and such that for every $\beta\ge\beta_0$ all of the following statements (A)--(E) hold.
+
+\smallskip\noindent\textbf{(A) Finite torus at $h=0$.} The conclusion of
+Theorem~\ref{thm:macro} holds with these $\beta_0,\kappa,C,\mathsf c_0,\zeta,\mathsf c_0(\cdot)$.
+
+\smallskip\noindent\textbf{(B) The $\HH^{0|2}$ model.}
+\begin{enumerate}
+\item \emph{Constants:}
+  \begin{equation}\label{e:h02-const}
+    |\theta(\beta)-1|\le\frac K\beta,\qquad |\mathsf c_1(\beta)-c_d|\le\frac K\beta,\qquad
+    |\mathsf c_2(\beta)-c_d^2|\le\frac K\beta.
+  \end{equation}
+\item \emph{Translation invariance:} for all $h>0$, $N\ge1$ and $y\in\Lambda_N$,
+  $\avg{z_y}^{\Lambda_N}_{\beta,h}=\avg{z_0}^{\Lambda_N}_{\beta,h}$.
+\item \emph{Magnetisation:} there is a function $\theta_h$ of $h>0$ such that
+  $\avg{z_0}^{\Lambda_N}_{\beta,h}\to\theta_h$ as $N\to\infty$ for each $h>0$, and
+  $\theta_h\to\theta(\beta)$ as $h\downarrow0$.
+\end{enumerate}
+In items (iv)--(vi), $x\in\Z^d$ with $x\ne0$, and the torus point is $\pi_N(x)$; we write
+$x$ for it.
+\begin{enumerate}\setcounter{enumi}{3}
+\item \emph{Two-point function:} there are a function $\tau_h$ of $h>0$ and a number $\tau_0$
+  such that $\avg{\xi_0\eta_{x}}^{\Lambda_N}_{\beta,h}\to\tau_h$ as $N\to\infty$ for each
+  $h>0$, $\tau_h\to\tau_0$ as $h\downarrow0$, and
+  \[
+    \Bigl|\tau_0-\frac{\mathsf c_1(\beta)}{\beta|x|^{d-2}}\Bigr|\le\frac{K}{\beta|x|^{d-2+\kappa}}.
+  \]
+\item \emph{Truncated $z$--$z$ correlation:} there are $\sigma_h$ ($h>0$) and $\sigma_0$ with
+  \[
+    \avg{z_0z_{x}}^{\Lambda_N}_{\beta,h}-\avg{z_0}^{\Lambda_N}_{\beta,h}
+      \avg{z_{x}}^{\Lambda_N}_{\beta,h}\xrightarrow[N\to\infty]{}\sigma_h
+  \]
+  for each $h>0$, $\sigma_h\to\sigma_0$ as $h\downarrow0$, and
+  \[
+    \Bigl|\sigma_0+\frac{\mathsf c_2(\beta)}{\beta^2|x|^{2(d-2)}}\Bigr|\le\frac{K}{\beta^2|x|^{2(d-2)+\kappa}}.
+  \]
+\item \emph{Spin--spin correlation:} there are $\upsilon_h$ ($h>0$) and $\upsilon_0$ with
+  $\avg{u_0\cdot u_{x}}^{\Lambda_N}_{\beta,h}\to\upsilon_h$ as $N\to\infty$ for each
+  $h>0$, $\upsilon_h\to\upsilon_0$ as $h\downarrow0$, and
+  \[
+    \Bigl|\upsilon_0+\theta(\beta)^2+\frac{2\,\mathsf c_1(\beta)}{\beta|x|^{d-2}}\Bigr|\le\frac{K}{\beta|x|^{d-2+\kappa}}.
+  \]
+\end{enumerate}
+
+\smallskip\noindent\textbf{(C) Percolation probability.} There is a function
+$\theta'_h$ of $h>0$ such that, for each $h>0$,
+$\P^{\Lambda_N}_{\beta,h}[\,0\conn\ghost\,]\to\theta'_h$ as $N\to\infty$, and
+$\theta'_h\to\theta(\beta)$ as $h\downarrow0$. In particular,
+\begin{equation}\label{e:theta}
+  \theta(\beta)=\lim_{h\downarrow0}\lim_{N\to\infty}\P^{\Lambda_N}_{\beta,h}[\,0\conn\ghost\,]
+\end{equation}
+exists, and $|\theta(\beta)-1|\le K/\beta$ by (B)(i).
+
+\smallskip\noindent\textbf{(D) Truncated connection probabilities.} For every
+$x\in\Z^d$ with $x\ne0$, again writing $x$ for $\pi_N(x)$:
+\begin{enumerate}
+\item there are $\tau'_h$ ($h>0$) and $\tau'_0$ such that, for each $h>0$,
+  \[
+    \P^{\Lambda_N}_{\beta,h}\bigl[\,0\conn x\text{ in }F|_{\Lambda_N}\ \text{and}\ 0\nconn\ghost\,\bigr]
+    \xrightarrow[N\to\infty]{}\tau'_h ,
+  \]
+  $\tau'_h\to\tau'_0$ as $h\downarrow0$, and
+  $\displaystyle\Bigl|\tau'_0-\frac{\mathsf c_1(\beta)}{\beta|x|^{d-2}}\Bigr|\le\frac{K}{\beta|x|^{d-2+\kappa}}$;
+\item there are $\sigma'_h$ ($h>0$) and $\sigma'_0$ such that, for each $h>0$,
+  \[
+    \P^{\Lambda_N}_{\beta,h}[\,0\nconn\ghost\,]^2
+    -\P^{\Lambda_N}_{\beta,h}\bigl[\,0\nconn\ghost,\ x\nconn\ghost,\ 0\nconn x\,\bigr]
+    \xrightarrow[N\to\infty]{}\sigma'_h ,
+  \]
+  $\sigma'_h\to\sigma'_0$ as $h\downarrow0$, and
+  $\displaystyle\Bigl|\sigma'_0-\frac{\mathsf c_2(\beta)}{\beta^2|x|^{2(d-2)}}\Bigr|\le\frac{K}{\beta^2|x|^{2(d-2)+\kappa}}$.
+\end{enumerate}
+In (C) and (D), $\P^{\Lambda_N}_{\beta,h}$ is the arboreal gas with ghost vertex of
+Definition~\ref{def:ghost}. The events ``$0\nconn\ghost$'', ``$x\nconn\ghost$'' and ``$0\nconn x$''
+refer to connections in the whole forest on $\Lambda_N\cup\{\ghost\}$. The event
+``$0\conn x$ in $F|_{\Lambda_N}$'' refers to connection by a path that avoids $\ghost$.
+
+\smallskip\noindent\textbf{(E) Identities between the constants.}
+\begin{equation}\label{e:identities}
+  \zeta(\beta)=\theta(\beta)^2,\qquad
+  \frac{\mathsf c_2(\beta)\,\theta(\beta)^2}{\mathsf c_1(\beta)^2}=1,\qquad
+  \mathsf c_0(\beta)=2\,\mathsf c_1(\beta).
+\end{equation}
+\end{theorem}
+
+\begin{remark}\label{rem:all}
+\begin{enumerate}
+\item In Theorem~\ref{thm:macro} and (A), the torus point $x$ is arbitrary and its distance to
+  $0$ is measured with the centred representative. In (B)--(D), the point $x\in\Z^d$ is fixed
+  first and then embedded into the tori $\Lambda_N$ as $N$ grows.
+\item Since $\zeta(\beta)=\theta(\beta)^2$, Theorem~\ref{thm:all} says that the macroscopic
+  density $\zeta(\beta)$ of the tree containing $0$ on the finite torus at $h=0$ is the square
+  of the infinite-volume percolation probability $\theta(\beta)$ of (C).
+\item By (E) and (B)(i), $\mathsf c_0(\beta)=2\mathsf c_1(\beta)=2c_d+O(1/\beta)$, consistent with
+  $\mathsf c_0=2c_d$. Moreover $\mathsf c_2(\beta)=\mathsf c_1(\beta)^2/\theta(\beta)^2$.
+\item The requirement that $L$ be odd, and the restriction $N\ge2$ in (A), are technical
+  conditions of the Lean proof.
+\item Theorem~\ref{thm:macro} is Theorem~1.1 of \cite{BCH24}; (A)--(D) of Theorem~\ref{thm:all}
+  are Theorems~1.1, 1.5, 1.2 and 1.3 of \cite{BCH24}, with one set of constants, and (E) records
+  the identities between these constants.
+\end{enumerate}
+\end{remark}
+
+\section{Lean formalisation}\label{sec:lean}
+
+\subsection{The model}
+A graph on $V$ (Definition~\ref{def:graph}) is \texttt{SimpleGraph V} (Mathlib), with edge set
+\lean{SimpleGraph.edgeFinset}; connection $x\conn y$ is \lean{SimpleGraph.Reachable} and the
+forest property is \lean{SimpleGraph.IsAcyclic} (Definition~\ref{def:walks}). The weight
+$\omega_w(F)$, the partition function $Z_w$ and the probability $\P_w[P]$ of
+Definition~\ref{def:arboreal} are \lean{H02.forestWeight}, \lean{H02.Zforest} and
+\texttt{H02.arborealProb w hw P} (\lean{H02/Spin.lean}), where \texttt{hw} is a proof that
+\texttt{w} is symmetric.
+
+The torus $\Lambda_N$ of Definition~\ref{def:torus} is \texttt{Loc.Lam d L N = Grassmann.Torus d (L\^{}N)}
+(\lean{Loc/Polymer.lean}, \lean{Grassmann/Torus.lean}), the function type
+\texttt{Fin d $\to$ ZMod (L\^{}N)}. The index set $\mathcal E_d$ of the unit vectors is
+\texttt{Grassmann.Dir d}, the unit vectors are \lean{Grassmann.dirVec}
+(\lean{Grassmann/Torus.lean}); the reduction map $\pi_N$ is \texttt{Ward.toT L N}, an abbreviation
+of \lean{FRD.prj} (\lean{H02RG/Ward/Defs.lean}, \lean{FRD/Lift.lean}); the centred representative
+$\mathrm{rep}$ is \lean{FRD.rep} (\lean{FRD/Lift.lean}); the Euclidean norm on $\Z^d$ is
+\lean{FRD.eNorm} (\lean{FRD/LatticeSum.lean}; \lean{Ward.eNorm} is an abbreviation of it). The
+nearest-neighbour weights $w_\beta$ of Definition~\ref{def:nnW} are \texttt{Ward.nnW d L N $\beta$}
+(\lean{H02RG/Ward/Defs.lean}, symmetry \lean{Ward.nnW_symm}), so that $\P_\beta^{\Lambda_N}[0\conn x]$ is
+\texttt{H02.arborealProb (Ward.nnW d L N $\beta$) \_ ($\cdot$.Reachable 0 x)}.
+
+For the ghost vertex of Definition~\ref{def:ghost}, the vertex set $\Lambda_N\cup\{\ghost\}$ is
+\texttt{Option (Loc.Lam d L N)}, with $\ghost=$\texttt{none} and $x\in\Lambda_N$ written
+\texttt{some x}; the weights $w_{\beta,h}$ are
+\texttt{H02.ghostW (Ward.nnW d L N $\beta$) (fun \_ => h)} and the base $F|_{\Lambda_N}$ is
+\lean{H02.base} (both \lean{H02/Tree.lean}).
+
+The Grassmann algebra $\Omega^\Lambda$ of Definition~\ref{def:grassmann} is \lean{H02.Grassmann},
+with the derivatives \texttt{H02.d$\xi$}, \texttt{H02.d$\eta$} defined via left contraction, and
+the generators \texttt{H02.$\xi$}, \texttt{H02.$\eta$}; $z_i$ and $u_i\cdot u_j$ of
+Definition~\ref{def:spins} are \lean{H02.z} and \lean{H02.dot}; the integral $[F]_0$ is
+\lean{H02.int0} (the enumeration of $\Lambda$ is the list \lean{Finset.univ.toList}); the action
+$H_{w,h}$ and the unnormalised expectation $[F]_{w,h}$ of Definition~\ref{def:action} are
+\lean{H02.action} and \lean{H02.expect} (all in \lean{H02/Defs.lean}); the expectation
+$\avg{F}_{w,h}$ is \lean{H02.avg} (\lean{H02/Spin.lean}). On the torus,
+$\avg{F}^{\Lambda_N}_{\beta,h}$ is \texttt{H02.avg (Ward.nnW d L N $\beta$) (fun \_ => h) F}.
+
+The constant $c_d$ of Section~\ref{sec:constants} is \lean{FRD.GreenAsymp.cd}
+(\lean{FRD/GreenAsympGauss.lean}); the Green function asymptotics
+$(-\Delta_{\Z^d})^{-1}(0,x)=c_d|x|^{2-d}+O(|x|^{1-d})$ is \lean{FRD.GreenAsymp.greenZd_asymp}
+(\lean{FRD/GreenAsymp.lean}).
+
+\subsection{Theorem~\ref{thm:macro}}
+\lean{H02RG.thm_forest_macro} (\lean{H02RG/Main/Theorems.lean}). The Lean statement has the single
+hypothesis \texttt{3 $\le$ d} and the form
+\begin{center}
+\texttt{$\exists$ L$_0$, $\forall$ L, L$_0$ $\le$ L $\to$ Odd L $\to$ $\exists$ ($\beta_0$ $\kappa'$ Cf c0 : $\R$) ($\zeta$ c$_0$ : $\R$ $\to$ $\R$), $\dots$}
+\end{center}
+with \texttt{0 < $\beta_0$}, \texttt{0 < $\kappa'$}, \texttt{$\kappa'$ $\le$ 1}, \texttt{0 $\le$ Cf},
+\texttt{0 < c0}, and for every \texttt{$\beta$ $\ge$ $\beta_0$} the claims
+\eqref{e:macro-const}--\eqref{e:macro}; these per-$\beta$ claims are the predicate
+\texttt{Ward.FMBody d L $\kappa'$ Cf c0 $\zeta$ c$_0$ $\beta$}. The correspondence of names is
+$\kappa=\kappa'$, $C=$ \texttt{Cf}, $\mathsf c_0=$ \texttt{c0}, $\mathsf c_0(\cdot)=$ \texttt{c$_0$}.
+The connection probability is
+\texttt{H02.arborealProb (Ward.nnW d L N $\beta$) (Ward.nnW\_symm \_) (fun F => F.Reachable 0 x)},
+and $r=|\mathrm{rep}(x)|$ is \texttt{FRD.eNorm (FRD.rep x)}; the powers $r^{d-2}$, $r^{-(d-2+\kappa)}$
+and $L^{-\kappa N}$ are real powers (\lean{Real.rpow}).
+
+\subsection{Theorem~\ref{thm:all}}
+\lean{H02RG.thm_all} (\lean{H02RG/Main/Theorems.lean}). The quantifier prefix is as for
+Theorem~\ref{thm:macro}, with the constants
+\texttt{($\beta_0$ $\kappa'$ K Cf c0 : $\R$) ($\zeta$ c$_0$ $\theta$ c$_1$ c$_2$ : $\R$ $\to$ $\R$)},
+the hypothesis \texttt{c0 = 2 * FRD.GreenAsymp.cd d} and \texttt{0 < c0} (this is \eqref{e:c0}), and
+for every \texttt{$\beta$ $\ge$ $\beta_0$} the conclusion
+\texttt{Ward.AllBody d L $\kappa'$ K Cf c0 $\zeta$ c$_0$ $\theta$ c$_1$ c$_2$ $\beta$}, which is the
+conjunction of
+\begin{itemize}
+\item \texttt{Ward.FMBody d L $\kappa'$ Cf c0 $\zeta$ c$_0$ $\beta$} (\lean{H02RG/Ward/ForestMacro.lean}): part (A);
+\item \texttt{Ward.H02Body d L $\kappa'$ K $\theta$ c$_1$ c$_2$ $\beta$} (\lean{H02RG/Ward/Main.lean}): part (B),
+  items (i)--(vi) in this order;
+\item \texttt{Ward.F0Body d L $\theta$ $\beta$} (\lean{H02RG/Ward/MainAll.lean}): part (C);
+\item \texttt{Ward.FBody d L $\kappa'$ K c$_1$ c$_2$ $\beta$} (\lean{H02RG/Ward/MainAll.lean}): part (D);
+\item the three identities \eqref{e:identities} of part (E), in the form
+  \texttt{$\zeta$ $\beta$ = $\theta$ $\beta$ \^{} 2}, \texttt{c$_2$ $\beta$ * $\theta$ $\beta$ \^{} 2 / c$_1$ $\beta$ \^{} 2 = 1},
+  \texttt{c$_0$ $\beta$ = 2 * c$_1$ $\beta$}.
+\end{itemize}
+In (B)--(D) the fixed point is \texttt{x : FRD.Zd d} with \texttt{x $\ne$ 0}, and its embedding
+$\pi_N(x)$ is \texttt{Ward.toT L N x}; $|x|$ is \texttt{FRD.eNorm x}. A limit ``$\to$ as
+$N\to\infty$'' is \texttt{Tendsto (fun N => $\dots$) atTop ($\mathcal N$ a)}, and ``$\to$ as
+$h\downarrow0$'' is \texttt{Tendsto ($\cdot$) ($\mathcal N$[>] 0) ($\mathcal N$ a)}; the functions
+$\theta_h,\tau_h,\sigma_h,\upsilon_h,\theta'_h,\tau'_h,\sigma'_h$ are existentially quantified
+functions \texttt{$\R$ $\to$ $\R$} whose values for $h\le0$ are irrelevant. The expectations of (B)
+are \texttt{H02.avg (Ward.nnW d L N $\beta$) (fun \_ => h) F} with
+\texttt{F = H02.z y}, \texttt{H02.$\xi$ 0 * H02.$\eta$ (Ward.toT L N x)},
+\texttt{H02.z 0 * H02.z (Ward.toT L N x)} and \texttt{H02.dot 0 (Ward.toT L N x)}. The probabilities
+of (C) and (D) are
+\texttt{H02.arborealProb (H02.ghostW (Ward.nnW d L N $\beta$) (fun \_ => h)) \_ P} with the events
+\texttt{P} given by \texttt{F.Reachable (some 0) none} for $0\conn\ghost$,
+\texttt{(H02.base F).Reachable 0 (Ward.toT L N x) $\wedge$ $\lnot$F.Reachable (some 0) none}
+for ``$0\conn x$ in $F|_{\Lambda_N}$ and $0\nconn\ghost$'', \texttt{$\lnot$F.Reachable (some 0) none}
+for $0\nconn\ghost$, and the conjunction of \texttt{$\lnot$F.Reachable (some 0) none},
+\texttt{$\lnot$F.Reachable (some (Ward.toT L N x)) none} and
+\texttt{$\lnot$F.Reachable (some 0) (some (Ward.toT L N x))} for
+``$0\nconn\ghost,\ x\nconn\ghost,\ 0\nconn x$''.
+
+The parts are also available as separate Lean theorems with their own constants:
+\lean{H02RG.thm_forest_macro} (A), \lean{H02RG.thm_h02} (B), \lean{H02RG.thm_forests0} (C) and
+\lean{H02RG.thm_forests} (D) (all in \lean{H02RG/Main/Theorems.lean}); \lean{H02RG.thm_all} combines them with one set
+of constants and adds (E).
+
+\subsection{Axioms}
+\lean{Audit/H02RG.lean} lists \lean{H02RG.thm_forest_macro}, \lean{H02RG.thm_forests0},
+\lean{H02RG.thm_forests}, \lean{H02RG.thm_h02} and \lean{H02RG.thm_all} with \lean{#print axioms} and
+prints the definitions used in their statements; each depends only on \lean{propext},
+\lean{Classical.choice} and \lean{Quot.sound}. There is no \lean{sorry}.
+
+\bibliographystyle{plain}
+\bibliography{all}
+
+\end{document}

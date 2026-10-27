@@ -1,0 +1,258 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{enumitem}\usepackage{tikz}
+\usepackage{xurl}\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
+\AtBeginDocument{\AddToHook{env/proposition/begin}{\crefalias{theorem}{proposition}}\AddToHook{env/lemma/begin}{\crefalias{theorem}{lemma}}\AddToHook{env/corollary/begin}{\crefalias{theorem}{corollary}}\AddToHook{env/definition/begin}{\crefalias{theorem}{definition}}\AddToHook{env/remark/begin}{\crefalias{theorem}{remark}}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\PP}{\mathbb P}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\HH}{\mathbb H}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\cH}{\mathcal H}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\RS}{\operatorname{RS}}
+\newcommand{\e}{\mathrm e}
+
+\newcommand{\RR}{\mathbb R}
+\newcommand{\lean}[1]{\texttt{\detokenize{#1}}}
+
+\title{Exponential Decay for the Two-Dimensional Arboreal Gas\\
+  \large Statements of the Frozen Lean Theorems}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This note translates the three declarations in
+\texttt{ArborealDecay/Frozen/ExpDecay*.lean}, together with the definitions
+appearing in their statements. All Lean declaration names below belong to
+the namespace \lean{ArborealDecay}. The statements retain the quantifiers,
+weight conventions, and distances of the frozen declarations.
+\end{abstract}
+
+\section{The arboreal gas}
+
+Let $V$ be a finite set. An edge-weight system is a function
+$w:V\times V\to\RR$ such that
+\begin{equation}
+  w_{uv}=w_{vu},\qquad w_{uv}\geq0\qquad(u,v\in V).
+\end{equation}
+This is \lean{EdgeWeights V}. Its support graph is the undirected simple graph
+$G_w=(V,E_w)$ with
+\begin{equation}
+  E_w=\bigl\{\{u,v\}:u,v\in V,\ u\ne v,\ w_{uv}>0\bigr\}.
+\end{equation}
+Thus zero-weight edges are absent and loops are discarded. Diagonal entries
+$w_{uu}$ have no effect on the probability measure.
+
+A \emph{spanning forest} on $V$ is an undirected simple graph with vertex set
+$V$ and no cycles. It need not be connected; isolated vertices are retained.
+Write $\cF(V)$ for all such forests and $\cF(G_w)$ for those whose edges lie
+in $E_w$. For $F\in\cF(V)$, define its weight and the partition function by
+\begin{align}
+  w(F)&=\prod_{\{u,v\}\in E(F)}w_{uv},
+       \label{eq:weight}\\
+  Z_V(w)&=\sum_{F\in\cF(V)}w(F)
+         =\sum_{F\in\cF(G_w)}w(F).
+       \label{eq:partition}
+\end{align}
+Every undirected edge occurs once in the product. The empty product is $1$,
+so the edgeless spanning forest has weight $1$ and $Z_V(w)\geq1$.
+The two sums agree because any forest containing a zero-weight edge has
+weight zero. The Lean definitions \lean{forestWeight} and
+\lean{partitionFunction} use the product in \eqref{eq:weight} and the first
+sum in \eqref{eq:partition}.
+
+The \emph{arboreal gas} is the probability measure on $\cF(V)$ given by
+the following singleton and event probabilities, for
+$\mathcal A\subseteq\cF(V)$:
+\begin{equation}
+  \mu_{V,w}(\{F\})=\frac{w(F)}{Z_V(w)},
+  \qquad
+  \mu_{V,w}(\mathcal A)
+    =\frac{\displaystyle\sum_{F\in\mathcal A}w(F)}{Z_V(w)}.
+\end{equation}
+This event probability is \lean{forestProb}; there is no additional factor
+depending on component sizes or a choice of roots. If the input is a graph
+with labelled parallel edges, their weights are summed to obtain $w_{uv}$.
+This gives the same connectivity probabilities: a forest can use at most
+one edge from each parallel class.
+
+For $x,y\in V$, write $x\leftrightarrow_F y$ when a path in $F$ joins them,
+allowing the path of length zero when $x=y$. The two-point function is
+\begin{equation}
+  \tau_{V,w}(x,y)
+    :=\mu_{V,w}(x\leftrightarrow_F y)
+    =\frac{\displaystyle\sum_{\substack{F\in\cF(V)\\x\leftrightarrow_F y}}
+      w(F)}{Z_V(w)}.
+\end{equation}
+This is \lean{twoPoint}; in particular, $\tau_{V,w}(x,x)=1$.
+
+\section{Finite subsets of the square lattice}
+
+For $x=(x_1,x_2)$ and $y=(y_1,y_2)$ in $\ZZ^2$, define nearest-neighbour
+adjacency and the $\ell^\infty$ distance by
+\begin{equation}
+  x\sim y\quad\Longleftrightarrow\quad
+    |x_1-y_1|+|x_2-y_2|=1,
+  \qquad
+  d_\infty(x,y)=\max\{|x_1-y_1|,|x_2-y_2|\}.
+\end{equation}
+These are \lean{IsNN} and \lean{supDist}, respectively.
+
+\begin{theorem}[Finite-volume exponential decay]
+\label{thm:finite}
+For every real $\beta\geq0$, there exists a real constant
+$c_\beta^{\mathrm{fin}}>0$ such that the following holds. For every finite
+set $\Lambda\subseteq\ZZ^2$ and every symmetric nonnegative weight system
+$w$ on $\Lambda$ satisfying
+\begin{equation}
+  w_{uv}\ne0\ \Longrightarrow\ u\sim v,
+  \qquad
+  w_{uv}\leq\beta
+  \qquad(u,v\in\Lambda),
+\end{equation}
+one has, for all $x,y\in\Lambda$,
+\begin{equation}
+  \tau_{\Lambda,w}(x,y)
+     \leq 2\exp\!\bigl(-c_\beta^{\mathrm{fin}}d_\infty(x,y)\bigr).
+\end{equation}
+\end{theorem}
+
+\noindent
+Lean declaration: \lean{expDecay_finite}, in
+\texttt{Frozen/ExpDecayFinite.lean}.
+The constant depends only on $\beta$, not on $\Lambda$, $w$, $x$, or $y$.
+No connectedness or shape assumption is imposed on $\Lambda$, and any
+nearest-neighbour edge may have weight zero. Since $u\not\sim u$, the support
+condition here also forces $w_{uu}=0$.
+
+\section{Torus geometry and weights}
+
+For a positive integer $L$, let
+\begin{equation}
+  \mathbb T_L=(\ZZ/L\ZZ)^2.
+\end{equation}
+The frozen torus adjacency predicate, \lean{IsTorusNN}, is
+\begin{align}
+  x\sim_L y\quad\Longleftrightarrow\quad&
+    \bigl[x_1=y_1\ \text{and}\ (x_2-y_2=1\ \text{or}\ y_2-x_2=1)\bigr]\\
+  &\text{or}\quad
+    \bigl[x_2=y_2\ \text{and}\ (x_1-y_1=1\ \text{or}\ y_1-x_1=1)\bigr],
+\end{align}
+where all coordinate equalities are in $\ZZ/L\ZZ$.
+
+For $a\in\ZZ/L\ZZ$, let $r_L(a)\in\ZZ$ be its representative of minimum
+absolute value, taking $+L/2$ in the tie when $L$ is even. Explicitly, if
+$\bar a\in\{0,\ldots,L-1\}$ represents $a$, then
+\begin{equation}
+  r_L(a)=
+  \begin{cases}
+    \bar a,&2\bar a\leq L,\\
+    \bar a-L,&2\bar a>L.
+  \end{cases}
+\end{equation}
+This is Lean's \lean{ZMod.valMinAbs}. Define
+\begin{align}
+  d_{\infty,L}(x,y)
+    &=\max\{|r_L(x_1-y_1)|,|r_L(x_2-y_2)|\},\\
+  |x|_{2,L}
+    &=\sqrt{r_L(x_1)^2+r_L(x_2)^2}.
+\end{align}
+These are \lean{torusSupDist} and \lean{torusEuclNorm}. Thus $|x|_{2,L}$
+is the toroidal Euclidean distance from the origin, not the norm of an
+arbitrary lift of $x$ to $\ZZ^2$.
+
+\section{Exponential decay on the torus}
+
+\begin{theorem}[Weighted tori]
+\label{thm:torus}
+For every real $\beta\geq0$, there exists a real constant
+$c_\beta^{\mathrm{tor}}>0$ such that, for every positive integer $L$ and
+every symmetric nonnegative weight system $w$ on $\mathbb T_L$ satisfying
+\begin{equation}
+  w_{uv}\ne0\ \Longrightarrow\ u\sim_L v,
+  \qquad
+  w_{uv}\leq\beta
+  \qquad(u,v\in\mathbb T_L),
+\end{equation}
+one has, for all $x,y\in\mathbb T_L$,
+\begin{equation}
+  \tau_{\mathbb T_L,w}(x,y)
+     \leq 2\exp\!\bigl(-c_\beta^{\mathrm{tor}}d_{\infty,L}(x,y)\bigr).
+\end{equation}
+\end{theorem}
+
+\noindent
+Lean declaration: \lean{expDecay_torus}, in
+\texttt{Frozen/ExpDecayTorus.lean}.
+The constant is uniform in $L$, $w$, $x$, and $y$. The finite-lattice and
+torus declarations quantify their constants separately. If desired, their
+minimum gives a common positive constant for both estimates.
+
+For $\beta\geq0$, define the uniform torus weight system by
+\begin{equation}
+  w^{L,\beta}_{uv}=
+  \begin{cases}
+    \beta,&u\sim_L v,\\
+    0,&\text{otherwise}.
+  \end{cases}
+\end{equation}
+This is \lean{torusUniform}. Write
+$\mathbb P_{L,\beta}=\mu_{\mathbb T_L,w^{L,\beta}}$.
+For $\beta>0$ and a spanning forest $F$ of the torus support graph, its
+probability is proportional to $\beta^{|E(F)|}$. At $\beta=0$ the edgeless
+forest has probability one, by the empty-product convention.
+
+\begin{theorem}[Uniform tori, Euclidean distance]
+\label{thm:euclidean}
+For every real $\beta\geq0$, there exist real constants
+$C_\beta>0$ and $c_\beta^{\mathrm{eucl}}>0$ such that, for every positive
+integer $L$ and every $x\in\mathbb T_L$,
+\begin{equation}
+  \mathbb P_{L,\beta}(0\leftrightarrow_F x)
+    \leq C_\beta
+       \exp\!\bigl(-c_\beta^{\mathrm{eucl}}|x|_{2,L}\bigr).
+\end{equation}
+\end{theorem}
+
+\noindent
+Lean declaration: \lean{expDecay_torus_eucl}, in
+\texttt{Frozen/ExpDecayTorusEucl.lean}.
+Both constants depend only on $\beta$. There is no restriction relating $L$
+to $x$. For a lift $\widetilde x\in\ZZ^2$ with
+$|\widetilde x_i|\leq L/2$ for $i=1,2$, one has
+$|x|_{2,L}=\|\widetilde x\|_2$. Also,
+$|x|_{2,L}\leq\sqrt{2}\,d_{\infty,L}(0,x)$, so the preceding theorem
+implies this bound with $C_\beta=2$ and
+$c_\beta^{\mathrm{eucl}}=c_\beta^{\mathrm{tor}}/\sqrt{2}$;
+the frozen Euclidean statement only asserts the existence of positive
+constants.
+
+\paragraph{Small tori.}
+All positive sizes, including $L=1$ and $L=2$, are included. For $L=1$,
+the predicate $u\sim_L u$ holds because $1=0$ in $\ZZ/L\ZZ$, but the
+forest measure still discards loops. For $L=2$, coincident positive and
+negative coordinate directions define a single undirected edge. In the
+uniform system its weight is $\beta$, with no multiplicity factor.
+
+\end{document}

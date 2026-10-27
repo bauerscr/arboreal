@@ -1,0 +1,261 @@
+\documentclass[11pt]{amsart}
+
+\usepackage[nomath,nothms,nomisc,nolayout,nohyperref,abbrs,nocolor]{mymacros}
+
+\usepackage{amsmath,amssymb,bbm,mathtools}
+\usepackage{xspace}
+\usepackage{thmtools, thm-restate}
+\usepackage{fullpage}
+\usepackage{enumerate}
+\usepackage{microtype}
+
+\usepackage[bookmarks, colorlinks, breaklinks,
+pdftitle={},pdfauthor={}]{hyperref}
+
+\hypersetup{
+  linkcolor=black,
+  citecolor=black,
+  filecolor=black,
+  urlcolor=black}
+
+\declaretheorem[numberwithin=section]{theorem}
+\declaretheorem[sibling=theorem]{lemma}
+\declaretheorem[sibling=theorem]{corollary}
+\declaretheorem[sibling=theorem]{proposition}
+\declaretheorem[sibling=theorem,style=remark]{remark}
+\declaretheorem[sibling=theorem,style=definition]{definition}
+\declaretheorem[sibling=theorem]{conjecture}
+
+\numberwithin{equation}{section}
+\numberwithin{theorem}{section}
+
+\usepackage{cleveref}
+
+\def\labelenumi{(\romannumeral\theenumi)}
+
+\newcommand{\conn}{\leftrightarrow}
+\newcommand{\nconn}{\not\leftrightarrow}
+\newcommand{\loc}{\operatorname{loc}}
+\newcommand{\lean}[1]{\texttt{\detokenize{#1}}}
+
+\title{The two-dimensional arboreal gas on the torus:\\ statements of the Lean theorems}
+\date{}
+
+\begin{document}
+\sloppy
+
+\begin{abstract}
+  We consider the arboreal gas on the discretised two-dimensional unit torus
+  $\T_\epsilon=\epsilon\Z^2/\Z^2$, $\epsilon=L^{-N}$. For every sufficiently large renormalised
+  inverse temperature $\beta_R$ there is a choice of inverse temperatures
+  $\beta_\epsilon=\frac{3}{2\pi}\log\frac1\epsilon+O(\log\log\frac1\epsilon)$ such that the suitably
+  rescaled connection probabilities converge along a subsequence, uniformly on compact subsets of $\T^2\setminus\{0\}$, to a
+  continuous limit $G$. The limit has logarithmic short-distance singularity with exponent $2/3$.
+  The statement involves only the arboreal gas. No proofs are given; the Lean declarations
+  that prove the statements are collected in a separate section.
+\end{abstract}
+
+\maketitle
+
+\section{The model}
+
+\subsection{Continuum limit of the arboreal gas}
+Let $G=(\Lambda,E)$ be a finite graph. A \emph{spanning forest} (or simply forest) $F$ is an acyclic subgraph of
+$G$ with vertex set $\Lambda$; $|F|$ denotes its number of edges. For $\beta>0$ the
+\emph{arboreal gas} is the probability measure
+\begin{equation}\label{e:P-forest}
+  \P_\beta^G[F] \bydef \frac{\beta^{|F|}}{Z_\beta^G},\qquad
+  Z_\beta^G\bydef\sum_{F} \beta^{|F|},
+\end{equation}
+on forests. For vertices $0,x$ we write $\{0\conn x\}$ for the event that $0$ and $x$ lie in the
+same tree of $F$. The object of this note is the connection probability $\P_\beta[0\conn x]$.
+%
+Fix $L\ge2$ and let, for $N\ge1$,
+\begin{equation}
+  \Lambda_N=(\Z/L^N\Z)^2,\qquad \epsilon=L^{-N},
+\end{equation}
+with its nearest-neighbour graph. We identify $\Lambda_N$ with the discretised unit torus
+$\T_\epsilon=\epsilon\Z^2/\Z^2\subset\T^2=\R^2/\Z^2$. Points of $\Lambda_N$ are in lattice units;
+for $x\in\Lambda_N$, $|x|$ is the Euclidean torus distance from $0$ in lattice units, so
+$\ell=|x|/L^N=\epsilon|x|$ is the physical distance. For $x\in\T^2$, $x_N\in\Lambda_N$ denotes the
+nearest lattice point to $L^Nx$ (coordinatewise rounding). The \emph{scale} of a physical length
+$\ell\in(0,1)$ is
+\begin{equation}
+  j(\ell)=\lfloor N+\log_L\ell\rfloor .
+\end{equation}
+For an inverse temperature $\beta_\epsilon$ that will be specified.
+\begin{equation}
+  P_\epsilon(x)=\P^{\Lambda_N}_{\beta_\epsilon}[0\conn x]
+\end{equation}
+denotes the probability that $0$ is connected to $x$.
+
+For a sequence $(\beta_N)_N$ of inverse temperatures let
+\begin{equation}
+  f_N(x)=\vartheta_N^{-2}\,\P^{\Lambda_N}_{\beta_N}[0\conn x_N],\qquad
+  \vartheta_N^2=(\beta_R/\beta_N)^{2/3},\qquad x\in\T^2 .
+\end{equation}
+On $\T^2$, $\|x\|$ is the max-norm of the coordinates in $\R/\Z$ and $|x|$ the Euclidean norm.
+
+Throughout, $L\ge L_0$, where $L_0$ is a universal constant. All other constants depend on $L$ only.
+The Lean declarations proving the results are listed in Section~\ref{sec:lean}.
+
+
+\begin{theorem}\label{thm:limit-fixed}
+There are $g_0>0$, $N_0\ge3$ and $K\in\R$, depending only on $L$, such that for every $\beta_R\ge1/g_0$ there are $\delta_0\in(0,1)$ and $K'\ge0$, depending only on $L$ and $\beta_R$, and a sequence
+$(\beta_N)_N$ with the following properties.
+For every $N\ge N_0$,
+\begin{equation} \label{e:betaN}
+    \bigl|\beta_N-\frac3{2\pi}\log L^N\bigr|\le K\,(1+\beta_R+\log N);
+\end{equation}
+in particular $\beta_N=\frac3{2\pi}\log\frac1\epsilon+O(\log\log\frac1\epsilon)$ with $\epsilon=L^{-N}$.
+
+There are a subsequence $(N_k)$ and a function $G$ on $\T^2$ such that $f_{N_k}\to G$
+uniformly on compact subsets of $\T^2\setminus\{0\}$. The function $G$ is continuous on
+$\T^2\setminus\{0\}$, nonnegative, invariant under coordinate
+permutations and reflections, bounded on $\{|x|\ge\delta\}$ for every $\delta>0$, and for
+$0<|x|<\delta_0$,
+\begin{equation}
+    \Biggl|G(x)-\Biggl(\frac{3\log\frac1{|x|}}{2\pi\beta_R}\Biggr)^{2/3}\Biggr|
+    \le K'\Biggl(\frac{3\log\frac1{|x|}}{2\pi\beta_R}\Biggr)^{2/3}\frac{\log\log\frac1{|x|}}{\log\frac1{|x|}}.
+\end{equation}
+\end{theorem}
+
+\subsection{\texorpdfstring{The $\HH^{0|2}$ model representation}{The H02 model representation}}
+Theorem~\ref{thm:limit-fixed} is proved through the representation of the arboreal gas as the
+$\HH^{0|2}$ model of \cite{BCH24}. For every $x\in\Lambda_N$ there are two Grassmann variables
+$\xi_x,\eta_x$, and $z_x=1-\xi_x\eta_x$. The supervectors $u_x=(\xi_x,\eta_x,z_x)$ satisfy
+\begin{equation}
+  u_x\cdot u_x=-1
+\end{equation}
+for the super inner product $u_x\cdot u_y=-\xi_x\eta_y-\xi_y\eta_x-z_xz_y$, and
+the $\HH^{0|2}$ model is
+\begin{equation}\label{e:H02-def}
+  \avg{F}_{\beta}=\frac{1}{Z_{\beta}}\int\Bigl(\prod_{x\in\Lambda_N}du_x\Bigr)
+  \exp\Bigl(-\frac\beta2\sum_{xy\in E}(u_x-u_y)\cdot(u_x-u_y)\Bigr)F,
+  \qquad du_x=\partial_{\xi_x}\partial_{\eta_x}\frac1{z_x},
+\end{equation}
+where $E$ is the set of nearest-neighbour edges of $\Lambda_N$, $F$ is a polynomial in the
+$\xi_x,\eta_x$, and $\int du_x$ is the Grassmann integral with respect to $du_x$, the volume form
+of $\HH^{0|2}$. By \cite{BCH24},
+\begin{equation}\label{e:P}
+  \P_\beta[0\conn x]=\avg{\xi_0\eta_x}_{\beta}=-\avg{z_0z_x}_{\beta}.
+\end{equation}
+
+This can be compared to the $O(n)$ model (or classical Heisenberg model).
+The $O(n)$ model on $\Lambda_N$ has spins $\sigma_x\in S^{n-1}\subset\R^n$ satisfying $\sigma_x\cdot\sigma_x=1$, and
+\begin{equation}\label{e:On-def}
+  \avg{F}^{O(n)}_\beta=\frac1{Z^{O(n)}_\beta}\int_{(S^{n-1})^{\Lambda_N}}F(\sigma)
+  \exp\Bigl(-\frac\beta2\sum_{xy\in E}(\sigma_x-\sigma_y)\cdot(\sigma_x-\sigma_y)\Bigr)\prod_{x\in\Lambda_N}d\sigma_x ,
+\end{equation}
+with $d\sigma_x$ the uniform measure on $S^{n-1}$.
+%\eqref{e:H02-def} is \eqref{e:On-def} with
+%$(\sigma_x,S^{n-1},d\sigma_x)$ replaced by $(u_x,\{u\cdot u=-1\},\partial_\eta\partial_\xi z^{-1})$.
+In perturbation theory in $1/\beta$, the renormalisation
+group flow of the $O(n)$ model in $d=2$ is, per scale,
+\begin{equation}\label{e:On-flow}
+  \beta_{j+1}=\beta_j-\frac{n-2}{2\pi}\log L+O(\beta_j^{-1}),
+\end{equation}
+and the spin field is renormalised with anomalous dimension $\frac{n-1}{2\pi\beta}$ per unit of
+$\log$ length, so that over the scales from $j$ to $0$ the two-point function picks up the factor
+$(\beta_j/\beta_0)^{(n-1)/(n-2)}$. For $n\ge3$ the model is asymptotically free, and the expected
+analogue of Theorem~\ref{thm:limit-fixed} is the following.
+
+\begin{conjecture}
+For $\beta_R$ large there is
+$\beta_\epsilon=\frac{n-2}{2\pi}\log\frac1\epsilon+O(\log\log\frac1\epsilon)$ such that the
+renormalised two-point functions $(\beta_\epsilon/\beta_R)^{(n-1)/(n-2)}\avg{\sigma_0\cdot\sigma_{x_N}}_{\beta_\epsilon}$
+converge on compact subsets of $\T^2\setminus\{0\}$ to a continuous function $G$ satisfying
+\begin{equation}\label{e:On-short}
+  G(x)=\Bigl(\frac{(n-2)\log\frac1{|x|}}{2\pi\beta_R}\Bigr)^{\frac{n-1}{n-2}}
+  \Bigl(1+O\Bigl(\frac{\log\log\frac1{|x|}}{\log\frac1{|x|}}\Bigr)\Bigr)\qquad(x\to0).
+\end{equation}
+This statement is not proved for any $n\ge3$.
+\end{conjecture}
+
+The $\HH^{0|2}$ model is the $O(n)$ model with $\R^n$ replaced by the superspace $\R^{1|2}$, with one bosonic
+coordinate $z$ and two fermionic coordinates $\xi,\eta$, and with the quadratic form of hyperbolic
+signature. Formally this is the $O(n)$ model with $n=1-2=-1$ and with $\beta$ replaced by $-\beta$;
+the correspondence holds term by term in perturbation theory, where $n$ only enters through
+traces over the components. Substituting $n=-1$ and $\beta\to-\beta$ in \eqref{e:On-flow} gives
+$\beta_{j+1}=\beta_j-\frac{3}{2\pi}\log L+O(\beta_j^{-1})$: the sign of $n-2$ and the sign of $\beta$
+both change, so the model is again asymptotically free, with $\frac{n-2}{2\pi}\mapsto\frac{3}{2\pi}$.
+The exponent becomes $\frac{n-1}{n-2}=\frac23$, and \eqref{e:On-short} becomes the short-distance law
+of Theorem~\ref{thm:limit-fixed}. Thus Theorem~\ref{thm:limit-fixed} is the statement that the
+expected asymptotic freedom of the two-dimensional $O(n)$ model holds for the arboreal gas. %, where
+%the fermionic representation makes the perturbative structure accessible to a rigorous
+%renormalisation group analysis.
+
+\subsection{Rescaled fields and the auxiliary mass}
+The proof applies a renormalisation group analysis to the right-hand side of \eqref{e:P}. It works with the rescaled fields
+$\bar\psi=\beta^{1/2}\xi$, $\psi=\beta^{1/2}\eta$ and a Gaussian reference measure with covariance
+$C=(-\Delta+m^2)^{-1}$, $m^2>0$. With $b=1/\beta$, the initial potential has quadratic
+coupling $a_0=b-m^2$, so that the total quadratic form is $-\Delta+b$ for every $m^2$. Accordingly
+the two-point function of this fermionic model does not depend on $m^2$:
+\begin{equation}\label{e:massshift}
+  b\,\avg{\bar\psi_0\psi_x}_{m^2,\,a_0=b-m^2}=\P_{1/b}[0\conn x]\qquad\text{for every }m^2>0.
+\end{equation}
+The mass $m^2$ is a parameter of the renormalisation group analysis only. It enters the running
+coupling constants and the admissible choices of $\beta_\epsilon$, but not the model.
+In Theorem~\ref{thm:limit-fixed} $m^2$ does not appear; it is chosen in the proof (one may take
+$m^2=1/(4\beta_RL^{2N})$).
+
+\section{Lean formalisation}\label{sec:lean}
+
+\subsection{The model and its representation}
+The connection probability is \texttt{Spin2.Pconn L N $\beta$ x}
+(\lean{H02UV/Spin2/Multiscale/Conn.lean}), defined as \texttt{H02.arborealProb (Ward.nnW 2 L N $\beta$) \_ ($\cdot$.Reachable 0 x)}:
+the forest sum \lean{H02.arborealProb} (\lean{H02/Spin.lean}) with weight
+$\beta\cdot\#\{e:\ y=x+e\}$ on $\Lambda_N$ (\lean{Ward.nnW}, $e$ running over the four unit vectors), which is
+\eqref{e:P-forest} on the nearest-neighbour graph when $L^N\ge3$. Identity \eqref{e:P} is \lean{H02.cor_spin_conn} (\lean{H02/Spin.lean}); in the
+form $\P_\beta[0\conn x]=\avg{\xi_0\eta_x}_{\beta}$ on $\Lambda_N$ it is \lean{Spin2.Pconn_eq_avg}. Identity \eqref{e:massshift} is
+\lean{Spin2.avg0_eq_Pconn}, and the independence of $m^2$ is \lean{Spin2.avg0_mass_indep}
+(both in \lean{H02UV/Spin2/Final/Arboreal.lean}, from \lean{Spin2.Pconn_eq_avg0} and
+\texttt{Ward.bridge\_avg\_$\xi\eta$}). The fermionic expectation is \texttt{PtCorr2.avg0 L N m b (b - m)} (the Lean variable \texttt{m} is $m^2$).
+
+\subsection{Theorem~\ref{thm:limit-fixed}}
+\lean{H02UV.thm_arboreal_limit_fixed} (\lean{H02UV/Main/Theorems.lean}). In this subsection,
+names without a namespace are in \lean{Spin2}, except that \lean{torusNorm} and \lean{clSgn} are in
+\lean{Cont} (\lean{Cont/TorusGreen.lean}, \lean{Cont/LatEmb.lean}) and that \lean{arbB},
+\lean{arb_adm_at}, \lean{arb_perN} and \lean{ct_beta_scale} are in \lean{Spin2.MasterFacts}.
+Here $f_N$ is \texttt{Spin2.arbF L $\beta_R$ $(\beta_N)_N$ N}, $|x|$ is \lean{torusNorm x},
+$(\frac{3}{2\pi\beta_R}\log\frac1{|x|})^{2/3}$ is \texttt{csA $\beta_R$ $|x|$} and $\log\log\frac1{|x|}/\log\frac1{|x|}$ is \texttt{csRate $|x|$};
+the point group acts by \lean{clSgn}. The Lean statement also contains the asymptotic
+equicontinuity of $(f_N)$ on $\{\|x\|\ge r\}$ for every $r>0$ (\lean{ClEqui}). The statement is free of $m^2$. It is
+\lean{thm_limit_fixed_betaR} (\lean{H02UV/Spin2/Cont/ContFx5b.lean}) applied to one admissible
+sequence constructed in the proof:
+\begin{itemize}
+\item \emph{existential choices}: the master construction $M$ (\lean{eqs_master}, with $c_{ab}>0$,
+  $B>0$), $R_N=$ \lean{a5wR M N}, $m_N^2=1/(4\beta_RL^{2N})$, $b_N=b_{\rm Fin}(m_N^2,\frac1{2\beta_R})$ (the left end of the
+  bracket, \lean{arbB}), and $\beta_N=1/b_N$; admissibility (\lean{ClAdm}) holds for all
+  $N\ge2$ (\lean{arb_adm_at}), and $\lean{arbF} = \lean{clF}$ (\lean{arbF_eq_clF});
+\item the threshold of \lean{ClAdm} must satisfy $N_0\ge2$; the copies \lean{arb_eqs_shortX},
+  \lean{arb_eqs_shortBound}, \lean{arb_eqs_limitAnn} (\lean{H02UV/Spin2/Final/ArborealEqs.lean},
+  verbatim bodies of \lean{eqs_shortX}, \lean{eqs_shortBound}, \lean{eqs_limitAnn}) also export
+  $N_0\ge3$;
+\item \eqref{e:betaN} is part of \lean{arb_perN} at $b_N$: the bound of \lean{thm_theta_eps}, re-derived from
+  \lean{ct_beta_scale} at $j=0$ (with $\beta_N=1/b_N=1/\check g_0$). In Lean the per-$N$ clause is stronger:
+  it is the conclusion of \lean{H02UV.thm_arboreal_multiscale} (\lean{H02UV/Main/Theorems.lean}),
+  i.e.\ the predicates \texttt{ArbScale} (running inverse temperatures $\tilde\beta_0=\beta_N,\dots,\tilde\beta_{N-2}$
+  with $\tilde\beta_j\ge\beta_R/4$, $\tilde\beta_{N-2}\le5\beta_R$, and the multiscale formula
+  $|P_\epsilon(x)-\vartheta_k^2|\le K\vartheta_k^2/\tilde\beta_k$, $\vartheta_k^2=(\tilde\beta_k/\beta_N)^{2/3}$,
+  $k=\min(j(\epsilon|x|),N-2)$) and \texttt{ArbShort} (the finite-$N$
+  short-distance bounds of \lean{thm_short_epsX}).
+\item $g_0$ includes $1/\beta_R\le\varepsilon/4$, $\varepsilon$ the size of the flow domain $D_\varepsilon$
+  (needed for the bracket to be nonempty).
+\end{itemize}
+Remarks: \lean{thm_limit_fixed_betaR} holds for every admissible $(R_N,m_N^2,b_N)$; admissibility
+involves $m_N^2$, so the $m^2$-free statement asserts the conclusion for one sequence $(\beta_N)$,
+characterised by \eqref{e:betaN} (in Lean by the per-$N$ clause above). Uniqueness of $\beta_N$ and monotonicity
+in $\beta_R$ (\lean{thm_beta}) concern an $m^2$-dependent shooting value and are not stated. Convergence is along a subsequence; in the
+boundedness the distance is the max-norm, in the short-distance bound the Euclidean norm.
+
+\subsection{Axioms}
+\lean{Audit/H02UV.lean} lists \lean{avg0_mass_indep}, \lean{avg0_eq_Pconn},
+\lean{H02UV.thm_arboreal_multiscale} and \lean{H02UV.thm_arboreal_limit_fixed} with \lean{#print axioms} and
+prints the definitions used in their statements; each depends only on \lean{propext}, \lean{Classical.choice} and \lean{Quot.sound}. There is no
+\lean{sorry}.
+
+\bibliographystyle{plain}
+\bibliography{all}
+
+\end{document}

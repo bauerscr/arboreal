@@ -1,0 +1,723 @@
+\ProvidesPackage{mymacros}[2018/10/16 My macros]
+
+\newif\if@loadhyperref %\@loadhyperreffalse
+\DeclareOption{hyperref}{\@loadhyperreftrue}
+\DeclareOption{nohyperref}{\@loadhyperreffalse}
+
+\newif\if@loadtimes %\@loadtimesfalse
+\DeclareOption{times}{\@loadtimestrue}
+
+\newif\if@loadmath %\@loadmathfalse
+\DeclareOption{math}{\@loadmathtrue}
+\DeclareOption{nomath}{\@loadmathfalse}
+
+\newif\if@loadthms %\@loadthmsfalse
+\DeclareOption{thms}{\@loadmathtrue\@loadthmstrue}
+\DeclareOption{nothms}{\@loadthmsfalse}
+
+\newif\if@loadabbrs %\@loadmathfalse
+\DeclareOption{abbrs}{\@loadmathtrue\@loadabbrstrue}
+\DeclareOption{noabbrs}{\@loadabbrsfalse}
+
+\newif\if@loadtitlesec %\@loadtitlesecfalse
+\DeclareOption{titlesec}{\@loadtitlesectrue}
+
+\newif\if@loadcolor %\@loadcolorfalse
+\DeclareOption{color}{\@loadcolortrue}
+\DeclareOption{nocolor}{\@loadcolorfalse}
+
+\newif\if@loadcoloralt %\@loadcoloraltfalse
+\DeclareOption{coloralt}{\@loadcoloralttrue}
+
+\newif\if@loadlists %\@loadtitlesecfalse
+\DeclareOption{lists}{\@loadliststrue}
+
+\newif\if@loadbiber %\@loadbiberfalse
+\DeclareOption{biber}{\@loadbibertrue}
+
+\newif\if@loadfancyhdr %\@loadfancyhdrfalse
+\DeclareOption{fancyhdr}{\@loadfancyhdrtrue}
+
+\newif\if@loadfancytitle %\@loadshorttitlefalse
+\DeclareOption{fancytitle}{\@loadfancyhdrtrue\@loadfancytitletrue}
+
+\newif\if@loadlayouta %\@loadlayoutafalse
+\DeclareOption{layouta}{\@loadlayoutatrue}
+
+\newif\if@loadbeamer %\@loadbeamer
+\DeclareOption{beamer}{\@loadcolortrue\@loadcoloralt\@loadbeamertrue}
+
+\newif\if@loadmisc %\@loadmiscfalse
+\DeclareOption{misc}{\@loadmisctrue}
+\DeclareOption{nomisc}{\@loadmiscfalse}
+
+\newif\ifdraft
+\DeclareOption{draft}{\drafttrue}
+\DeclareOption{nodraft}{\draftfalse}
+
+\newif\ifarxiv
+\DeclareOption{arxiv}{\arxivtrue\@loadcolorfalse\@loadhyperreffalse}
+\DeclareOption{noarxiv}{\arxivfalse}
+
+\ExecuteOptions{math,thms,abbrs,misc,layouta,color,hyperref}
+\ProcessOptions\relax
+
+
+%%%%% option: hyperref %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifdraft
+\date{{\today} --- \textbf{WORK IN PROGRESS}}
+\newcommand{\draftbeginmain}{\newpage\setcounter{page}{1}}
+\newcommand{\draftendmain}{\newpage\pagenumbering{roman}\setcounter{page}{1}}
+\else
+\newcommand{\draftbeginmain}{}
+\newcommand{\draftendmain}{}
+\fi
+
+
+\ifarxiv
+\RequirePackage{url}
+\fi
+
+\if@loadhyperref
+\RequirePackage{hyperref}
+\fi
+
+
+%%%%% option: math %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\if@loadmath
+\RequirePackage{amsmath,amsthm,amssymb,amsfonts,amsxtra,amscd,mathscinet}
+\RequirePackage{latexsym,mathrsfs,bm}
+\RequirePackage{cite}
+\fi
+
+
+%%%%% option: thms %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\if@loadthms
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem*{theorem*}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem*{corollary*}{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem*{proposition*}{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem*{definition*}{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem*{conjecture*}{Conjecture}
+%\newtheorem*{notation}{Notation}
+\newtheorem{claim}{Claim}
+\newtheorem{question*}{Question}
+
+\theoremstyle{definition}
+\newtheorem*{notation}{Notation}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem*{assumption*}{Assumption}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem*{example*}{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem*{remark*}{Remark}
+\newtheorem*{convention}{Convention}
+\newtheorem*{conventions}{Conventions}
+\newtheorem*{goal*}{Goal}
+\fi
+
+%%%%% option: times %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\if@loadtimes
+\RequirePackage{newtxtext}
+\RequirePackage{newtxmath}
+\fi
+
+%%%%% option: titlesec %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\if@loadtitlesec
+\RequirePackage{titlesec}
+\titleformat{\section}{\centering\normalfont\bfseries}{\thesection.}{.5em}{}
+\titlespacing*{\section}{0pt}{3ex plus .1ex minus .2ex}{.8em}
+\titleformat{\subsection}[runin]{\normalfont\bfseries}{\thesubsection.}{.5em}{}[.]
+\titlespacing{\subsection}{0pt}{2ex plus .1ex minus .2ex}{.5em}
+\titleformat{\subsubsection}[runin]{\normalfont\itshape}{\thesubsubsection.}{.3em}{}[.]
+\titlespacing{\subsubsection}{0pt}{1ex plus .1ex minus .2ex}{.5em}
+
+\titleformat{\paragraph}[runin]{\normalfont\itshape}{\theparagraph.}{.3em}{}[.]\titlespacing{\paragraph}{0pt}{1ex plus .1ex minus .2ex}{.5em}
+
+\newcounter{problem}[subsection]
+\titleclass{\problem}{straight}[\subsection]
+\renewcommand{\theproblem}{P\arabic{subsection}.\arabic{problem}}
+\titleformat{\problem}[runin]{\normalfont\itshape}{\theproblem.}{.3em}{}[.]
+\titlespacing{\problem}{0pt}{1ex plus .1ex minus .2ex}{.5em}
+
+\newcounter{subproblem}[problem]
+\titleclass{\subproblem}{straight}[\problem]
+\renewcommand{\thesubproblem}{\theproblem.\alph{subproblem}}
+\titleformat{\subproblem}[runin]{\normalfont\itshape}{\thesubproblem.}{.3em}{}[.]
+\titlespacing{\subproblem}{0pt}{1ex plus .1ex minus .2ex}{.5em}
+\fi
+
+%%%%% option: biber %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\if@loadbiber
+\usepackage[backend=biber,citestyle=numeric-comp,bibstyle=trad-plain,maxnames=99,doi=false,isbn=false,url=false,eprint=false,sortcites=true,sorting=nyt]{biblatex}
+\fi
+
+%%%%% option: fancyhdr %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\if@loadfancyhdr
+\RequirePackage{fancyhdr}
+\fancypagestyle{plain}{%
+\fancyhf{} 
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}}
+
+% header
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\fi
+
+\if@loadfancytitle
+\makeatletter
+\let\Title\@title
+\let\Author\@author
+\def\@maketitle{%
+  \pagestyle{plain}
+  \newpage
+  \let \footnote \thanks
+  \noindent
+  {\bf\large \MakeUppercase{\@title}}%
+  \hfill \large \MakeUppercase{\@author}\par%
+  \noindent
+  \rule[6pt]{\textwidth}{1pt}
+}
+\makeatother
+
+\lhead{\small \bf \MakeUppercase{\Title}}
+\rhead{\small \MakeUppercase{\Author}}
+\cfoot{\small\thepage}
+\fi
+
+
+%%%%% option: abbrs %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\if@loadabbrs
+\newcommand{\cA}{\ensuremath{\mathcal A}}
+\newcommand{\cB}{\ensuremath{\mathcal B}}
+\newcommand{\cC}{\ensuremath{\mathcal C}}
+\newcommand{\cD}{\ensuremath{\mathcal D}}
+\newcommand{\cE}{\ensuremath{\mathcal E}}
+\newcommand{\cF}{\ensuremath{\mathcal F}}
+\newcommand{\cG}{\ensuremath{\mathcal G}}
+\newcommand{\cH}{\ensuremath{\mathcal H}}
+\newcommand{\cI}{\ensuremath{\mathcal I}}
+\newcommand{\cJ}{\ensuremath{\mathcal J}}
+\newcommand{\cK}{\ensuremath{\mathcal K}}
+\newcommand{\cL}{\ensuremath{\mathcal L}}
+\newcommand{\cM}{\ensuremath{\mathcal M}}
+\newcommand{\cN}{\ensuremath{\mathcal N}}
+\newcommand{\cO}{\ensuremath{\mathcal O}}
+\newcommand{\cP}{\ensuremath{\mathcal P}}
+\newcommand{\cQ}{\ensuremath{\mathcal Q}}
+\newcommand{\cR}{\ensuremath{\mathcal R}}
+\newcommand{\cS}{\ensuremath{\mathcal S}}
+\newcommand{\cT}{\ensuremath{\mathcal T}}
+\newcommand{\cU}{\ensuremath{\mathcal U}}
+\newcommand{\cV}{\ensuremath{\mathcal V}}
+\newcommand{\cW}{\ensuremath{\mathcal W}}
+\newcommand{\cX}{\ensuremath{\mathcal X}}
+\newcommand{\cY}{\ensuremath{\mathcal Y}}
+\newcommand{\cZ}{\ensuremath{\mathcal Z}}
+
+\newcommand{\frA}{\ensuremath{\mathfrak A}}
+\newcommand{\frB}{\ensuremath{\mathfrak B}}
+\newcommand{\frC}{\ensuremath{\mathfrak C}}
+\newcommand{\frD}{\ensuremath{\mathfrak D}}
+\newcommand{\frE}{\ensuremath{\mathfrak E}}
+\newcommand{\frF}{\ensuremath{\mathfrak F}}
+\newcommand{\frG}{\ensuremath{\mathfrak G}}
+\newcommand{\frH}{\ensuremath{\mathfrak H}}
+\newcommand{\frI}{\ensuremath{\mathfrak I}}
+\newcommand{\frJ}{\ensuremath{\mathfrak J}}
+\newcommand{\frK}{\ensuremath{\mathfrak K}}
+\newcommand{\frL}{\ensuremath{\mathfrak L}}
+\newcommand{\frM}{\ensuremath{\mathfrak M}}
+\newcommand{\frN}{\ensuremath{\mathfrak N}}
+\newcommand{\frO}{\ensuremath{\mathfrak O}}
+\newcommand{\frP}{\ensuremath{\mathfrak P}}
+\newcommand{\frQ}{\ensuremath{\mathfrak Q}}
+\newcommand{\frR}{\ensuremath{\mathfrak R}}
+\newcommand{\frS}{\ensuremath{\mathfrak S}}
+\newcommand{\frT}{\ensuremath{\mathfrak T}}
+\newcommand{\frU}{\ensuremath{\mathfrak U}}
+\newcommand{\frV}{\ensuremath{\mathfrak V}}
+\newcommand{\frW}{\ensuremath{\mathfrak W}}
+\newcommand{\frX}{\ensuremath{\mathfrak X}}
+\newcommand{\frY}{\ensuremath{\mathfrak Y}}
+\newcommand{\frZ}{\ensuremath{\mathfrak Z}}
+\newcommand{\frb}{\ensuremath{\mathfrak b}}
+\newcommand{\frc}{\ensuremath{\mathfrak c}}
+\newcommand{\frd}{\ensuremath{\mathfrak d}}
+\newcommand{\fre}{\ensuremath{\mathfrak e}}
+\newcommand{\frf}{\ensuremath{\mathfrak f}}
+\newcommand{\frg}{\ensuremath{\mathfrak g}}
+\newcommand{\frh}{\ensuremath{\mathfrak h}}
+\newcommand{\fri}{\ensuremath{\mathfrak i}}
+\newcommand{\frj}{\ensuremath{\mathfrak j}}
+\newcommand{\frk}{\ensuremath{\mathfrak k}}
+\newcommand{\frl}{\ensuremath{\mathfrak l}}
+\newcommand{\frm}{\ensuremath{\mathfrak m}}
+\newcommand{\frn}{\ensuremath{\mathfrak n}}
+\newcommand{\fro}{\ensuremath{\mathfrak o}}
+\newcommand{\frp}{\ensuremath{\mathfrak p}}
+\newcommand{\frq}{\ensuremath{\mathfrak q}}
+\newcommand{\frr}{\ensuremath{\mathfrak r}}
+\newcommand{\frs}{\ensuremath{\mathfrak s}}
+\newcommand{\frt}{\ensuremath{\mathfrak t}}
+\newcommand{\fru}{\ensuremath{\mathfrak u}}
+\newcommand{\frv}{\ensuremath{\mathfrak v}}
+\newcommand{\frw}{\ensuremath{\mathfrak w}}
+\newcommand{\frx}{\ensuremath{\mathfrak x}}
+\newcommand{\fry}{\ensuremath{\mathfrak y}}
+\newcommand{\frz}{\ensuremath{\mathfrak z}}
+
+\newcommand{\bbA}{{\ensuremath{\mathbb A}} }
+\newcommand{\bbB}{{\ensuremath{\mathbb B}} }
+\newcommand{\bbC}{{\ensuremath{\mathbb C}} }
+\newcommand{\bbD}{{\ensuremath{\mathbb D}} }
+\newcommand{\bbE}{{\ensuremath{\mathbb E}} }
+\newcommand{\bbF}{{\ensuremath{\mathbb F}} }
+\newcommand{\bbG}{{\ensuremath{\mathbb G}} }
+\newcommand{\bbH}{{\ensuremath{\mathbb H}} }
+\newcommand{\bbI}{{\ensuremath{\mathbb I}} }
+\newcommand{\bbJ}{{\ensuremath{\mathbb J}} }
+\newcommand{\bbK}{{\ensuremath{\mathbb K}} }
+\newcommand{\bbL}{{\ensuremath{\mathbb L}} }
+\newcommand{\bbM}{{\ensuremath{\mathbb M}} }
+\newcommand{\bbN}{{\ensuremath{\mathbb N}} }
+\newcommand{\bbO}{{\ensuremath{\mathbb O}} }
+\newcommand{\bbP}{{\ensuremath{\mathbb P}} }
+\newcommand{\bbQ}{{\ensuremath{\mathbb Q}} }
+\newcommand{\bbR}{{\ensuremath{\mathbb R}} }
+\newcommand{\bbS}{{\ensuremath{\mathbb S}} }
+\newcommand{\bbT}{{\ensuremath{\mathbb T}} }
+\newcommand{\bbU}{{\ensuremath{\mathbb U}} }
+\newcommand{\bbV}{{\ensuremath{\mathbb V}} }
+\newcommand{\bbW}{{\ensuremath{\mathbb W}} }
+\newcommand{\bbX}{{\ensuremath{\mathbb X}} }
+\newcommand{\bbY}{{\ensuremath{\mathbb Y}} }
+\newcommand{\bbZ}{{\ensuremath{\mathbb Z}} }
+
+\newcommand{\ga}{\alpha}
+\newcommand{\gb}{\beta}
+\newcommand{\gga}{\gamma}            % \gg already exists...
+\newcommand{\gd}{\delta}
+\newcommand{\gep}{\varepsilon}       % \ge already exists...
+\newcommand{\gp}{\varphi}
+\newcommand{\gr}{\rho}
+\newcommand{\gz}{\zeta}
+\newcommand{\gG}{\Gamma}
+\newcommand{\gP}{\Phi}
+\newcommand{\gD}{\Delta}
+\newcommand{\gk}{\kappa}
+\newcommand{\go}{\omega}
+\newcommand{\gO}{\Omega}
+\newcommand{\gl}{\lambda}
+\newcommand{\gL}{\Lambda}
+\newcommand{\gs}{\sigma}
+\newcommand{\gS}{\Sigma}
+\newcommand{\gt}{\vartheta}
+
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\HH}{\mathbb{H}}
+
+\DeclareMathOperator{\real}{Re}
+\DeclareMathOperator{\imag}{Im}
+
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\dd}{\mathrm{d}}
+%\newcommand{\s}{\mspace{-0.9mu}} 		%empty space for upper and lower indices
+\newcommand{\col}{\mathrel{\vcenter{\baselineskip0.75ex \lineskiplimit0pt \hbox{.}\hbox{.}}}}
+\newcommand*{\deq}{\mathrel{\vcenter{\baselineskip0.65ex \lineskiplimit0pt \hbox{.}\hbox{.}}}=}
+\newcommand*{\eqd}{=\mathrel{\vcenter{\baselineskip0.65ex \lineskiplimit0pt \hbox{.}\hbox{.}}}}
+\newcommand{\eqdist}{\overset{\text{d}}{=}}
+\newcommand{\simdist}{\overset{\text{d}}{\sim}}
+\newcommand{\todist}{\overset{\text{d}}{\longrightarrow}}
+\newcommand{\id}{\mspace{2mu}\mathrm{i}\mspace{-0.6mu}\mathrm{d}} %identity map
+%\newcommand{\umat}{\mathbbmss{1}} %unit matrix
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+\renewcommand{\epsilon}{\varepsilon}
+
+\newcommand{\psibar}{\bar\psi}
+\newcommand{\psib}{\bar\psi}
+\newcommand{\phibar}{\bar\phi}
+\newcommand{\phib}{\bar\phi}
+\newcommand{\chibar}{\bar\chi}
+\newcommand{\chib}{\bar\chi}
+\newcommand{\zetabar}{\bar\zeta}
+\newcommand{\zetab}{\bar\zeta}
+\newcommand{\xibar}{\bar\xi}
+\newcommand{\xib}{\bar\xi}
+
+\newcommand{\floor}[1] {\lfloor {#1} \rfloor}
+\newcommand{\ceil}[1]  {\lceil  {#1} \rceil}
+
+\renewcommand{\qq}[1]{[\![{#1}]\!]}
+\newcommand{\qqb}[1]{\bigl[\!\bigl[{#1}\bigr]\!\bigr]}
+\newcommand{\qqB}[1]{\Bigl[\!\Bigl[{#1}\Bigr]\!\Bigr]}
+\newcommand{\qqbb}[1]{\biggl[\!\!\biggl[{#1}\biggr]\!\!\biggr]}
+\newcommand{\qqBB}[1]{\Biggl[\!\!\Biggl[{#1}\Biggr]\!\!\Biggr]}
+\newcommand{\qqa}[1]{\left[\!\left[{#1}\right]\!\right]}
+
+\newcommand{\ind}[1]{\b 1_{#1}}
+\newcommand{\indb}[1]{\b 1_{\hb{#1}}}
+%\newcommand{\indB}[1]{\b 1 \pB{#1}}
+%\newcommand{\indbb}[1]{\b 1 \pbb{#1}}
+%\newcommand{\indBB}[1]{\b 1 \pBB{#1}}
+\newcommand{\inda}[1]{\b 1_{\ha{#1}}}
+%\newcommand{\ind}[1]{\b 1 (#1)}
+%\newcommand{\indb}[1]{\b 1 \pb{#1}}
+%\newcommand{\inda}[1]{\b 1 \pa{#1}}
+
+\newcommand{\p}[1]{({#1})}
+\newcommand{\pb}[1]{\bigl({#1}\bigr)}
+\newcommand{\pB}[1]{\Bigl({#1}\Bigr)}
+\newcommand{\pbb}[1]{\biggl({#1}\biggr)}
+\newcommand{\pBB}[1]{\Biggl({#1}\Biggr)}
+\newcommand{\pa}[1]{\left({#1}\right)}
+
+\renewcommand{\q}[1]{[{#1}]}
+\newcommand{\qb}[1]{\bigl[{#1}\bigr]}
+\newcommand{\qB}[1]{\Bigl[{#1}\Bigr]}
+\newcommand{\qbb}[1]{\biggl[{#1}\biggr]}
+\newcommand{\qBB}[1]{\Biggl[{#1}\Biggr]}
+\newcommand{\qa}[1]{\left[{#1}\right]}
+
+\newcommand{\h}[1]{\{{#1}\}}
+\newcommand{\hb}[1]{\bigl\{{#1}\bigr\}}
+\newcommand{\hB}[1]{\Bigl\{{#1}\Bigr\}}
+\newcommand{\hbb}[1]{\biggl\{{#1}\biggr\}}
+\newcommand{\hBB}[1]{\Biggl\{{#1}\Biggr\}}
+\newcommand{\ha}[1]{\left\{{#1}\right\}}
+
+\newcommand{\abs}[1]{\lvert #1 \rvert}
+\newcommand{\absb}[1]{\bigl\lvert #1 \bigr\rvert}
+\newcommand{\absB}[1]{\Bigl\lvert #1 \Bigr\rvert}
+\newcommand{\absbb}[1]{\biggl\lvert #1 \biggr\rvert}
+\newcommand{\absBB}[1]{\Biggl\lvert #1 \Biggr\rvert}
+\newcommand{\absa}[1]{\left\lvert #1 \right\rvert}
+
+\newcommand{\norm}[1]{\lVert #1 \rVert}
+\newcommand{\normb}[1]{\bigl\lVert #1 \bigr\rVert}
+\newcommand{\normB}[1]{\Bigl\lVert #1 \Bigr\rVert}
+\newcommand{\normbb}[1]{\biggl\lVert #1 \biggr\rVert}
+\newcommand{\normBB}[1]{\Biggl\lVert #1 \Biggr\rVert}
+\newcommand{\norma}[1]{\left\lVert #1 \right\rVert}
+
+\newcommand{\avg}[1]{\langle #1 \rangle}
+\newcommand{\avgb}[1]{\bigl\langle #1 \bigr\rangle}
+\newcommand{\avgB}[1]{\Bigl\langle #1 \Bigr\rangle}
+\newcommand{\avgbb}[1]{\biggl\langle #1 \biggr\rangle}
+\newcommand{\avgBB}[1]{\Biggl\langle #1 \Biggr\rangle}
+\newcommand{\avga}[1]{\left\langle #1 \right\rangle}
+
+\newcommand{\scalar}[2]{\langle{#1} \mspace{2mu}, {#2}\rangle}
+\newcommand{\scalarb}[2]{\bigl\langle{#1} \mspace{2mu}, {#2}\bigr\rangle}
+\newcommand{\scalarB}[2]{\Bigl\langle{#1} \,\mspace{2mu},\, {#2}\Bigr\rangle}
+\newcommand{\scalarbb}[2]{\biggl\langle{#1} \,\mspace{2mu},\, {#2}\biggr\rangle}
+\newcommand{\scalarBB}[2]{\Biggl\langle{#1} \,\mspace{2mu},\, {#2}\Biggr\rangle}
+\newcommand{\scalara}[2]{\left\langle{#1} \,\mspace{2mu},\, {#2}\right\rangle}
+
+\newcommand{\com}[2]{[{#1} \mspace{2mu}, {#2}]}
+\newcommand{\comb}[2]{\bigl[{#1} \mspace{2mu}, {#2}\bigr]}
+\newcommand{\comB}[2]{\Bigl[{#1} \,\mspace{2mu},\, {#2}\Bigr]}
+\newcommand{\combb}[2]{\biggl[{#1} \,\mspace{2mu},\, {#2}\biggr]}
+\newcommand{\comBB}[2]{\Biggl[{#1} \,\mspace{2mu},\, {#2}\Biggr]}
+\newcommand{\coma}[2]{\left[{#1} \,\mspace{2mu},\, {#2}\right]}
+
+\newcommand{\poi}[2]{\{{#1} \mspace{2mu}, {#2}\}}
+\newcommand{\poib}[2]{\bigl\{{#1} \mspace{2mu}, {#2}\bigr\}}
+\newcommand{\poiB}[2]{\Bigl\{{#1} \,\mspace{2mu},\, {#2}\Bigr\}}
+\newcommand{\poibb}[2]{\biggl\{{#1} \,\mspace{2mu},\, {#2}\biggr\}}
+\newcommand{\poiBB}[2]{\Biggl{\{#1} \,\mspace{2mu},\, {#2}\Biggr\}}
+\newcommand{\poia}[2]{\left\{{#1} \,\mspace{2mu},\, {#2}\right\}}
+
+\newcommand{\davg}[1]{\langle\!\langle #1 \rangle\!\rangle}
+\newcommand{\spin}[1]{\left\langle{#1}\right\rangle}
+\newcommand{\uspin}[1]{\left[{#1}\right]}
+
+\DeclareMathOperator*{\slim}{s-lim}
+\DeclareMathOperator*{\wlim}{w-lim}
+\DeclareMathOperator*{\wstarlim}{w*-lim}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\tr}{Tr}
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\im}{Im}
+%\DeclareMathOperator{\dom}{\mathcal{D}}
+%\DeclareMathOperator{\domq}{\mathcal{Q}}
+%\DeclareMathOperator{\ran}{\mathcal{R}}
+%\DeclareMathOperator{\keroperator}{\mathcal{N}}
+%\renewcommand{\ker}{\keroperator}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator*{\esssup}{ess\,sup}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Ad}{Ad}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\spec}{spec}
+\DeclareMathOperator{\He}{Hess}
+\DeclareMathOperator{\Sp}{Sp}
+\DeclareMathOperator{\Unif}{Unif}
+\DeclareMathOperator{\Match}{Match}
+\DeclareMathOperator{\cov}{Cov}
+\DeclareMathOperator{\ent}{Ent}
+
+\newcommand{\ddp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\nnb}{\nonumber\\}
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\bydef}{\equiv}
+\fi
+
+
+%%%%% option: color %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\if@loadcolor
+\usepackage{color}
+\definecolor{darkred}{rgb}{0.9,0,0.3}
+\definecolor{darkblue}{rgb}{0,0.3,0.9}
+\definecolor{darkpurple}{rgb}{0.4,0.1,0.8}
+\definecolor{darkgreen}{rgb}{0.0,0.6,0.1}
+\newcommand{\red}{\color{darkred}}
+\newcommand{\blue}{\color{darkblue}}
+\newcommand{\purple}{\color{darkpurple}}
+\newcommand{\green}{\color{darkgreen}}
+\newcommand{\dgray}{\color{darkgray}}
+\newcommand{\black}{\color{black}}
+\newcommand{\cor}{\color{darkred}}
+\newcommand{\cob}{\color{darkblue}}
+\newcommand{\cog}{\color{darkgreen}}
+\newcommand{\cop}{\color{darkpurple}}
+\newcommand{\nc}{\normalcolor}
+\fi
+
+%%%%% option: coloralt %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\if@loadcoloralt
+\definecolor{darkred}{rgb}{0.7,0,0.2}
+\definecolor{darkblue}{rgb}{0,0.3,0.7}
+\definecolor{darkgreen}{rgb}{0,0.5,0.3}
+\fi
+
+%%%%% option: lists %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\if@loadlists
+\usepackage{enumerate}
+\usepackage{enumitem}
+% \setlist[enumerate]{leftmargin=*,itemsep=2pt,topsep=2pt,label=\emph{(\alph*)}}
+\setlist[enumerate]{leftmargin=*,itemsep=0pt,topsep=2pt,label=\emph{(\alph*)}}
+\setlist[itemize]{leftmargin=*,itemsep=2pt,topsep=2pt}
+\newlist{tightitemize}{itemize}{1}
+\setlist[tightitemize]{leftmargin=0pt,itemindent=1em,labelwidth=\itemindent,labelsep=0pt,align=left,label=\labelitemi,noitemsep,topsep=1pt}
+
+\newlist{largeitemize}{itemize}{1}
+\setlist[largeitemize]{leftmargin=0pt,itemindent=1em,labelwidth=\itemindent,labelsep=0pt,align=left,label=\labelitemi}
+
+\renewcommand{\labelitemi}{\raisebox{0.2ex}{$\scriptstyle{\blacksquare}$}}
+
+\newenvironment{cvlist}{%
+\begin{list}{}{%
+      \setlength{\itemsep}{0ex}%
+      \setlength{\parsep}{%
+        0.5\baselineskip plus 1pt minus 1pt%
+      }%
+      \setlength{\topsep}{%
+        0.7\baselineskip plus 2pt minus 2pt%
+      }%
+      \setlength{\partopsep}{0ex}%
+      \setlength{\labelsep}{0ex}%
+      \setlength{\labelwidth}{0ex}%
+      \setlength{\leftmargin}{0ex}%
+      \addtolength{\leftmargin}{0ex}%
+}%
+}{\end{list}}% \vspace{8pt}}
+\fi
+
+
+
+%%%%% option: layouta %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\if@loadlayouta
+\usepackage[left=2.4cm,right=2.4cm,top=2.4cm,bottom=2.4cm]{geometry}
+
+\usepackage{titlesec}
+\titleformat{\subsection}[runin]{\normalfont\bfseries}{\thesubsection.}{.5em}{}[.]\titlespacing{\subsection}{0pt}{2ex plus .1ex minus .2ex}{.8em}
+\titleformat{\subsubsection}[runin]{\normalfont\itshape}{\thesubsubsection.}{.3em}{}[.]\titlespacing{\subsubsection}{0pt}{1ex plus .1ex minus .2ex}{.5em}
+\titleformat{\paragraph}[runin]{\normalfont\itshape}{\theparagraph.}{.3em}{}[.]\titlespacing{\paragraph}{0pt}{1ex plus .1ex minus .2ex}{.5em}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+\flushbottom
+
+% Normal, broader bold, which also works in italic
+\newcommand{\define}[1]{{\fontseries{bx}\selectfont#1}}
+\renewcommand{\bfdefault}{b} % Reduce spacing in bold fonts
+\renewcommand{\labelenumi}{(\roman{enumi})}
+\fi
+
+%%%%% option: beamer %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\if@loadbeamer
+\setlength{\unitlength}{1cm}
+
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+% Use to make math bold in headings
+\def\bfseries{\fontseries \bfdefault \selectfont \boldmath}
+
+% remove navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+\setlength{\parskip}{0.8em}
+
+\definecolor{specialColor}{rgb}{0.8,0,0.2} % 204,0,102
+\definecolor{backgroundColor}{rgb}{1,1,1}
+\definecolor{textColor}{rgb}{0,0,0}
+\definecolor{frameTitleBg}{rgb}{0.91,0.91,0.91}
+\definecolor{TitleFg}{rgb}{0,0.3,0.7}
+%\definecolor{frameTitleFg}{rgb}{0.4,0.4,0.4}
+\definecolor{mathColor}{rgb}{0,0.3,0.7} % 0,77,179
+\definecolor{structureColor}{rgb}{1,0,0}
+\definecolor{blockBodyFg}{rgb}{0,0,0}
+\definecolor{blockBodyBg}{rgb}{0.91,0.91,0.91}
+\definecolor{blockTitleBg}{rgb}{0.91,0.91,0.91}
+\definecolor{blockTitleFg}{rgb}{0.3,0.4,0.5}
+
+\definecolor{itemColor}{rgb}{0.54,0.54,0.54}
+
+\setbeamercolor*{title}{fg=TitleFg}
+\setbeamercolor*{frametitle}{fg=TitleFg,bg=frameTitleBg}
+% \setbeamercolor*{titlelike}{fg=titleColor, bg=backgroundColor}
+\setbeamercolor*{normal text}{fg=textColor,bg=backgroundColor}
+\setbeamercolor*{math text}{fg=mathColor}
+%\setbeamercolor*{math text inlined}{fg=mathColor}
+%\setbeamercolor*{math text displayed}{fg=mathColor}
+\setbeamercolor*{normal text in math text}{fg=textColor}
+\setbeamercolor*{itemize item}{fg=itemColor}
+\setbeamercolor*{enumerate item}{fg=TitleFg}
+\setbeamercolor*{description item}{fg=TitleFg}
+\setbeamercolor*{structure}{fg=TitleFg}
+\setbeamercolor*{alerted text}{fg=specialColor}
+\setbeamercolor*{block title}{fg=TitleFg,bg=blockTitleBg} %fg=specialcolor
+\setbeamercolor*{block body}{fg=blockBodyFg,bg=blockBodyBg}
+%\setbeamercolor{separation line}{fg=black}
+
+\setbeamersize{text margin left=3ex, text margin right=3ex}
+\setbeamersize{description width=1cm}
+\setbeamertemplate{itemize items}[square]
+\setlength{\leftmargini}{1.2em}
+
+%\setbeamerfont{enumerate item}{family=\rmfamily}
+\setbeamerfont{description item}{series=\bfseries}
+\setbeamerfont{block title}{size=\normalsize} %,series=\bfseries}
+\setbeamerfont{block body}{shape=\upshape,size=\normalsize}
+%\setbeamerfont{titlelike}{size=\normalsize}
+\setbeamerfont{frametitle}{size=\large}
+\setbeamertemplate{frametitle}[default][center]
+\setbeamerfont{title}{size=\Large}
+\setbeamerfont{author}{size=\normalsize}
+\setbeamerfont{institute}{size=\normalsize}
+\setbeamerfont{date}{size=\normalsize}
+
+\setbeamertemplate{footline}{}
+
+\defbeamertemplate*{title page}{JLC}[1][]
+{
+  \vbox{}
+  \vfill
+  \begin{centering}
+    \begin{beamercolorbox}[sep=8pt,center,#1]{title}
+      \usebeamerfont{title}\inserttitle\par%
+      \ifx\insertsubtitle\@empty%
+      \else%
+        \vskip0.25em%
+		\fi%
+    \end{beamercolorbox}%
+	 \vskip1.8em\par
+	 \begin{beamercolorbox}[sep=4pt,center,#1]{author}
+      \usebeamerfont{author}\insertauthor
+    \end{beamercolorbox}
+    % \begin{beamercolorbox}[sep=8pt,center,#1]{institute}
+    %    \usebeamerfont{institute}\insertinstitute
+    % \end{beamercolorbox}
+    \begin{beamercolorbox}[sep=30pt,center,#1]{date}
+      \usebeamerfont{date}\insertdate
+    \end{beamercolorbox}\vskip0.5em
+  \end{centering}
+} 
+
+\newcommand{\eqnoskip}{\vspace*{-1em}}
+\fi
+
+
+%%%%% option: misc %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\if@loadmisc
+\usepackage{inputenc}
+\usepackage{color,xcolor}
+\usepackage{graphicx}
+\usepackage[font=scriptsize,labelsep=period]{caption}
+
+\makeatletter
+\font\dummyft@=dummy \relax
+\def\suppress{%
+  \begingroup\par
+  \parskip\z@
+  \offinterlineskip
+  \baselineskip=\z@skip
+  \lineskip=\z@skip
+  \lineskiplimit=\maxdimen
+  \dummyft@
+  \count@\sixt@@n
+  \loop\ifnum\count@ >\z@
+    \advance\count@\m@ne
+    \textfont\count@\dummyft@
+    \scriptfont\count@\dummyft@
+    \scriptscriptfont\count@\dummyft@
+  \repeat
+  \let\selectfont\relax
+  \let\mathversion\@gobble
+  \let\getanddefine@fonts\@gobbletwo
+  \tracinglostchars\z@
+  \frenchspacing
+  \hbadness\@M}
+\def\endsuppress{\par\endgroup}
+\makeatother
+
+\newcommand{\placeholderbox}[1]{\setlength\fboxsep{0pt}\noindent\colorbox{gray!20}{\framebox[\textwidth]{\rule{0pt}{#1}}}}
+
+\makeatletter\def\SetFigFont#1#2#3#4#5{\small}
+\fi
+
+\InputIfFileExists{localmacros.tex}{}{}
