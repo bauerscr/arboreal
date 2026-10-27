@@ -25,7 +25,9 @@ Small corrections found along the way are documented in `h02rg/summaries/h02rg-e
 ### Sample result (Theorem 1.1 of the paper)
 For the arboreal gas on the torus $\Lambda_N = (\mathbb{Z}/L^N\mathbb{Z})^d$ with $d \geq 3$ and $L$ odd and large,
 there are $\beta_0 > 0$ and $\kappa \in (0,1]$ such that for all $\beta \geq \beta_0$, $N \geq 2$ and $x \in \Lambda_N \setminus \{0\}$,
-$$P^{\Lambda_N}_{\beta}[0\leftrightarrow x] = \theta(\beta)^2 + \frac{2c_1(\beta)}{\beta |x|^{d-2}} + O\Big(\frac{1}{\beta|x|^{d-2+\kappa}}\Big) + O\Big(\frac{1}{\beta L^{\kappa N}}\Big),$$
+```math
+P^{\Lambda_N}_{\beta}[0\leftrightarrow x] = \theta(\beta)^2 + \frac{2c_1(\beta)}{\beta |x|^{d-2}} + O\Big(\frac{1}{\beta|x|^{d-2+\kappa}}\Big) + O\Big(\frac{1}{\beta L^{\kappa N}}\Big),
+```
 where: $\theta(\beta) = 1 + O(1/\beta)$ is the percolation probability, i.e., the limit of $P_{\beta,h}[0 \leftrightarrow \mathfrak{g}]$ as first $N \to \infty$, then $h \downarrow 0$, with a ghost vertex $\mathfrak{g}$;
 $c_1(\beta) = c_d + O(1/\beta)$; and $c_d$ is the constant of the lattice Green function, $(-\Delta_{\mathbb{Z}^d})^{-1}(0,x) \sim c_d |x|^{2-d}$.
 
@@ -56,12 +58,18 @@ In the future, we plan to post an exposition of these results, possibly along wi
 
 For the arboreal gas on the discretized unit torus $\mathbb{T}_\epsilon = (\epsilon \mathbb{Z}/\mathbb{Z})^2 \cong (\mathbb{Z}/L^N\mathbb{Z})^2$, $\epsilon = L^{-N}$ ($L$ fixed and large),
 for any large $\beta_R > 0$ there is a choice of $\beta_\epsilon$ with
-$$\beta_\epsilon = \frac{3}{2\pi} \log \frac{1}{\epsilon} + O\Big(\log\log\frac{1}{\epsilon}\Big)$$
+```math
+\beta_\epsilon = \frac{3}{2\pi} \log \frac{1}{\epsilon} + O\Big(\log\log\frac{1}{\epsilon}\Big)
+```
 and a continuous function $G_{\beta_R}: \mathbb{T}^2 \setminus \{0\} \to \mathbb{R}$ such that, along a subsequence $\epsilon \to 0$,
-$$ \Big(\frac{\beta_\epsilon}{\beta_R}\Big)^{2/3} \, P^{\mathbb{T}_\epsilon}_{\beta_\epsilon}[0\leftrightarrow x] \to G_{\beta_R}(x)$$
+```math
+\Big(\frac{\beta_\epsilon}{\beta_R}\Big)^{2/3} \, P^{\mathbb{T}_\epsilon}_{\beta_\epsilon}[0\leftrightarrow x] \to G_{\beta_R}(x)
+```
 uniformly on compact subsets of $\mathbb{T}^2 \setminus \{0\}$ (with $x$ rounded to the nearest point of $\mathbb{T}_\epsilon$).
 The limit $G_{\beta_R}$ satisfies, as $x \to 0$,
-$$ G_{\beta_R}(x) = \Big(\frac{3}{2\pi\beta_R} \log \frac{1}{|x|}\Big)^{2/3} \Big(1 + O\Big(\frac{\log \log (1/|x|)}{\log (1/|x|)}\Big)\Big).$$
+```math
+G_{\beta_R}(x) = \Big(\frac{3}{2\pi\beta_R} \log \frac{1}{|x|}\Big)^{2/3} \Big(1 + O\Big(\frac{\log \log (1/|x|)}{\log (1/|x|)}\Big)\Big).
+```
 See `h02rg/h02uv-lean.tex` for the full statement.
 
 ### Lean theorems
@@ -81,7 +89,9 @@ and the Lean formalisation was done using Claude. For the prompts, see `h02expde
 ### Main result
 
 For every $\beta \geq 0$ there is $c > 0$ such that for every finite $\Lambda \subset \mathbb{Z}^2$, every symmetric nonnegative edge weight $w$ on $\Lambda$ with $w_{uv} \le \beta$ and $w_{uv} = 0$ unless $u, v$ are nearest neighbours, and all $x, y \in \Lambda$,
-$$P^\Lambda_{w}[x \leftrightarrow y] \leq 2e^{-c\|x-y\|_\infty}.$$
+```math
+P^\Lambda_{w}[x \leftrightarrow y] \leq 2e^{-c\|x-y\|_\infty}.
+```
 The same bound holds on the tori $(\mathbb{Z}/L\mathbb{Z})^2$, uniformly in $L \geq 1$, with the toroidal $\ell^\infty$ distance. In particular, for constant weight $\beta$ on the torus, $P_\beta[0 \leftrightarrow x] \leq C e^{-c|x|}$ with the toroidal Euclidean distance $|x|$.
 See `h02expdec/h02expdec-lean.tex` for the full statements.
 
