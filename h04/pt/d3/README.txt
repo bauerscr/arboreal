@@ -1,0 +1,3 @@
+d=3 variants of the PT engine (D=3). Run from this folder after copying the other ../*.py files next to them;
+regenerate pickles with qvertex_sym.py, qvertex3_sym.py, qvertex3_delta.py (about 7 s), then qvertex_num.py and qvertex3_total.py N:m ...
+sums3.py: d=3 lattice sums G(0), sum G^2 ~ 1/(8 pi m), sum G^3 ~ log(1/m)/(16 pi^2).
