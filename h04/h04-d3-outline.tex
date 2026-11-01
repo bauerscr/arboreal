@@ -316,11 +316,23 @@ $m$ the flow is massive beyond $j_m\approx\log_L(1/m)$, so a detuning $\delta$ g
 $\delta L^{j_m}\approx\delta/m$; the admissible window is $|\delta|\lesssim\eps m$. Detuning
 by $\delta$ moves $h_2$ by $\approx|\delta|/(2\eps^2)$. So Lemma~\ref{lem:onefield} holds
 if $h_2(m)=O(m/\eps)$ along the tuned curve, but \emph{fails if $h_2(m)\sim1/\log(1/m)$}.
-Which case holds is decided by the numerator $b_2-(X_{31}/X_{11})b_1$ in \eqref{e:h2} at
-$m\to0$. \open{decide this first, perturbatively: it is one more run of
-\texttt{schur3.py}-type code (numerator at $O(\eps)$, $O(\eps^2)$).} If it fails, the
-theorem should be stated along the two-field curve only, or the one-field limit has to be
-treated as a different (log-corrected) approach to criticality.}
+\textbf{Perturbative resolution (done).} To the orders computed, the tuned family is
+$dh=1-m^2G(0)+O(\eps)$ (mass renormalisation) and $c_Q=2$ (so $\Gamma_Q\to0$); in
+$\psi$-variables the model relations $(1+h_1)\eps=m^2+dh\,\eps$,
+$2\eps^2h_2=\eps m^2+\eps^2(1+dh-c_Q)$ give
+\[
+  h_1=\frac{m^2}{\eps}-m^2G(0)+\dots,\qquad 2h_2=\frac{m^2}{\eps}-m^2G(0)+\dots,
+\]
+so $h_2(m)=O(m^2/\eps)$, and $h_1\approx 2h_2$: the tuned curve approaches $0$ along
+$h_2\big(2(z-1)+(z-1)^2\big)=h_2(z^2-1)=-2h_2s$, i.e.\ a pure $s$-field with no $q$-component.
+The one-field model differs from it by a $q$-term of size $h$, i.e.\ a detuning
+$|\delta|\approx\eps m^2\ll\eps m$, inside the window. This is consistent with the reduced
+Ward identity $N=2h_2\Sigma$: in $\psi$-units $N_\psi=\avg{P}-\eps\avg{Q}-(\chi_{31}/\chi_{11})(1-\eps\avg S-\dots)$
+has $N_\psi^{(0)}=0$ exactly and $N_\psi^{(1)}=-m^2\Sigma^{(0)}=m^2\sum G^3\to0$ like $m^2\log(1/m)$
+(checked: $0.00233257$ vs.\ $0.00233257$ at $m=0.45$, $0.00099887$ vs.\ $0.00099887$ at
+$m=0.25$; \texttt{h04/pt/d3/numer3.py}). So Lemma~\ref{lem:onefield} should hold.
+\open{rigorous version: an implicit-function argument in $(\eps,m^2,\delta)$ with
+$|\delta|\le c\,\eps m$, as in \reuse{cor:ward}(ii) but with one extra parameter.}}
 
 %------------------------------------------------------------------
 \section{Proof of Theorem~\ref{thm:main} (given the lemmas)}
@@ -350,13 +362,12 @@ now with two species.
   Lemma~\ref{lem:obs} (observables) & open & \reuse{sec:suscept,sec:obs-flow}; new cubic-source case\\
   Lemma~\ref{lem:schur} (Schur) & PT done at $O(\eps)$ & no $\log^2$; $\sigma_1\approx1.7$\\
   Lemma~\ref{lem:wardinv} (inversion) & proved given above & elementary\\
-  Lemma~\ref{lem:onefield} (one-field) & \textbf{decide first} & numerator of \eqref{e:h2}\\
+  Lemma~\ref{lem:onefield} (one-field) & PT: holds ($h_2=O(m^2/\eps)$) & IFT with detuning window $\eps m$\\
   \bottomrule
 \end{tabular}
 \end{center}
 
-\paragraph{Suggested order.} (1) Lemma~\ref{lem:onefield}'s numerator (cheap; it decides the
-form of the theorem). (2) Lemma~\ref{lem:loc} audit of the Lean \texttt{Loc}/norm libraries for
+\paragraph{Suggested order.} (1) [done perturbatively: Lemma~\ref{lem:onefield} holds.] (2) Lemma~\ref{lem:loc} audit of the Lean \texttt{Loc}/norm libraries for
 a species fibre (decides whether the Lean RG is reused or rebuilt). (3) Lemmas~\ref{lem:step},
 \ref{lem:flow} on paper. (4) Lemma~\ref{lem:obs} with the cubic sources, which also yields
 Lemma~\ref{lem:schur}.
