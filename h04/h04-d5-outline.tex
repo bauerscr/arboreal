@@ -1,0 +1,341 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,enumitem}
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Loc}{\operatorname{Loc}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\avg}[1]{\langle #1\rangle}
+\newcommand{\st}[1]{\textsf{[#1]}}
+\newcommand{\hr}[1]{\textup{[h02rg, \texttt{#1}]}}
+
+\title{Outline: the massless phase of the $\HH^{0|4}$ model in $d=5$\\[2pt]
+\large (adaptation of \texttt{h02rg}; draft)}
+\date{1 November 2026}
+
+\begin{document}
+\maketitle
+
+\noindent
+\textbf{Scope.} We outline a proof that the $\HH^{0|4}$ model on $\Z^d$, $d\ge 5$ (target: $d=5$),
+has spontaneous symmetry breaking with massless free-field low temperature fluctuations for $\beta$ large,
+by adapting \texttt{h02rg/src/h02rg.tex} (arXiv:2107.01878; cited as [h02rg] with its \LaTeX\ labels).
+Only the order of limits $\lim_{h\downarrow0}\lim_{N\to\infty}$ is treated (the analogue of \hr{thm:h02});
+the finite volume order of limits (\hr{thm:psi4-full}) is deferred.
+
+\medskip
+\noindent\textbf{Status tags.}
+\st{V}: verbatim from [h02rg] (up to the number of Grassmann generators per site);
+\st{M}: minor change, indicated;
+\st{N}: new.
+\st{done}: argument written out here and needs only checking (in particular of sign conventions).
+
+\tableofcontents
+
+%======================================================================
+\section{The model and the target theorem}
+
+For each $x\in\Lambda$ let $\xi^a_x,\eta^a_x$ ($a=1,2$) be generators of a Grassmann algebra and set
+\begin{equation}
+  s_x=\sum_{a=1}^2\xi^a_x\eta^a_x,\qquad q_x=\xi^1_x\eta^1_x\xi^2_x\eta^2_x,\qquad
+  z_x=\sqrt{1-2s_x},\qquad u_x=(\xi^1_x,\eta^1_x,\xi^2_x,\eta^2_x,z_x),
+\end{equation}
+\begin{equation}
+  u_x\cdot u_y=-\sum_{a=1}^2(\xi^a_x\eta^a_y+\xi^a_y\eta^a_x)-z_xz_y .
+\end{equation}
+With $\frac12(u,\Delta u)=\sum_{xy\in E(\Lambda)}(u_x\cdot u_y+1)$ as in [h02rg, Section~1.2], define
+\begin{equation}\label{e:h04-def}
+  \avg{F}_{\beta,h}=\frac{1}{Z_{\beta,h}}\int\Big(\prod_{x\in\Lambda}\partial_{\eta^2_x}\partial_{\xi^2_x}\partial_{\eta^1_x}\partial_{\xi^1_x}\frac1{z_x}\Big)
+  e^{\frac\beta2(u,\Delta u)-h(1,z-1)}F .
+\end{equation}
+
+\begin{remark}
+(i) Unlike $\HH^{0|2}$ there is no known (to us) probabilistic representation, so $Z_{\beta,h}\neq0$ is not automatic;
+it follows from the renormalisation group (RG) representation in the regime considered.
+(ii) The symmetry group is $OSp(1|4)$; its even part $Sp(4)$ acts on $(\xi^a,\eta^a)$ and preserves $s$, hence $z$.
+\end{remark}
+
+\begin{theorem}[Target]\label{thm:A}
+Let $d\ge5$ and $L\ge L_0(d)$. There are $\beta_0<\infty$, $\kappa>0$,
+$\theta_d(\beta)=1+O(1/\beta)$ and $c_i(\beta)=c_i+O(1/\beta)$ such that for $\beta\ge\beta_0$, $a,b\in\{1,2\}$,
+\begin{align}
+  \lim_{h\downarrow0}\lim_{N\to\infty}\avg{z_0}_{\beta,h}&=\theta_d(\beta),\\
+  \lim_{h\downarrow0}\lim_{N\to\infty}\avg{\xi^a_0\eta^b_x}_{\beta,h}&=\delta_{ab}\frac{c_1(\beta)}{\beta|x|^{d-2}}+O\Big(\frac1{\beta|x|^{d-2+\kappa}}\Big),\\
+  \lim_{h\downarrow0}\lim_{N\to\infty}\avg{z_0;z_x}_{\beta,h}&=-\frac{c_2(\beta)}{\beta^2|x|^{2d-4}}+O\Big(\frac1{\beta^2|x|^{2d-4+\kappa}}\Big),
+\end{align}
+with $c_1=c_d$ and (to be confirmed) $c_2=2c_d^2$, the factor $2$ being the number of flavours.
+\end{theorem}
+
+%======================================================================
+\section{Fermionic reformulation \st{N, done}}
+
+\begin{lemma}\label{lem:alg}
+For each $x$: $s^2=2q$, $s^3=sq=0$; $z=1-s-q$; $u\cdot u=-1$; $1/z=e^{s+2q}$; and
+\begin{equation}\label{e:edge}
+  u_x\cdot u_y+1=\sum_a(\xi^a_x-\xi^a_y)(\eta^a_x-\eta^a_y)+\tfrac12(\nabla s)^2+(\nabla s)(\nabla q)+\tfrac12(\nabla q)^2,
+\end{equation}
+where $\nabla f=f_x-f_y$.
+\end{lemma}
+
+\begin{proof}
+The $\xi^a\eta^a$ are even and square to zero, so $s^2=\xi^1\eta^1\xi^2\eta^2+\xi^2\eta^2\xi^1\eta^1=2q$, and every product of $s$ with $q$
+repeats a generator, so $sq=0$ and $s^3=2sq=0$.
+Hence $\sqrt{1-2s}=1-s-\tfrac12 s^2=1-s-q$; check: $(1-s-q)^2=1-2s-2q+s^2=1-2s$.
+Then $u\cdot u=-2s-z^2=-1$.
+Next, $-\tfrac12\log(1-2s)=s+s^2=s+2q$, so $1/z=(1-2s)^{-1/2}=e^{s+2q}$.
+Finally, by bilinearity and $u_x\cdot u_x=u_y\cdot u_y=-1$,
+$u_x\cdot u_y+1=-\tfrac12(u_x-u_y)\cdot(u_x-u_y)=\sum_a\nabla\xi^a\nabla\eta^a+\tfrac12(\nabla z)^2$,
+and $\nabla z=-\nabla s-\nabla q$ gives \eqref{e:edge}.
+\end{proof}
+
+\begin{corollary}\label{cor:density}
+The density in \eqref{e:h04-def} equals
+\begin{equation}
+  \exp\Big[\beta\sum_{xy}\Big(\sum_a\nabla\xi^a\nabla\eta^a+\tfrac12(\nabla s)^2+(\nabla s)(\nabla q)+\tfrac12(\nabla q)^2\Big)
+  +\sum_x\big((1+h)s_x+(2+h)q_x\big)\Big],
+\end{equation}
+since $-h(z-1)=h(s+q)$ and $1/z=e^{s+2q}$. (For $q\equiv0$ this is \hr{e:h02-psi} with the familiar $(1+h)$.)
+\end{corollary}
+
+\paragraph{Rescaling.} For $s_0>-1$ put $\varepsilon=(1+s_0)/\beta$, $\xi^a=\sqrt\varepsilon\,\bar\psi^a$, $\eta^a=\sqrt\varepsilon\,\psi^a$, and
+\begin{equation}
+  S=\sum_a\psi^a\bar\psi^a,\qquad Q=\psi^1\bar\psi^1\psi^2\bar\psi^2=\tfrac12S^2,\qquad
+  s=-\varepsilon S,\quad q=\varepsilon^2Q,\quad z=1+\varepsilon S-\varepsilon^2Q .
+\end{equation}
+With $b_0=\beta\varepsilon^2=(1+s_0)\varepsilon$ the exponent of Corollary~\ref{cor:density} becomes
+\begin{equation}\label{e:rescaled}
+  -(1+s_0)\sum_{xy}\sum_a\nabla\psi^a\nabla\bar\psi^a-(1+h)\varepsilon\sum_xS_x+(2+h)\varepsilon^2\sum_xQ_x
+  +\frac{b_0}2\sum_{xy}(\nabla S)^2-b_0\varepsilon\sum_{xy}(\nabla S)(\nabla Q)+\frac{b_0\varepsilon^2}2\sum_{xy}(\nabla Q)^2 .
+\end{equation}
+This is of the form $e^{-\sum_a(\psi^a,(-\Delta+m^2)\bar\psi^a)-V_0(\Lambda)-W_0(\Lambda)}$ (sign conventions for the Gaussian part to be matched with \hr{e:psi4}), with
+\begin{align}
+  V_0&=\sum_x\Big[s_0\sum_a(\nabla\psi^a)_x(\nabla\bar\psi^a)_x+a_0S_x+g_0Q_x+b_0B_x\Big],\qquad B_x=-\tfrac14\sum_{e\in\mathcal E_d}(\nabla_eS)_x^2,\label{e:V0}\\
+  a_0&=(1+h)\varepsilon-m^2,\qquad g_0=-(2+h)\varepsilon^2,\qquad b_0=(1+s_0)\varepsilon,\label{e:a0g0}\\
+  W_0&=\sum_{xy}\Big[b_0\varepsilon(\nabla S)(\nabla Q)-\tfrac{b_0\varepsilon^2}2(\nabla Q)^2\Big].\label{e:W0}
+\end{align}
+
+\begin{remark}[Choice of the $b$-monomial]\label{rem:bmon}
+For $\HH^{0|2}$ the $b$-monomial of \hr{e:quartic} is $\psi_x\bar\psi_x\cdot\frac12\sum_e\psi_{x+e}\bar\psi_{x+e}$, which coincides with
+a squared gradient because $S^2=0$. For $\HH^{0|4}$, $S_xS_{x+e}=2Q_x+S_x\nabla_eS_x$ contains the local monomial $Q$,
+so the $b$-monomial must be the squared gradient $B$ in \eqref{e:V0}. Harmless in $d\ge5$, essential in $d\le4$.
+\end{remark}
+
+%======================================================================
+\section{Ward identity \st{N, done}}
+
+\begin{lemma}\label{lem:ward}
+Let $T_a=\sum_xz_x\partial_{\xi^a_x}$ (an odd derivation). Then $T_az_x=-\eta^a_x$, $T_a(u_x\cdot u_y)=0$, and
+$\int d\mu\,T_aG=0$ for every $G$, where $d\mu=\prod_x\partial_{\eta^2_x}\partial_{\xi^2_x}\partial_{\eta^1_x}\partial_{\xi^1_x}z_x^{-1}$.
+Consequently, for $F$ of parity $|F|$,
+\begin{equation}\label{e:ward-gen}
+  \avg{T_aF}_{\beta,h}=-(-1)^{|F|}\,h\sum_{x\in\Lambda}\avg{F\eta^a_x}_{\beta,h}.
+\end{equation}
+In particular, with $F=\xi^a_0$,
+\begin{equation}\label{e:W1}
+  \avg{z_0}_{\beta,h}=h\sum_{x\in\Lambda}\avg{\xi^a_0\eta^a_x}_{\beta,h}\qquad(\text{no sum over }a).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Since $z_x$ is a function of $s_x$ and $\partial_{\xi^a_x}s_x=\eta^a_x$, we get $\partial_{\xi^a_x}z_x=-z_x^{-1}\eta^a_x$, so $T_az_x=-\eta^a_x$.
+Then $T_a(\xi^a_x\eta^a_y+\xi^a_y\eta^a_x)=z_x\eta^a_y+z_y\eta^a_x$ and $T_a(z_xz_y)=-\eta^a_xz_y-z_x\eta^a_y$, which cancel in $u_x\cdot u_y$.
+For the integral: $\big(\prod_yz_y^{-1}\big)z_x\partial_{\xi^a_x}G=\partial_{\xi^a_x}\big(\prod_{y\ne x}z_y^{-1}G\big)$
+because $\prod_{y\ne x}z_y^{-1}$ is even and independent of $\xi^a_x$; the Berezin integral of a derivative vanishes.
+Apply this to $G=Fe^{A}$ with $A=\frac\beta2(u,\Delta u)-h(1,z-1)$: $T_aA=h\sum_x\eta^a_x$ and
+$T_a(Fe^A)=(T_aF)e^A+(-1)^{|F|}F(T_aA)e^A$.
+\end{proof}
+
+\begin{remark}[Second identity, not needed for $d\ge5$]
+$F=\xi^1_0\xi^2_0\eta^2_0$ gives $T_1F=z_0\xi^2_0\eta^2_0=\xi^2_0\eta^2_0-q_0$, hence
+$\avg{\xi^2_0\eta^2_0-q_0}_{\beta,h}=h\sum_x\avg{\xi^1_0\xi^2_0\eta^2_0\eta^1_x}_{\beta,h}$.
+This is the candidate for pinning the $Q$-coupling in $d\le4$.
+\end{remark}
+
+%======================================================================
+\section{Power counting, symmetry and localisation \st{M}}
+
+\paragraph{Symmetry.} Replace $U(1)$ invariance of \hr{sec:symmetries} by invariance under
+$G_{\rm fl}=U(1)^2\rtimes S_2$ (separate phase rotations of the two flavours and the flavour swap), a subgroup of $Sp(4)$.
+$\E_{C}\theta$ preserves $G_{\rm fl}$-invariance because $C$ is flavour-diagonal. The bare potential is $Sp(4)$-invariant.
+
+\paragraph{Power counting.} $[\psi]=(d-2)/2$; a monomial with $p$ fields and $k$ gradients has dimension $p(d-2)/2+k$.
+Odd $k$ is excluded by lattice symmetries, as in [h02rg].
+
+\begin{center}
+\begin{tabular}{lccc}
+monomial & dimension & $d=5$ & status in $\cV$\\\hline
+$S$ ($a$) & $d-2$ & 3 & relevant\\
+$\sum_a\nabla\psi^a\nabla\bar\psi^a$, $\frac12\sum_a(\psi^a(-\Delta\bar\psi^a)+(-\Delta\psi^a)\bar\psi^a)$ ($y,z$) & $d$ & 5 & marginal\\
+$Q$ ($g$) & $2(d-2)$ & 6 & irrelevant, carried\\
+$B$ ($b$) & $2(d-2)+2$ & 8 & irrelevant, carried\\
+$(\nabla S)(\nabla Q)$, $(\nabla Q)^2$ & $3(d-2)+2$, $4(d-2)+2$ & 11, 14 & irrelevant, in $K_0$
+\end{tabular}
+\end{center}
+
+\begin{definition}
+$\cV^\varnothing\cong\C^5$: formal local polynomials
+$V=y\sum_a\nabla\psi^a\nabla\bar\psi^a+\frac z2\sum_a(\psi^a(-\Delta\bar\psi^a)+(-\Delta\psi^a)\bar\psi^a)+aS+gQ+bB$.
+\end{definition}
+
+\begin{proposition}[analogue of \hr{prop:Loc}]
+With field dimensions as above and $d_+=d$, the operators $\Loc_X,\Loc_{X,Y}$ of [h02rg] (from [MR3332939]) have the same properties,
+with image in the $(z,y,a)$ part of $\cV^\varnothing$. In $d\ge5$ every monomial of degree $\ge4$ is irrelevant, so $\Loc$ never produces $b$ or $g$.
+\end{proposition}
+
+\begin{lemma}[Wick computations]\label{lem:wick}
+With the convention $\E_C[\bar\zeta_x\zeta_y]=C(x,y)$, so $\E_C\theta(\psi^a\bar\psi^a)=\psi^a\bar\psi^a-C(0)$,
+and since $C$ is flavour-diagonal,
+\begin{equation}
+  \E_C\theta Q=Q-C(0)S+C(0)^2,\qquad
+  \E_C\theta B=B+\text{(quadratic terms as in \hr{eq:tildeflow}, summed over }a)+\text{const}.
+\end{equation}
+The second identity uses that $(\nabla_eS)^2=\sum_{a,b}\nabla_eP^a\nabla_eP^b$ with $P^a=\psi^a\bar\psi^a$, and that for $a\ne b$
+the factors are independent under $\E_C$, while $\E_C\theta\nabla_eP^a=\nabla_eP^a$. Hence the flow before $\Loc$ is
+\begin{equation}
+  \tilde z=z+\kappa^{zb}b,\quad \tilde y=y+\kappa^{yb}b,\quad \tilde a=a+\kappa^{ab}b-C_{j+1}(0)\,g,\quad \tilde b=b,\quad \tilde g=g,
+\end{equation}
+with the $\kappa$'s of \hr{eq:tildeflow} (to be rechecked: the flavour sum may change $\kappa^{ab}$ by a factor).
+\end{lemma}
+
+\begin{remark}[Why $W_0$ goes into $K_0$]
+Single contractions of $(\nabla S)(\nabla Q)$ produce degree-4 monomials outside $\mathrm{span}\{Q,B\}$, so the $W_0$-monomials do not span an
+$\E_C\theta$-invariant space. Placing $W_0$ into the initial polymer activity $K_0$ avoids enlarging $\cV^\varnothing$.
+\end{remark}
+
+%======================================================================
+\section{Bulk renormalisation group flow \st{M}}
+
+\begin{enumerate}[label=(\alph*)]
+\item Finite range decomposition \hr{sec:frd}: \st{V}, applied flavour-diagonally.
+\item Grassmann Gaussian integration and polymer coordinates: \st{V}.
+\item Norms \hr{sec:norms}: \st{M}. Same $T_\phi$ norms; constants depend on the number of generators per site ($4$ instead of $2$).
+  Block norms: $\|V_j(B)\|\asymp|z_j|+|y_j|+L^{2j}|a_j|+L^{-(d-2)j}|b_j|+L^{-(d-4)j}|g_j|$.
+\item RG map \hr{sec:step-def}, including \hr{prop:ZVK} and \hr{prop:consistency}: \st{V}.
+\item Step estimates \hr{thm:step}: \st{M}. The new input is $g$; check every place where the explicit form of $V$ enters
+  (in particular the stability estimate for $e^{-V}$ and the second-order $\Loc$ terms).
+\item \textbf{Initial activity} \st{N, routine}: with $f_{xy}=e^{-w_{xy}}-1$, where $W_0=\sum_{xy}w_{xy}$,
+  \begin{equation}
+    e^{-V_0(\Lambda)-W_0(\Lambda)}=\sum_{X\subset\Lambda}e^{-V_0(\Lambda\setminus X)}K_0(X),\qquad
+    K_0(X)=e^{-V_0(X)}\sum_{E'\subset E:\ V(E')=X}\ \prod_{xy\in E'}f_{xy}.
+  \end{equation}
+  $K_0$ factorises over connected components, is $G_{\rm fl}$- and lattice-invariant, and $\|K_0\|_0=O(b_0\varepsilon)$.
+  To check: that $K_0$ lies in the scale-$0$ space $\mathcal K_0$ of [h02rg] (regulators at scale $0$).
+\end{enumerate}
+
+\begin{theorem}[analogue of \hr{thm:flow}]\label{thm:flow5}
+Let $d\ge5$, $L\ge L_0$, $A\ge A_0(L)$. For $m^2\ge0$ and $w_0=(b_0,g_0,K_0)$ with $|b_0|+|g_0|+\|K_0\|_0\le\delta$,
+there is $v_0^c(m^2,w_0)=(z_0,y_0,a_0)$ such that the flow from $(v_0^c,w_0)$ satisfies
+$\|V_j\|_j=O_L(\delta L^{-\kappa j})$ and $\|K_j\|_j=O_L(\delta L^{-\kappa j})$.
+$v_0^c$ is continuous and bounded in $m^2\ge0$, and analytic in $w_0$ with uniformly bounded derivative.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+As in [h02rg], with $v_j=(\hat z_j,\hat y_j,\hat a_j)$ and $w_j=(\hat b_j,\hat g_j,K_j)$, where $\hat g_j=L^{-(d-4)j}g_j$.
+Then $\hat g_{j+1}=L^{-(d-4)}\hat g_j$ joins $D_j$, and $\|D_j\|\le\max(L^{-(d-2)},L^{-(d-4)},O(L^{-3}+A^{-\eta}))$,
+which is $<1$ for $d\ge5$.
+The new entry of $B_j$ is $\hat\kappa^{ag}_j\hat g_j$ with $\hat\kappa^{ag}_j=-L^{2(j+1)}L^{(d-4)j}C_{j+1}(0)=O(L^2)$ by \hr{e:C-bd}.
+Apply the stable manifold theorem (Lean: \texttt{Flow.System.Bounds.existsUnique\_stable}, \texttt{analyticAlongCurves\_stableMap},
+\texttt{continuous\_stableMap}). Note $w_0$ now has a nonzero $K_0$ component, which the abstract theorem allows.
+\end{proof}
+
+\paragraph{Corollary~\hr{cor:flow-finvol} and susceptibility (\hr{prop:ZNN}, \hr{prop:suscept}).}
+\st{M}: per flavour, $\sum_x\avg{\bar\psi^a_0\psi^a_x}=m^{-2}+O(\delta L^{-(2+\kappa)N})m^{-4}$.
+
+%======================================================================
+\section{Observables \st{M}}
+
+\begin{itemize}
+\item \emph{Case (1)}, $\avg{\bar\psi^1_a\psi^1_b}$: \st{V} with flavour-$1$ sources $\sigma_a\bar\psi^1_a$, $\psi^1_b\bar\sigma_b$.
+  Since $d_+^a=(d-2)/2$, the cubic terms $\sigma_a\bar\psi^1_aP^2_a$ (dimension $3(d-2)/2$) are irrelevant and not extracted.
+\item \emph{Case (2)}: sources $\sigma_x=\bar\vartheta_x\vartheta_x$ at $x\in\{a,b\}$ coupled to
+  $f_x\in\mathrm{span}\{S_x,Q_x\}=\mathrm{span}\{z_x-1,(z_x-1)^2\}$, i.e.\ to the $Sp(4)$-invariant local functions.
+  $\Loc^a$ with $d_+^a=d-2$ extracts $\sigma_a(\nu+\lambda S_a)$; $\sigma_aQ_a$ (dimension $2(d-2)$) is irrelevant and is placed in the
+  initial observable activity (\st{N, routine}, as for $K_0$).
+\item Result (analogue of \hr{prop:1pt}, \hr{prop:2pt}, $N\to\infty$ at $m^2>0$, then continuity in $m^2\ge0$): for
+  $f\in\{S,Q\}$ there are $\gamma_f,\lambda_f$ continuous in $(w_0,m^2)$ with
+  \begin{equation}
+    \avg{f_0}=\gamma_f,\qquad \avg{f_0;g_x}=-2\lambda_f\lambda_g\,(-\Delta+m^2)^{-1}(0,x)^2+O(\delta|x|^{-2(d-2)-\kappa}),
+  \end{equation}
+  with $\lambda_S=1+O(\delta)$, and $\lambda_Q$, $\gamma_Q$ given at leading order by the free Wick computation.
+  The factor $2$ is the flavour sum for $S$; it is to be confirmed together with the signs.
+\end{itemize}
+
+%======================================================================
+\section{Matching with $\HH^{0|4}$ via the Ward identity \st{M}}
+
+Let $s_0^c(w_0,m^2)$ and $a_0^c(w_0,m^2)$ be the critical couplings of Theorem~\ref{thm:flow5}
+(with $s_0=y_0+z_0$ as in [h02rg]). By \eqref{e:a0g0}--\eqref{e:W0}, $\HH^{0|4}$ corresponds to
+$w_0=w_0(\varepsilon,h,s_0)$ with $b_0=(1+s_0)\varepsilon$, $g_0=-(2+h)\varepsilon^2$ and $K_0=K_0[W_0]$ with coefficients $O(\varepsilon^2)$.
+
+\begin{enumerate}[label=\textbf{Step \arabic*.}, leftmargin=*]
+\item ($s_0$). For fixed $(\varepsilon,h,m^2)$ solve $s_0=s_0^c(w_0(\varepsilon,h,s_0),m^2)$. The right side is Lipschitz in $s_0$
+  with constant $O(\varepsilon)$, so Banach's fixed point theorem applies.
+\item ($h$). Solve $(1+h)\varepsilon=a_0^c(w_0(\varepsilon,h,s_0(h)),m^2)+m^2$ for $h$. The map
+  $h\mapsto\varepsilon^{-1}(a_0^c+m^2)-1$ is Lipschitz with constant $O(\varepsilon)$, since $h$ enters only through
+  $g_0=-(2+h)\varepsilon^2$ and through $s_0$; restrict to $m^2\le m^2_{\max}$. This defines $h(\varepsilon,m^2)$ and $\beta(\varepsilon,m^2)=(1+s_0)/\varepsilon$.
+  (New compared with \hr{e:hb0m}: there $h$ is explicit; here the irrelevant input depends on $h$.)
+\item (Ward). By \eqref{e:W1} and Section~6 in the limit $N\to\infty$ with $m^2>0$:
+  $\avg{z_0}=1+\varepsilon\gamma_S-\varepsilon^2\gamma_Q=:\Theta(\varepsilon,m^2)$ and
+  $h\sum_x\avg{\xi^1_0\eta^1_x}=h\varepsilon\,m^{-2}$. Hence
+  \begin{equation}
+    h(\varepsilon,m^2)=\frac{m^2\,\Theta(\varepsilon,m^2)}{\varepsilon}=m^2\beta(\varepsilon,m^2)\,(1+O(\varepsilon)),
+  \end{equation}
+  so $h(\varepsilon,0)=0$ and $h>0$ for $m^2>0$. This is \hr{cor:ward}(i).
+\item (Inversion). As \hr{cor:ward}(ii) / [MR3339164, Prop.~4.2]: for $\beta$ large and $h\ge0$ there are
+  $\tilde\varepsilon(\beta,h),\tilde m^2(\beta,h)$, right-continuous as $h\downarrow0$. This requires differentiability in $\varepsilon$
+  (from analyticity in $w_0$) and continuity in $m^2$.
+\end{enumerate}
+
+\section{Proof of Theorem~\ref{thm:A} \st{M}}
+Since $\xi^a_0\eta^b_x=\varepsilon\bar\psi^a_0\psi^b_x$ and $z=1+\varepsilon S-\varepsilon^2Q$, Sections~5--7 give, after
+$N\to\infty$ and then $h\downarrow0$ (equivalently $m^2\downarrow0$):
+\begin{itemize}
+\item $\theta_d(\beta)=\Theta(\varepsilon,0)=1+O(\varepsilon)$;
+\item $c_1(\beta)=(1+s_0^c)c_d$, using $\avg{\bar\psi^a_0\psi^b_x}=\delta_{ab}G(x)+\dots$ (flavour-diagonality from $G_{\rm fl}$);
+\item $\avg{z_0;z_x}=-2(\varepsilon\lambda_S-\varepsilon^2\lambda_Q)^2G(x)^2+\dots$, so $c_2(\beta)=2(1+s_0^c)^2(\lambda_S-\varepsilon\lambda_Q)^2c_d^2$.
+\end{itemize}
+
+%======================================================================
+\section{Deferred}
+\begin{itemize}
+\item Finite volume order of limits (\hr{thm:psi4-full}, \hr{sec:finvol}): zero mode integration now involves four Grassmann zero modes.
+\item Analogue of Appendix A (high temperature, $h>0$): no forest representation is available.
+\item $d=4$: $\hat g_{j+1}=\hat g_j+O(\hat g^2,\hat g\hat b,\dots)$ is marginal, so $\|D_j\|<1$ fails in the $g$-direction.
+  This is where the second Ward identity enters.
+\end{itemize}
+
+%======================================================================
+\section{Lean plan}
+\begin{tabular}{p{0.32\textwidth}p{0.6\textwidth}}
+\texttt{Grassmann/*} & Gap G1 in \texttt{docs/duplication-audit.md}: generator index $\Lambda\times\iota\times\Z^\times$ with $\iota=\mathrm{Fin}\,2$.\\
+\texttt{Loc/Stencil}, \texttt{Loc2}, \texttt{Loc4} & Gap G2: new coupling structure $(z,y,a,b,g)$ and evaluation; $\Loc$ unchanged in $d\ge5$ beyond monomial definitions.\\
+\texttt{H02RG/Step/*} & Wick computation (Lemma~\ref{lem:wick}); norm constants; stability with $g$.\\
+\texttt{H02RG/Flow/*} & \texttt{StableManifold.lean} reused as is; new \texttt{Theorem.lean} with $w=(\hat b,\hat g,K)$ and $K_0\neq0$; initial-activity lemma.\\
+\texttt{H02RG/Obs/*}, \texttt{PtCorr} & Gap G5: Case~(2) observables $\sigma_af_a$ with $f\in\{S,Q\}$.\\
+new \texttt{H04/Ward.lean} & Lemma~\ref{lem:ward}; the $\HH^{0|2}$ version is in \texttt{H02/Ward.lean}.\\
+new \texttt{H04/Main} & \texttt{thm\_h04}, the analogue of \texttt{H02RG.thm\_h02}, with hypothesis \texttt{5 <= d}.
+\end{tabular}
+
+\section{Checks before writing proofs}
+\begin{enumerate}
+\item Sign and ordering conventions in Corollary~\ref{cor:density}, \eqref{e:rescaled} and \eqref{e:ward-gen} against [h02rg] and \texttt{H02/Ward.lean}.
+\item $\kappa$-coefficients with the flavour sum (Lemma~\ref{lem:wick}).
+\item Initial activity $K_0\in\mathcal K_0$ and the observable analogue; whether any step of \hr{thm:step} uses $K_0=0$ beyond the initial condition.
+\item The flavour factor in $c_2$.
+\item Signs of $\gamma_S,\gamma_Q$ and the $O(\varepsilon)$ term of $\theta_d(\beta)$.
+\end{enumerate}
+
+\end{document}

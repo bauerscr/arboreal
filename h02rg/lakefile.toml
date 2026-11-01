@@ -83,3 +83,7 @@ globs = ["H02RG.Main.+"]
 [[lean_lib]]
 name = "H02UVMain"
 globs = ["H02UV.Main.+"]
+
+# The `ℍ^{0|4}` model (`h04/h04-d5-outline.tex`). New library; reuses the libraries above.
+[[lean_lib]]
+name = "H04RG"
