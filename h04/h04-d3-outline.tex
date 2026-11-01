@@ -1,0 +1,364 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,enumitem,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\avg}[1]{\langle #1\rangle}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Loc}{\operatorname{Loc}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\bpsi}{\bar\psi}
+\newcommand{\status}[1]{\par\smallskip\noindent\textbf{Status/reuse.} #1\par\smallskip}
+\newcommand{\reuse}[1]{\textsf{[h02rg: #1]}}
+\newcommand{\lean}[1]{\textsf{[Lean: #1]}}
+\newcommand{\open}[1]{\textcolor{red!60!black}{\textsf{[open: #1]}}}
+
+\title{The $\HH^{0|4}$ model in $d=3$:\\ outline of a proof of a massless phase (two-field form)}
+\author{Draft for N.~Crawford --- working notes}
+\date{November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+  We outline a proof that the $\HH^{0|4}$ sigma model on $\mathbb{Z}^3$ is massless at
+  $h=0$ for $\beta$ large, following the strategy of \texttt{h02rg} (renormalisation group
+  for the fermionic representation, plus Ward identities to locate the critical point).
+  Compared with $\HH^{0|2}$ there is one new relevant coupling (the quartic $Q$), so the
+  model is embedded in a two-field family and two Ward identities are used. Each step is
+  stated as a lemma with (i) what is already done, (ii) which \texttt{h02rg} results are
+  reused and (iii) what is new. References of the form \reuse{\dots} are to labels in
+  \texttt{h02rg/src/h02rg.tex}; \lean{\dots} to the Lean sources in \texttt{h02rg/}.
+  This supersedes \texttt{h04-d5-outline.tex}, which uses a single field and does not
+  use the second Ward identity.
+\end{abstract}
+
+\tableofcontents
+
+%------------------------------------------------------------------
+\section{Model, conventions and the main statement}
+
+\paragraph{Algebra.} At each $x\in\Lambda$ we have Grassmann generators $\xi^a_x,\eta^a_x$,
+$a\in\{1,2\}$, and set
+\[
+  s=\sum_a\xi^a\eta^a,\qquad q=\xi^1\eta^1\xi^2\eta^2,\qquad z=\sqrt{1-2s}=1-s-q,\qquad
+  u=(\xi,\eta,z).
+\]
+Then $s^2=2q$, $sq=q^2=0$, $z^{-1}=1+s+3q=e^{s+2q}$, $u\cdot u=-1$, $(z-1)^2=2q$, and
+$(z-1)^3=0$ (degree $\ge 6>4$). The edge identity is
+$u_x\cdot u_y+1=\sum_a\nabla\xi^a\nabla\eta^a+\tfrac12(\nabla z)^2$.
+
+\paragraph{Two-field family.} For $\beta>0$, $h=(h_1,h_2)$,
+\begin{equation}\label{e:H}
+  H_{\beta,h}=\frac{\beta}{4}\sum_{xy}(u_x-u_y)^2+\sum_x h_1(z_x-1)+\sum_x h_2(z_x-1)^2,
+\end{equation}
+with expectation $\avg{F}_{\beta,h}\propto\int\prod_x z_x^{-1}\,\partial_\eta\partial_\xi\,
+e^{-H_{\beta,h}}F$. The physical one-field model is $h_2=0$. Because $(z-1)^3=0$ there is
+no third field: $\{1,(z-1),(z-1)^2\}$ spans the $Sp(4)$-invariant local functions of one site.
+
+\paragraph{Fermionic form.} With $\eps=1/\beta$, $\xi=\sqrt\eps\,\bpsi$, $\eta=\sqrt\eps\,\psi$,
+$S=\sum_a\bpsi^a\psi^a$, $Q=\bpsi^1\psi^1\bpsi^2\psi^2$ (so $s=\eps S$, $q=\eps^2 Q$) the
+weight is $e^{E}$ with
+\begin{equation}\label{e:E}
+  E=\sum_{xy}\sum_a\nabla\bpsi^a\nabla\psi^a+\frac{\eps}{2}\sum(\nabla S)^2+\eps^2\sum(\nabla S)(\nabla Q)
+  +\frac{\eps^3}{2}\sum(\nabla Q)^2+\sum_x\big[(1+h_1)\eps S_x+c_Q\eps^2Q_x\big],
+\end{equation}
+$c_Q=2+h_1-2h_2$. (The $2$ in $c_Q$ and the $1$ in $1+h_1$ come from $z^{-1}=e^{s+2q}$.)
+Sign conventions are those of \texttt{h04/pt}, in which $\avg{\bpsi_x\psi_y}=(-\Delta+m^2)^{-1}(x,y)$.
+
+\paragraph{Target theorem.}
+\begin{theorem}[target]\label{thm:main}
+  Let $d=3$. There is $\beta_0$ such that for $\beta\ge\beta_0$ there is a continuous curve
+  $m\mapsto h(m)=(h_1(m),h_2(m))$, $m\in(0,m_0]$, with $h(m)\to0$ as $m\downarrow0$, along
+  which the infinite-volume limits exist and
+  \begin{align*}
+    \lim_{m\downarrow0}\avg{z_0}_{\beta,h(m)}&=\theta(\beta)\in(0,1),\\
+    \lim_{m\downarrow0}\avg{\xi^a_0\eta^a_x}_{\beta,h(m)}&=\frac{c(\beta)}{|x|}\big(1+O(|x|^{-\kappa})\big),\\
+    \sum_x\avg{\xi^1_0\eta^1_x}_{\beta,h(m)}&\asymp m^{-2}\to\infty,
+  \end{align*}
+  with $c(\beta)=\beta^{-1}(1+O(\beta^{-1}))\,c_3$. The same holds along the one-field path
+  $h=(h,0)$, $h\downarrow0$, provided Lemma~\ref{lem:onefield} holds.
+\end{theorem}
+
+The statement mirrors \reuse{thm:h02}. Along the RG curve $h(m)$ is determined by the two Ward
+identities (Lemma~\ref{lem:wardinv}); it is not chosen.
+
+%------------------------------------------------------------------
+\section{Ward identities (done)}
+
+\begin{lemma}[Ward identities]\label{lem:ward}
+  With $T_a=\sum_xz_x\partial_{\xi^a_x}$, for every finite $\Lambda$ and all $\beta,h$:
+  \begin{align}
+    \avg{z_0}&=\sum_x\avg{\xi^1_0\,\big(h_1+2h_2(z_x-1)\big)\,\eta^1_x}, \tag{W1}\label{W1}\\
+    \avg{\xi^2_0\eta^2_0-q_0}&=\sum_x\avg{\xi^1_0\xi^2_0\eta^2_0\,\big(h_1+2h_2(z_x-1)\big)\,\eta^1_x}.\tag{W2}\label{W2}
+  \end{align}
+\end{lemma}
+\status{Done. \lean{H04RG.Model.Ward: \texttt{expect2\_z}, \texttt{expect2\_}$\xi\eta q$}; built on
+\texttt{H04RG.Model.Algebra} and \texttt{H02.Grassmann}; axioms
+\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound} only. Also checked exactly on
+small graphs (\texttt{h04/pt/check\_ward.py}) and perturbatively through $\eps^3$ on the
+4-torus (\texttt{ward\_check.py}). Analogue of \reuse{e:ward}. Independent of $d$.}
+
+Write $X_{11}=\sum_x\avg{\xi^1_0\eta^1_x}$, $X_{13}=\sum_x\avg{\xi^1_0(z_x-1)\eta^1_x}$,
+$X_{31}=\sum_x\avg{\xi^1_0\xi^2_0\eta^2_0\eta^1_x}$,
+$X_{33}=\sum_x\avg{\xi^1_0\xi^2_0\eta^2_0(z_x-1)\eta^1_x}$,
+$b_1=\avg{z_0}$, $b_2=\avg{\xi^2_0\eta^2_0-q_0}$. Then
+\begin{equation}\label{e:wardsys}
+  \begin{pmatrix}X_{11}&X_{13}\\X_{31}&X_{33}\end{pmatrix}
+  \begin{pmatrix}h_1\\2h_2\end{pmatrix}=\begin{pmatrix}b_1\\b_2\end{pmatrix}.
+\end{equation}
+
+%------------------------------------------------------------------
+\section{Power counting in $d=3$}
+
+$[\psi]=\tfrac12$. With $[\,\cdot\,]$ the dimension of a local monomial and $d-[\,\cdot\,]$
+the scaling exponent of its coupling:
+
+\begin{center}
+\begin{tabular}{llll}
+  \toprule
+  monomial & dimension & coupling & per scale\\
+  \midrule
+  $S$ & 1 & $a$ & relevant, $\times L^2$\\
+  $Q$ & 2 & $g$ & relevant, $\times L$\\
+  $\nabla\bpsi\cdot\nabla\psi$, $\tfrac12(\bpsi(-\Delta\psi)+(-\Delta\bpsi)\psi)$ & 3 & $y,z$ & marginal\\
+  $(\nabla S)^2$ and other $Sp(4)$-invariant $\psi^4\nabla^2$ & 4 & $b$ & irrelevant, $\times L^{-1}$\\
+  $\psi^6\nabla^2$, $\psi^8\nabla^2$ & $\ge5$ & & irrelevant\\
+  $\psi^6$ (no derivatives) & & & absent: $4$ generators per site\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Odd numbers of derivatives are excluded by lattice reflections, and one-derivative
+bilinears reduce to $S$ plus the wave-function term. So there are two strictly expanding
+directions ($a,g$) and two marginal ones ($y,z$, exactly as in \texttt{h02rg}).
+\emph{The flow is hyperbolic apart from $y,z$, whose increments are summable.} This is
+structurally simpler than $d=4$, where $g$ is marginal with one-loop coefficient
+$\beta_g=\log L/(4\pi^2)>0$ (\texttt{h04/pt/qq\_bubble.py}).
+
+%------------------------------------------------------------------
+\section{Renormalisation group}
+
+\begin{lemma}[fermionic representation]\label{lem:psi}
+  For $m^2\ge0$ and $s_0>-1$, after rescaling $\psi\to\psi/\sqrt{1+s_0}$ as in
+  \reuse{e:xietapsi}, $\avg{\cdot}_{\beta,h}$ equals the Grassmann Gaussian expectation with
+  covariance $C=(-\Delta+m^2)^{-1}$ and interaction
+  \[
+    V_0=\sum_x\Big[s_0\nabla\bpsi\cdot\nabla\psi+a_0S+g_0Q+b_0(\nabla S)^2+b_0'(\nabla S)(\nabla Q)+b_0''(\nabla Q)^2\Big]
+  \]
+  with $a_0=(1+s_0)\eps(1+h_1)-m^2$, $g_0=(1+s_0)^2\eps^2c_Q$,
+  $b_0=(1+s_0)^2\eps/2$, $b_0'=(1+s_0)^3\eps^2$, $b_0''=(1+s_0)^4\eps^3/2$ (signs as in \eqref{e:E}).
+\end{lemma}
+\status{Algebra only; mirrors \reuse{e:quartic-rescale}. New because of $Q$ and the two higher
+bare terms. Lean: straightforward from \texttt{H04RG.Model.Algebra} (\texttt{exp\_eq\_inverse\_zC},
+\texttt{dotC\_edge}). \open{write it.}}
+
+\begin{definition}[bulk coupling space]\label{def:V}
+  $\mathcal V\cong\mathbb C^{7}$: $V=y\,\nabla\bpsi\cdot\nabla\psi+\tfrac z2(\bpsi(-\Delta\psi)+(-\Delta\bpsi)\psi)
+  +aS+gQ+b(\nabla S)^2+b'(\nabla S)(\nabla Q)+b''(\nabla Q)^2$.
+\end{definition}
+Here $b,b',b''$ are bare irrelevant couplings carried along exactly as $b$ is in \reuse{def:cV}.
+Alternatively $b',b''$ can be put into $K_0$, which needs the stable-manifold theorem with
+$K_0\neq0$. That is allowed by the abstract theorem (\lean{Flow.StableManifold}: the initial
+datum is $w_0=(\hat b_0,K_0)$).
+
+\begin{lemma}[symmetry and localisation]\label{lem:loc}
+  (i) $\E_{C_j}\theta$ preserves $Sp(4)$-invariance (acting on $(\bpsi^a,\psi^a)$ fibrewise) and
+  lattice symmetries. (ii) For $Sp(4)\times$lattice-invariant $F$, $\Loc_XF$ lies in
+  $\mathbb C\oplus\mathrm{span}\{S,\,Q,\,\nabla\bpsi\cdot\nabla\psi,\,\bpsi(-\Delta\psi)+(-\Delta\bpsi)\psi\}$,
+  and $\Loc$ satisfies the contraction estimate of \reuse{prop:Loc} in $d=3$.
+\end{lemma}
+\status{Reuse \reuse{sec:symmetries} with $U(1)$ replaced by $Sp(4)$ (the single-site
+$Sp(4)$-invariants of $\Lambda(\mathbb C^4)$ are the polynomials in $S$, so $Q=S^2/2$ is
+the only degree-4 one); \reuse{sec:Loc}, \reuse{prop:Loc}.
+New: (a) the field index set becomes $\Lambda\times\{1,2\}$; check that
+\texttt{Loc/} and the norms in \texttt{Grassmann/Norms.lean}, \texttt{Grassmann/TNorm.lean} are
+parametric in a fibre, i.e.\ only use lattice structure through the first factor
+\open{audit}; (b) the $\Loc$ space must contain the non-derivative degree-4 monomial $Q$,
+which is identically $0$ for one species and so may have been omitted from the
+\texttt{h02rg} test-polynomial space \open{check \texttt{Loc/Loc2.lean}, \texttt{Loc2Sym.lean}};
+(c) \reuse{prop:Loc} needs the first irrelevant dimension $>d$; here it is $4>3$, the same
+margin as for $\HH^{0|2}$ in $d=3$.}
+
+\begin{lemma}[RG step]\label{lem:step}
+  Analogue of \reuse{thm:step} for $d=3$ with $\mathcal V$ from Definition~\ref{def:V}, with
+  \[
+    \|V_j(B)\|_{T_j(\ell_j)}\asymp |y_j|+|z_j|+L^{2j}|a_j|+L^{j}|g_j|+L^{-j}(|b_j|+\dots).
+  \]
+\end{lemma}
+\status{Reuse: the whole $K$-machinery \reuse{sec:step}: \reuse{prop:SmallSetLin},
+\reuse{prop:LargeSetLin}, \reuse{prop:K-linear-nonlinear}, polymer calculus
+\reuse{sec:polymers}, norms \reuse{sec:norms}, FRD \reuse{sec:frd} (\lean{FRD/},
+\lean{DressedFRD/}). New: (a) stability bound $\|e^{-V_j(B)}\|\le C$ with the relevant $gQ$
+term; it holds because $L^{j}|g_j|$ is small on the stable manifold, so this is a
+bookkeeping change, but every lemma that bounds $V_j$ by $\|V_j\|_j$ (\reuse{lem:smallset-V},
+\reuse{lem:smallset-V1}, \reuse{lem:pert12}) has to be rechecked with the new weight
+$L^{j}$; (b) two species in the Gaussian (covariance $C\otimes I_2$): the Gram bound
+(\lean{Grassmann/Gram.lean}) needs the fibre. \open{both.}}
+
+\begin{lemma}[flow; stable manifold]\label{lem:flow}
+  For $\eps$ small and $m^2\ge0$ there is $V_0^c(\eps,m^2)$ (values of $s_0,a_0,g_0$ and the
+  $z$-coupling), continuous in $m^2\ge0$ and smooth in $\eps$, such that
+  $\|V_j\|_j=O_L(\eps L^{-\kappa j})$, $\|K_j\|_j=O_L(\eps^2L^{-\kappa j})$.
+\end{lemma}
+\status{Reuse \lean{H02RG/Flow/StableManifold.lean} \emph{verbatim}. It is stated for an
+arbitrary Banach space $V$ and invertible $E$ with $\|E^{-1}\|\le1$. Here
+$v=(\hat y,\hat z,\hat a,\hat g)$ with $\hat a=L^{2j}a$, $\hat g=L^{j}g$, and
+$E$ upper triangular with diagonal $(1,1,L^2,L)$; mirrors \reuse{thm:flow}, \reuse{e:flowblock}.
+New: the explicit linear Wick coefficients $\kappa_j$ (bare $b$-terms $\to y,z,a$ as in
+\reuse{eq:tildeflow}; $b'\to g$ via $\nabla\nabla C_{j+1}(0)$; $g\to a$ via $C_{j+1}(0)$). The
+$g^2$ bubble ($2g^2\sum_yC(y)^2$ per site, \texttt{qq\_bubble.py}) and similar terms are
+second order and sit in the nonlinearity, as in \texttt{h02rg}. \open{compute and bound the
+$\kappa_j$; instantiate \texttt{RGSystem.lean} with $\mathcal V$.}}
+
+\begin{remark}[perturbative consistency]
+  On the stable manifold at $m=0$ the effective $Q$ coupling vanishes: to $O(\eps^2)$,
+  $\Gamma_Q=\eps^2(h_1-2h_2+2m^4\sum_xG(x)^2)$ in every $d$ (checked numerically in $d=3$ to
+  10 digits). At $O(\eps^3)$ in $d=3$, $\Gamma_Q^{(3)}/\eps^3=0.0424,0.0221,0.0108,0.00363,0.00116$
+  at $m=0.8,0.6,0.45,0.3,0.2$, i.e.\ $\approx m^{3}$ (local exponent $2.7$--$2.8$ and increasing).
+  There is no IR obstruction at third order even though $Q$ is relevant
+  (\texttt{h04/pt/d3/}).
+\end{remark}
+
+%------------------------------------------------------------------
+\section{Observables and susceptibilities}
+
+\begin{lemma}[susceptibilities and one-point functions]\label{lem:obs}
+  On the stable manifold of Lemma~\ref{lem:flow}, as $N\to\infty$ then $m\downarrow0$,
+  with $\chi_{ij}$ the $\psi$-variable versions of $X_{ij}$
+  ($\chi_{13}=\sum_x\avg{\bpsi^1_0(\bpsi^2\psi^2\psi^1)_x}$ etc.):
+  \begin{align*}
+    \chi_{11}&=m^{-2}\big(1+O(\eps L^{-(2+\kappa)N}m^{-2})\big),\qquad
+    \chi_{13}=\gamma_{13}\,m^{-2}+R_{13},\qquad \chi_{31}=\gamma_{31}\,m^{-2}+R_{31},\\
+    \chi_{33}&=\gamma_{33}\,m^{-2}+R_{33},
+  \end{align*}
+  with $\gamma_{ij}=\gamma_{ij}(\eps,m^2)$ continuous and $\gamma_{13},\gamma_{31}=\pm G(0)+O(\eps)$,
+  $\gamma_{33}=G(0)^2+O(\eps)$, and the one-point functions $\avg{S_0},\avg{\bpsi^2\psi^2_0},\avg{Q_0}$ converge.
+\end{lemma}
+\status{Reuse \reuse{sec:suscept} (\reuse{prop:ZNN}, \reuse{prop:suscept}: constant
+sources, zero-mode integration) and \reuse{sec:obs-flow} (\reuse{thm:step-obs},
+\reuse{prop:flow-obs}). New: a third observable case, \emph{odd cubic sources} coupling to
+$\bpsi^1\bpsi^2\psi^2$ and $\psi^2\bpsi^2\psi^1$, besides \reuse{sec:obsfields}'s Case (1)
+(linear) and Case (2) ($\sigma=\bar\vartheta\vartheta$). The cubic observable mixes into the
+linear one at each scale ($\lambda^{(1)}_{j+1}\ni C_{j+1}(0)\lambda^{(3)}_j$); this mixing
+produces the $\gamma_{13},\gamma_{31}$ and the $m^{-2}$ rank-one structure. \open{whole lemma.}}
+
+\begin{lemma}[Schur complement]\label{lem:schur}
+  $\Sigma:=\chi_{33}-\chi_{31}\chi_{13}/\chi_{11}$ satisfies
+  \[
+    \Sigma=-\sigma(\eps)\log(1/m)+O(1),\qquad
+    \sigma(\eps)=\frac{1}{16\pi^2}\big(1+\sigma_1\eps+O(\eps^2)\big).
+  \]
+  At $\eps=0$, $\Sigma=-\sum_xG(x)^3=-\log(1/m)/(16\pi^2)-0.0080+o(1)$.
+\end{lemma}
+\status{Proof idea: $\Sigma$ is the susceptibility of the cubic composite after the projection
+onto the linear one. $\bpsi^1\bpsi^2\psi^2$ has dimension $3/2$, so its two-point function
+is $\sim|x|^{-3}$ and its sum is logarithmic. A $\log^2$ would need an anomalous dimension,
+i.e.\ a non-derivative coupling at scale $j$ of size $O(1)$; on the stable manifold the
+only such coupling, $\hat g_j$, is $O(\eps L^{-\kappa j})$. This should come from
+Lemma~\ref{lem:obs} with the cubic observable flow, at precision $O(\eps)$ per scale.
+\textbf{Perturbative check (done):} at $O(\eps)$ in $d=3$ (\texttt{h04/pt/d3/schur3.py};
+mass renormalised so that $\chi_{11}=m^{-2}$ exactly at this order),
+$\Sigma=\Sigma^{(0)}+\eps\Sigma^{(1)}$ with $\Sigma^{(0)}=-\sum G^3$ exactly and
+$d\Sigma^{(1)}/d\log(1/m)=-0.0081,-0.0094,-0.0102,-0.0107,-0.0109,-0.0111,-0.0111$
+over $m\in[0.1,0.8]$. The slope converges, so the $O(\eps)$ term is a pure log with no $\log^2$, and
+$\sigma_1\approx1.7$. \open{rigorous version.}}
+
+%------------------------------------------------------------------
+\section{Locating the critical point}
+
+\begin{lemma}[Ward inversion]\label{lem:wardinv}
+  Let $(\beta,h)=(\beta(\eps,m^2),h(\eps,m^2))$ be the model parameters corresponding to
+  $V_0^c(\eps,m^2)$ via Lemma~\ref{lem:psi}. Then $h(\eps,m^2)\to0$ as $m\downarrow0$.
+\end{lemma}
+\begin{proof}[Proof (given Lemmas~\ref{lem:ward}, \ref{lem:obs}, \ref{lem:schur})]
+Solving \eqref{e:wardsys} (and passing from $X$ to $\chi$ by the rescaling of
+Lemma~\ref{lem:psi}, which multiplies each row and column by powers of $\eps(1+s_0)$),
+\begin{align}
+  2h_2&=\frac{b_2-(X_{31}/X_{11})\,b_1}{\Sigma_X},\label{e:h2}\\
+  h_1&=\frac{b_1}{X_{11}}-\frac{X_{13}}{X_{11}}\,2h_2,\label{e:h1}
+\end{align}
+with $\Sigma_X=X_{33}-X_{31}X_{13}/X_{11}$. By Lemma~\ref{lem:obs}, $b_1,b_2$ and
+$X_{31}/X_{11}$, $X_{13}/X_{11}$ stay bounded and $X_{11}\asymp m^{-2}$. By
+Lemma~\ref{lem:schur}, $|\Sigma_X|\to\infty$. Hence $h_2\to0$, like $1/\log(1/m)$ unless
+the numerator also vanishes, and then $h_1\to0$.
+\end{proof}
+
+\begin{remark}[what precision is really needed]
+  For $h\to0$ one only needs $|\Sigma|\to\infty$ and boundedness of the other quantities. Even
+  a $\log^2$ term would not break this unless it cancelled the leading log, which an
+  $O(\eps)$ correction cannot do. (This corrects an earlier claim that $o(\log)$ precision
+  was needed.) Finer control is needed for: (i) the rate at which $h(m)\to0$; (ii) showing that
+  $m\mapsto h(m)$ is injective and that $h(m)\neq0$ for $m>0$; (iii) Lemma~\ref{lem:onefield}.
+  In $d=4$ the situation is \emph{harder}: $\Sigma\to-\sum G^3$ is finite there, so
+  $h_2\to0$ requires the numerator of \eqref{e:h2} to vanish, i.e.\ a genuine second-order
+  cancellation.
+\end{remark}
+
+\begin{lemma}[reaching the one-field model]\label{lem:onefield}
+  For $\beta\ge\beta_0$ and small $h>0$ there are RG parameters giving $(\beta,h,0)$.
+\end{lemma}
+\status{Analogue of \reuse{cor:ward}(ii), which inverts $(b_0,m^2)\mapsto(\beta,h)$ by an
+implicit-function argument. \emph{New difficulty:} the RG has two free parameters
+$(\eps,m^2)$ but the two-field model has three $(\beta,h_1,h_2)$. The tuned family is a
+surface, so the plane $h_2=0$ is reached only by \emph{detuning} $g_0$ by some $\delta$. At mass
+$m$ the flow is massive beyond $j_m\approx\log_L(1/m)$, so a detuning $\delta$ grows only to
+$\delta L^{j_m}\approx\delta/m$; the admissible window is $|\delta|\lesssim\eps m$. Detuning
+by $\delta$ moves $h_2$ by $\approx|\delta|/(2\eps^2)$. So Lemma~\ref{lem:onefield} holds
+if $h_2(m)=O(m/\eps)$ along the tuned curve, but \emph{fails if $h_2(m)\sim1/\log(1/m)$}.
+Which case holds is decided by the numerator $b_2-(X_{31}/X_{11})b_1$ in \eqref{e:h2} at
+$m\to0$. \open{decide this first, perturbatively: it is one more run of
+\texttt{schur3.py}-type code (numerator at $O(\eps)$, $O(\eps^2)$).} If it fails, the
+theorem should be stated along the two-field curve only, or the one-field limit has to be
+treated as a different (log-corrected) approach to criticality.}
+
+%------------------------------------------------------------------
+\section{Proof of Theorem~\ref{thm:main} (given the lemmas)}
+
+As in \reuse{sec:proofs} and the proof of \reuse{thm:h02}: choose $V_0=V_0^c(\eps,m^2)$
+(Lemma~\ref{lem:flow}); express $\avg{z_0}$, $\avg{\xi^a_0\eta^a_x}$ and $X_{11}$ through the
+$\psi$-correlations of Lemma~\ref{lem:obs} and the pointwise analogue of
+\reuse{prop:1pt}, \reuse{prop:2pt}; use Lemma~\ref{lem:wardinv} to identify the limit $m\downarrow0$
+with $h\to0$; $\theta(\beta)=1-\eps(1+s_0)\avg{S_0}+O(\eps^2)$ etc.\ as in \reuse{e:constants}.
+The pointwise two-point function needs the Case (1) observable flow only (\reuse{lem:2pt}),
+now with two species.
+
+%------------------------------------------------------------------
+\section{Status table}
+
+\begin{center}
+\small
+\begin{tabular}{p{4.2cm}p{3.6cm}p{6.6cm}}
+  \toprule
+  item & status & reuse / new\\
+  \midrule
+  Lemma~\ref{lem:ward} (Ward) & done, Lean & \texttt{H04RG.Model.Ward}\\
+  Lemma~\ref{lem:psi} (fermionic form) & paper-ready & new algebra; small Lean task\\
+  Lemma~\ref{lem:loc} (symmetry, Loc) & open & \reuse{sec:symmetries,prop:Loc}; audit \texttt{Loc/} for fibre; add $Q$\\
+  Lemma~\ref{lem:step} (RG step) & open & \reuse{thm:step} machinery; new stability weight $L^j|g|$; Gram bound with fibre\\
+  Lemma~\ref{lem:flow} (stable mfd) & open & \lean{StableManifold} verbatim; new $\kappa_j$\\
+  Lemma~\ref{lem:obs} (observables) & open & \reuse{sec:suscept,sec:obs-flow}; new cubic-source case\\
+  Lemma~\ref{lem:schur} (Schur) & PT done at $O(\eps)$ & no $\log^2$; $\sigma_1\approx1.7$\\
+  Lemma~\ref{lem:wardinv} (inversion) & proved given above & elementary\\
+  Lemma~\ref{lem:onefield} (one-field) & \textbf{decide first} & numerator of \eqref{e:h2}\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Suggested order.} (1) Lemma~\ref{lem:onefield}'s numerator (cheap; it decides the
+form of the theorem). (2) Lemma~\ref{lem:loc} audit of the Lean \texttt{Loc}/norm libraries for
+a species fibre (decides whether the Lean RG is reused or rebuilt). (3) Lemmas~\ref{lem:step},
+\ref{lem:flow} on paper. (4) Lemma~\ref{lem:obs} with the cubic sources, which also yields
+Lemma~\ref{lem:schur}.
+
+\end{document}
