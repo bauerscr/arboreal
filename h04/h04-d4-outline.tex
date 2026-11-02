@@ -1,0 +1,171 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,enumitem,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\avg}[1]{\langle #1\rangle}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Loc}{\operatorname{Loc}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\bpsi}{\bar\psi}
+\newcommand{\status}[1]{\par\smallskip\noindent\textbf{Status/reuse.} #1\par\smallskip}
+\newcommand{\reuse}[1]{\textsf{[h02rg: #1]}}
+\newcommand{\lean}[1]{\textsf{[Lean: #1]}}
+\newcommand{\open}[1]{\textcolor{red!60!black}{\textsf{[open: #1]}}}
+
+\title{The $\HH^{0|4}$ model in $d=4$:\\ the endpoint problem and a plan}
+\author{Draft for N.~Crawford --- working notes}
+\date{November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+  Companion to \texttt{h04-d3-outline.tex}, whose notation (two-field family $H_{\beta,h}$,
+  fermionic form, Ward identities W1, W2, the matrix $X$, $\Sigma$, $N$) is used without
+  repetition. We record what changes in $d=4$, isolate the one genuinely new problem (the
+  \emph{endpoint lemma}), reduce it to a one-dimensional statement about the RG tuning, and
+  propose a proof via analyticity in $\eps$ plus an all-orders symmetry argument.
+\end{abstract}
+
+\section{What changes from $d=3$}
+
+\paragraph{Power counting.} $[\psi]=1$. $S$: dimension 2 (relevant, $\times L^2$);
+$Q$: dimension 4 (\emph{marginal}); wave-function terms: marginal; $(\nabla S)^2$ and the other
+$\psi^4\nabla^2$: dimension 6 (irrelevant, $\times L^{-2}$). One-loop flow of $g$ (exact Wick
+computation, \texttt{h04/pt/qq\_bubble.py}, per-scale check \texttt{bubble\_perscale.py}):
+\[
+  g_{j+1}=g_j+\beta_jg_j^2+\dots,\qquad \beta_j=2\Big[\sum_y w_{j+1}(y)^2-\sum_yw_j(y)^2\Big]
+  \to\frac{\log L}{4\pi^2}>0,
+\]
+with weight $e^{+gQ}$. Bare $g\approx\eps^2(h_1-2h_2)$.
+
+\paragraph{Critical set.} Near $h=0$ the critical set in the $(h_1,h_2)$ plane is a curve:
+on the side where $g<0$ the coupling is marginally irrelevant ($g_j\sim-1/(\beta j)$, massless
+with logarithmic corrections); on the other side it is marginally relevant. The RG family
+in which $g$ is \emph{tuned} (treated as a neutral direction, like $y,z$ in \texttt{h02rg})
+is the endpoint $h_*$ of this curve, with $g_j=O(\eps L^{-\kappa j})$.
+
+\paragraph{RG.} The stable-manifold step is no harder than in $d=3$: put $\hat g$ in the
+neutral block $v=(\hat y,\hat z,\hat a,\hat g)$ with $E$ upper triangular, diagonal
+$(1,1,L^2,1)$; \lean{H02RG/Flow/StableManifold.lean} allows $\|E^{-1}\|\le1$. The $g^2$ bubble
+reaches the $v$-equation only through $K_{j+1}$ and then $\Loc$, i.e.\ through
+$B_{j+1}w_{j+1}$, which is the structure that theorem assumes. Marginal estimates of
+Bauerschmidt--Brydges--Slade type are needed only for interior points of the critical
+curve, not for the endpoint.
+
+\paragraph{Ward inversion.} $\Sigma\to-\sum_xG(x)^3(1+O(\eps))$ is \emph{finite} in $d=4$.
+So $N=2h_2\Sigma$ no longer forces $h_2\to0$; this is the new problem.
+
+\section{The endpoint lemma and its reduction}
+
+Let $V_0^c(\eps,m^2)$ be the tuned bare couplings (Lemma 7 of the $d=3$ outline with $g$
+neutral) and $s_0^c,a_0^c,g_0^c$ their components. Define
+\begin{equation}\label{e:kappa}
+  \kappa(\eps,m^2)=\frac{g_0^c(\eps,m^2)}{(1+s_0^c)^2\eps^2}-2 .
+\end{equation}
+By the fermionic representation, $g_0=(1+s_0)^2\eps^2(2+h_1-2h_2)$, so
+$\kappa=h_1-2h_2$ along the tuned family.
+
+\begin{lemma}[reduction]\label{lem:reduce}
+  Along the tuned family, as $m\downarrow0$, $h(m)\to h_*$ with
+  \[
+    h_{2*}=-\frac{\kappa(\eps,0)}{2(1+\gamma_{13})},\qquad
+    h_{1*}=\frac{\gamma_{13}\,\kappa(\eps,0)}{1+\gamma_{13}},
+  \]
+  where $\gamma_{13}=\lim X_{13}/X_{11}=O(\eps)$. In particular $h_*=0$ iff $\kappa(\eps,0)=0$.
+\end{lemma}
+\begin{proof}
+W1 solved for $h_1$ gives $h_1=b_1/X_{11}-(X_{13}/X_{11})\,2h_2$; since $X_{11}\asymp m^{-2}$
+and $b_1$ is bounded, $h_{1*}=-2\gamma_{13}h_{2*}$. Together with
+$h_{1*}-2h_{2*}=\kappa(\eps,0)$ this gives the claim; $1+\gamma_{13}\neq0$ for $\eps$ small.
+\end{proof}
+
+\begin{remark}[why W1, W2 alone cannot decide it]
+  W1 and W2 hold for \emph{every} value of the bare couplings, so they cannot single out
+  the tuned value of $g_0$. Concretely, W2 is equivalent to $N=2h_2\Sigma$, and with
+  Lemma~\ref{lem:reduce} this is $N_*=-\kappa\Sigma_*/(1+\gamma_{13})$: a restatement, not a
+  constraint. (Explicitly, $\partial_{g_0}N$ is finite because the $\log(1/m)$ pieces of
+  $\partial_{g_0}\avg{P}$ and $\partial_{g_0}\gamma_{31}$ cancel.) In $d=3$ the extra input is
+  $|\Sigma|\to\infty$, which forces $h_{2*}=0$ and hence $\kappa=0$: \emph{in $d=3$ the Ward
+  identities prove that the tuned $Q$ coupling equals its $h=0$ value.}
+\end{remark}
+
+\begin{remark}[what is at stake]
+  The sign of $\kappa$ decides the physics at $h=0$:
+  $\kappa=0$: $h=0$ is the endpoint, massless with power-law corrections;
+  $\kappa$ on the irrelevant side: $h=0$ is an interior point, massless with
+  $1/\log$ corrections; $\kappa$ on the relevant side: the flow from $h=0$ leaves the
+  perturbative regime at scale $\approx\exp(c/|\kappa|)$, and one expects \emph{no}
+  massless phase (a dynamically generated mass, as in asymptotically free models). There is
+  no contradiction with W1 in the last case: in finite volume $\avg{z_0}_{h=0}=0$ by
+  symmetry, and the local estimate $\avg{z}\approx1-2\eps G(0)$ is only meaningful after
+  $N\to\infty$ in an ordered phase.
+\end{remark}
+
+\begin{lemma}[endpoint]\label{lem:endpoint}
+  $\kappa(\eps,0)=0$ for all small $\eps$.
+\end{lemma}
+
+\paragraph{Evidence.} $\kappa=O(\eps^2)$: the effective $Q$ vertex along $h_1=2h_2$ (bare
+$c_Q=2$) has no constant term as $m\to0$ at $O(\eps^2)$
+($\Gamma_Q^{(2)}=2\eps^2m^4\sum G^2$) and at $O(\eps^3)$
+($\Gamma_Q^{(3)}\approx\eps^3m^4(0.043\log(1/m)+0.026)$). A displacement $\kappa\neq0$ would
+show up as a constant $\approx\kappa\eps^2$.
+
+\paragraph{Proposed proof.}
+\begin{enumerate}[label=(\roman*)]
+\item \emph{Analyticity.} $\eps\mapsto\kappa(\eps,m^2)$ is analytic on a disc
+  $|\eps|<\eps_0$, uniformly in $m^2\ge0$, and continuous in $m^2\ge0$. Source:
+  \lean{Flow.System.Bounds.analyticAlongCurves\_stableMap} and
+  \lean{Flow.continuous\_stableMap}. The bare irrelevant couplings are polynomials in $\eps$;
+  $s_0^c$ is itself tuned, so this is an implicit-function statement.
+  \open{check that the $\eps$-dependence enters only through $w_0$ and $E,B_j,D_j,g_j$
+  analytically.}
+\item \emph{Taylor coefficients are perturbation theory.} $\partial_\eps^k\kappa(0,m^2)$ is
+  the $k$-th coefficient of formal lattice perturbation theory for the tuned family at mass
+  $m$, and is continuous at $m=0$ by (i). So it suffices that each coefficient vanishes in
+  the limit $m\to0$.
+\item \emph{All orders, by symmetry.} At $h=0$ the lattice action and the measure
+  $\prod z^{-1}\,d\xi\,d\eta$ are exactly $OSp(1|4)$-invariant. The claim is the analogue of
+  the classical result for the $O(N)$ nonlinear sigma model (Br\'ezin, Zinn-Justin and
+  Le~Guillou, 1976): the functional Ward identity (Zinn-Justin equation with a source for
+  the composite $z$) forces the local part of the effective action to be an invariant
+  functional plus terms proportional to the explicit breaking. The only single-site
+  invariant is $u\cdot u=-1$, so no non-derivative $S$ or $Q$ term survives at $h=0$, i.e.\
+  $\kappa_k=0$ for all $k$. Here the regulator is the lattice, which keeps the symmetry
+  exactly; the IR regulator is the $s$-field direction $h_1=2h_2\propto m^2$, which breaks
+  it softly, and the breaking terms vanish as $m\to0$ order by order. Note that the
+  \emph{full functional} identity is needed; the two zero-momentum identities W1, W2 are
+  not enough (previous remark). \open{the main work in $d=4$.}
+\end{enumerate}
+Then $\kappa(\eps,0)=\sum_k\eps^k\kappa_k(0)=0$.
+
+\begin{remark}
+  Step (iii) is purely perturbative and finite-order at each step, so it can be checked
+  by machine at low order (done through $\eps^3$) and is a candidate for Lean at the level
+  of formal power series. Step (i) is already essentially in Lean for $\HH^{0|2}$.
+\end{remark}
+
+\section{Remaining $d=4$ lemmas}
+
+As in the $d=3$ outline, with these changes. Lemma~4 (symmetry, $\Loc$): same space
+$\{S,Q,\text{wave-function}\}$; in $d=4$ $Q$ is marginal, so $\Loc$ must include it at
+dimension $d$. Lemma~6 (RG step): norm weight $|g|$ instead of $L^j|g|$, so stability is
+easier. Lemma~7 (flow): $\hat g$ neutral, as above. Lemma~8 (observables): unchanged in
+structure. Lemma~9 (Schur): $\Sigma=-\sum G^3+O(\eps)$, finite. Lemma~10 (Ward inversion):
+replaced by Lemmas~\ref{lem:reduce} and \ref{lem:endpoint}. Lemma~11 (one-field model): the
+detuning window for a marginal coupling is $|\delta|\lesssim\eps/\log(1/m)$, much larger
+than the needed $\eps m^2$.
+
+\end{document}
